@@ -1,0 +1,91 @@
+[gd_scene load_steps=6 format=3 uid="uid://bvwjgxmq2ro5h"]
+
+[ext_resource type="Texture2D" uid="uid://d4dje22awji6e" path="res://Location/Star.png" id="1_lnqws"]
+[ext_resource type="Script" path="res://Location/Location.cs" id="1_v8j7d"]
+
+[sub_resource type="Animation" id="Animation_vdoim"]
+resource_name = "Choosable"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("StarSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.174533, -0.174533, 0.174533]
+}
+
+[sub_resource type="Animation" id="Animation_tdbk1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("StarSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bqx77"]
+_data = {
+"Choosable": SubResource("Animation_vdoim"),
+"RESET": SubResource("Animation_tdbk1")
+}
+
+[node name="Location" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_v8j7d")
+
+[node name="StarSprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_lnqws")
+
+[node name="Button" type="Button" parent="."]
+offset_left = -11.0
+offset_top = -11.0
+offset_right = 11.0
+offset_bottom = 11.0
+focus_mode = 0
+flat = true
+
+[node name="VBox" type="VBoxContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -24.0
+offset_top = 10.0
+offset_right = 24.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="QuestPolygon" type="Polygon2D" parent="."]
+visible = false
+color = Color(0.110626, 0.566406, 0, 1)
+polygon = PackedVector2Array(-2, -32, -2, -18, -8, -18, 0, -10, 8, -18, 2, -18, 2, -32)
+
+[node name="Animator" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_bqx77")
+}
+
+[connection signal="mouse_entered" from="Button" to="." method="OnButtonMouseEntered"]
+[connection signal="mouse_exited" from="Button" to="." method="OnButtonMouseExited"]
+[connection signal="pressed" from="Button" to="." method="OnButtonPressed"]

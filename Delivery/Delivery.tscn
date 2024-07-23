@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://drmstje3wacnt"]
+
+[ext_resource type="Script" path="res://Delivery/Delivery.cs" id="1_6nldt"]
+
+[node name="Delivery" type="HBoxContainer"]
+script = ExtResource("1_6nldt")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="IDLabel" type="Label" parent="VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "[1]"
+horizontal_alignment = 1
+
+[node name="ItemsHFlow" type="HFlowContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 9.0
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="OnDeliveryTimerTimeout"]

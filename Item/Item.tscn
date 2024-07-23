@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://eo8sjdn43ad7"]
+
+[ext_resource type="Script" path="res://Item/Item.cs" id="1_urfug"]
+[ext_resource type="Texture2D" uid="uid://cskg0vuygd6dd" path="res://Item Sprites/Archeology findings.png" id="1_wamyk"]
+
+[node name="Item" type="HBoxContainer"]
+modulate = Color(0, 1, 0, 1)
+script = ExtResource("1_urfug")
+
+[node name="ItemIcon" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_wamyk")
+stretch_mode = 2
+
+[node name="DamageLabel" type="Label" parent="."]
+layout_mode = 2
+text = "9"
+
+[node name="ItemHP" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(4, 16)
+layout_mode = 2
+size_flags_vertical = 4
+step = 1.0
+value = 100.0
+fill_mode = 3
+show_percentage = false

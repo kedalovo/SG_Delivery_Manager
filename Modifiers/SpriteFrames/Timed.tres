@@ -1,0 +1,32 @@
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://doalvdob1m7m6"]
+
+[ext_resource type="Texture2D" uid="uid://c304x05ny6g2a" path="res://Modifiers/TimedSpritesheet.png" id="1_b1ryf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8d83c"]
+atlas = ExtResource("1_b1ryf")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lj3hm"]
+atlas = ExtResource("1_b1ryf")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_budyn"]
+atlas = ExtResource("1_b1ryf")
+region = Rect2(32, 0, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8d83c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lj3hm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_budyn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]

@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://p0nx1idytng6"]
+
+[ext_resource type="Script" path="res://Modifiers/ModifierIcon.cs" id="1_de863"]
+
+[node name="ModifierIcon" type="CenterContainer"]
+custom_minimum_size = Vector2(16, 16)
+script = ExtResource("1_de863")
+
+[node name="Icon" type="AnimatedSprite2D" parent="."]
+autoplay = "default"
+centered = false
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HBox"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="DataLabel" type="Label" parent="HBox"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1

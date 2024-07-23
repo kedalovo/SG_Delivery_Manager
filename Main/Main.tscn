@@ -1,0 +1,1383 @@
+[gd_scene load_steps=12 format=3 uid="uid://huvowrxh5x0l"]
+
+[ext_resource type="Script" path="res://Main/Main.cs" id="1_ei6yb"]
+[ext_resource type="Texture2D" uid="uid://crb4c3qicfnek" path="res://Main/StarMap_Background.png" id="2_p67wq"]
+[ext_resource type="PackedScene" uid="uid://bvwjgxmq2ro5h" path="res://Location/Location.tscn" id="3_dt0bp"]
+[ext_resource type="PackedScene" uid="uid://ck7a82me5xux0" path="res://Ship/Ship.tscn" id="4_tp5ri"]
+[ext_resource type="Texture2D" uid="uid://dfd4qgmg3todd" path="res://NPC/Faces/Faces.png" id="5_mmjq5"]
+[ext_resource type="Texture2D" uid="uid://g0o15jg5f87f" path="res://NPC/Bodies/Bodies.png" id="5_xd0hc"]
+[ext_resource type="Texture2D" uid="uid://d4dje22awji6e" path="res://Location/Star.png" id="7_arlnc"]
+
+[sub_resource type="Animation" id="Animation_lam5p"]
+resource_name = "Idle"
+length = 6.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodySprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3, 4.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 1), Vector2(0, 0), Vector2(0, -1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FaceSprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 2)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FaceSprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(3.5, 3.5), Vector2(3.6, 3.6)]
+}
+
+[sub_resource type="Animation" id="Animation_n8nk5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodySprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FaceSprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FaceSprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3.5, 3.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rhkjq"]
+_data = {
+"Idle": SubResource("Animation_lam5p"),
+"RESET": SubResource("Animation_n8nk5")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ic3lu"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Main" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_ei6yb")
+ConSegmentMargin = 4
+ConLineWidth = 3
+ConLineColor = Color(0.168543, 0.650288, 0.605149, 1)
+
+[node name="ReferenceStarMap" type="Sprite2D" parent="."]
+self_modulate = Color(0.351563, 0.351563, 0.351563, 1)
+show_behind_parent = true
+texture_filter = 1
+position = Vector2(144, 0)
+texture = ExtResource("2_p67wq")
+centered = false
+metadata/_edit_lock_ = true
+
+[node name="Locations" type="Node" parent="."]
+
+[node name="Location" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(190, 26)
+LocationName = "Aurora"
+
+[node name="Location2" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(305, 25)
+LocationName = "Alpha"
+ID = 1
+
+[node name="Location3" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(366, 43)
+LocationName = "Beta"
+ID = 2
+
+[node name="Location4" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(451, 12)
+LocationName = "Gamma"
+ID = 3
+
+[node name="Location5" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(512, 24)
+LocationName = "Epsilon"
+ID = 4
+
+[node name="Location6" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(471, 90)
+LocationName = "Borealis"
+ID = 5
+
+[node name="Location7" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(493, 140)
+LocationName = "Omega"
+ID = 6
+
+[node name="Location8" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(567, 231)
+LocationName = "Zeppelin"
+ID = 7
+
+[node name="Location9" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(382, 197)
+LocationName = "Trifecta"
+ID = 8
+
+[node name="Location10" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(356, 150)
+LocationName = "Cupid"
+ID = 9
+
+[node name="Location11" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(310, 160)
+LocationName = "Theta"
+ID = 10
+
+[node name="Location12" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(258, 135)
+LocationName = "Fate"
+ID = 11
+
+[node name="Location13" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(261, 186)
+LocationName = "Sigma"
+ID = 12
+
+[node name="Location14" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(171, 149)
+LocationName = "Quatro"
+ID = 13
+
+[node name="Location15" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(269, 70)
+LocationName = "Titan"
+ID = 14
+
+[node name="Location16" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(318, 84)
+LocationName = "Dread"
+ID = 15
+
+[node name="Ship" parent="." instance=ExtResource("4_tp5ri")]
+position = Vector2(305, 25)
+
+[node name="LeftMenu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 144.0
+offset_bottom = 256.0
+
+[node name="PanelContainer" type="PanelContainer" parent="LeftMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBox" type="VBoxContainer" parent="LeftMenu/PanelContainer"]
+z_index = 1
+layout_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CurrentLocationLabel" type="Label" parent="LeftMenu/PanelContainer/VBox"]
+layout_mode = 2
+text = "Current Location"
+horizontal_alignment = 1
+
+[node name="NPCNameLabel" type="Label" parent="LeftMenu/PanelContainer/VBox"]
+layout_mode = 2
+text = "NPC Name"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="LeftMenu/PanelContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="LeftMenu/PanelContainer/VBox"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="LeftMenu/PanelContainer/VBox/CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="LeftMenu/PanelContainer/VBox/CenterContainer/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Buy fuel:"
+
+[node name="FuelButton" type="Button" parent="LeftMenu/PanelContainer/VBox/CenterContainer/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "$50"
+
+[node name="NPC" type="Node2D" parent="."]
+position = Vector2(72, 96)
+
+[node name="BodySprite" type="Sprite2D" parent="NPC"]
+self_modulate = Color(0.123492, 0.484375, 0.0605469, 1)
+texture_filter = 1
+position = Vector2(0, 32)
+scale = Vector2(3, 3)
+texture = ExtResource("5_xd0hc")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 48)
+
+[node name="FaceSprite" type="Sprite2D" parent="NPC"]
+self_modulate = Color(0.038269, 0.816406, 0.068665, 1)
+texture_filter = 1
+position = Vector2(0, -40)
+scale = Vector2(3.5, 3.5)
+texture = ExtResource("5_mmjq5")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NPC"]
+libraries = {
+"": SubResource("AnimationLibrary_rhkjq")
+}
+autoplay = "Idle"
+
+[node name="BottomMenu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 256.0
+offset_right = 600.0
+offset_bottom = 400.0
+
+[node name="PanelContainer" type="PanelContainer" parent="BottomMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="BottomMenu/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+metadata/_edit_use_anchors_ = true
+
+[node name="HBox" type="HBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="DeliveryVBox" type="VBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeliveryLabel" type="Label" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox"]
+layout_mode = 2
+text = "Deliver these:"
+
+[node name="ModifiersHBox" type="HBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox"]
+layout_mode = 2
+
+[node name="DeliveryContentsLabel" type="RichTextLabel" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Delivery item 1 (4)
+Delivery Item 2 (2)
+..."
+
+[node name="HBox" type="HBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox"]
+layout_mode = 2
+
+[node name="DestinationLabel" type="Label" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox"]
+layout_mode = 2
+text = "Delivery Destination"
+
+[node name="AcceptButton" type="Button" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "Yes"
+
+[node name="DeclineButton" type="Button" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "No"
+
+[node name="CargoVBox" type="VBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CargoLabel" type="Label" parent="BottomMenu/PanelContainer/MarginContainer/HBox/CargoVBox"]
+layout_mode = 2
+text = "Current Cargo:"
+
+[node name="Scroll" type="ScrollContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox/CargoVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CargoVBox" type="VBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox/CargoVBox/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 400.0
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="InfoVBox" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -104.0
+offset_bottom = 40.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="MoneyLabel" type="Label" parent="Control/InfoVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "$9999999"
+horizontal_alignment = 2
+
+[node name="FuelLabel" type="Label" parent="Control/InfoVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Fuel:"
+horizontal_alignment = 2
+
+[node name="NewReferenceStartMap" type="Node2D" parent="."]
+position = Vector2(600, 0)
+
+[node name="Connections" type="Node2D" parent="NewReferenceStartMap"]
+
+[node name="Line2D" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(72, 48, 72, 192)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D2" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(72, 48, 216, 48)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D3" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(264, 48, 216, 48)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D4" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(264, 48, 360, 48)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D5" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(408, 48, 360, 48)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D6" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(408, 48, 408, 144)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D7" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(408, 192, 408, 144)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D8" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(408, 192, 264, 192)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D9" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(408, 192, 408, 336)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D10" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(264, 144, 408, 144)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D11" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(264, 144, 264, 192)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D12" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(168, 192, 264, 192)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D13" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(168, 192, 168, 144)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D14" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(168, 144, 216, 144)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D15" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(264, 144, 216, 144)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D16" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(216, 96, 168, 96)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D17" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(168, 144, 168, 96)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D18" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(216, 96, 216, 48)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D19" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(168, 192, 72, 192)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D20" type="Line2D" parent="NewReferenceStartMap/Connections"]
+points = PackedVector2Array(264, 144, 264, 48)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Locations" type="Node2D" parent="NewReferenceStartMap"]
+
+[node name="Location" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(72, 48)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Aurora"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location2" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(216, 48)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location2"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location2"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Alpha"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location3" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(264, 48)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location3"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Beta"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location4" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(360, 48)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location4"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location4"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Gamma"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location5" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(408, 48)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location5"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location5"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Epsilon"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location6" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(408, 144)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location6"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location6"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Borealis"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location7" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(408, 192)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location7"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location7"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Omega"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location8" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(408, 336)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location8"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location8"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Zeppelin"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location9" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(264, 192)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location9"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location9"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Trifecta"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location10" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(264, 144)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location10"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location10"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Cupid"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location11" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(216, 144)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location11"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location11"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Theta"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location12" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(168, 144)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location12"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location12"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Fate"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location13" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(168, 96)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location13"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location13"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Titan"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location14" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(216, 96)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location14"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location14"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Dread"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location15" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(168, 192)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location15"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location15"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Sigma"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location16" type="Node2D" parent="NewReferenceStartMap/Locations"]
+position = Vector2(72, 192)
+
+[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location16"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location16"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quatro"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Reference" type="Node2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.384314)
+position = Vector2(144, 0)
+metadata/_edit_group_ = true
+
+[node name="Panel" type="Panel" parent="Reference"]
+visible = false
+offset_right = 456.0
+offset_bottom = 256.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ic3lu")
+metadata/_edit_lock_ = true
+
+[node name="Connections" type="Node2D" parent="Reference"]
+
+[node name="Line2D" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(46, 26, 27, 149)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D2" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(117, 186, 27, 149)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D3" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(117, 186, 114, 135)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D4" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(166, 160, 114, 135)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D5" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(166, 160, 212, 150)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D6" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(238, 197, 212, 150)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D7" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(238, 197, 117, 186)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D8" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(125, 70, 114, 135)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D9" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(125, 70, 174, 84)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D10" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(161, 25, 174, 84)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D11" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(161, 25, 46, 26)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D12" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(161, 25, 222, 43)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D13" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(307, 12, 222, 43)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D14" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(307, 12, 368, 24)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D15" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(327, 90, 368, 24)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D16" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(327, 90, 349, 140)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D17" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(327, 90, 212, 150)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D18" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(349, 140, 238, 197)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D19" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(349, 140, 423, 231)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Line2D20" type="Line2D" parent="Reference/Connections"]
+points = PackedVector2Array(222, 43, 212, 150)
+width = 4.0
+default_color = Color(0, 0.905882, 1, 0.47451)
+
+[node name="Locations" type="Node2D" parent="Reference"]
+visible = false
+
+[node name="Location" type="Node2D" parent="Reference/Locations"]
+position = Vector2(46, 26)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Aurora"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location2" type="Node2D" parent="Reference/Locations"]
+position = Vector2(161, 25)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location2"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location2"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Alpha"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location3" type="Node2D" parent="Reference/Locations"]
+position = Vector2(222, 43)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location3"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Beta"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location4" type="Node2D" parent="Reference/Locations"]
+position = Vector2(307, 12)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location4"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location4"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Gamma"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location5" type="Node2D" parent="Reference/Locations"]
+position = Vector2(368, 24)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location5"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location5"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Epsilon"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location6" type="Node2D" parent="Reference/Locations"]
+position = Vector2(327, 90)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location6"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location6"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Borealis"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location7" type="Node2D" parent="Reference/Locations"]
+position = Vector2(349, 140)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location7"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location7"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Omega"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location8" type="Node2D" parent="Reference/Locations"]
+position = Vector2(423, 231)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location8"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location8"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Zeppelin"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location9" type="Node2D" parent="Reference/Locations"]
+position = Vector2(238, 197)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location9"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location9"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Trifecta"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location10" type="Node2D" parent="Reference/Locations"]
+position = Vector2(212, 150)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location10"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location10"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Cupid"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location11" type="Node2D" parent="Reference/Locations"]
+position = Vector2(166, 160)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location11"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location11"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Theta"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location12" type="Node2D" parent="Reference/Locations"]
+position = Vector2(114, 135)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location12"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location12"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Fate"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location13" type="Node2D" parent="Reference/Locations"]
+position = Vector2(125, 70)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location13"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location13"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Titan"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location14" type="Node2D" parent="Reference/Locations"]
+position = Vector2(174, 84)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location14"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location14"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Dread"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location15" type="Node2D" parent="Reference/Locations"]
+position = Vector2(117, 186)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location15"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location15"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Sigma"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Location16" type="Node2D" parent="Reference/Locations"]
+position = Vector2(27, 149)
+metadata/_edit_group_ = true
+
+[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location16"]
+texture_filter = 1
+texture = ExtResource("7_arlnc")
+
+[node name="Label" type="Label" parent="Reference/Locations/Location16"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.5
+offset_top = 5.0
+offset_right = 23.5
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quatro"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="LocationPressed" from="Locations/Location" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location2" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location3" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location4" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location5" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location6" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location7" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location8" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location9" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location10" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location11" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location12" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location13" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location14" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location15" to="." method="OnLocationPressed"]
+[connection signal="LocationPressed" from="Locations/Location16" to="." method="OnLocationPressed"]
+[connection signal="pressed" from="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/FuelButton" to="." method="OnFuelButtonPressed"]
+[connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
+[connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/DeclineButton" to="." method="OnDeclineQuestButtonPressed"]

@@ -1,0 +1,18 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://bjmab53ws6ldg"]
+
+[ext_resource type="FontFile" uid="uid://vkwgskm7oags" path="res://joystix.monospace-regular.otf" id="1_tsnux"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knrdk"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q5l14"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_qhc2v"]
+base_font = ExtResource("1_tsnux")
+
+[resource]
+default_font = SubResource("FontVariation_qhc2v")
+default_font_size = 8
+ProgressBar/styles/background = SubResource("StyleBoxFlat_knrdk")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_q5l14")
