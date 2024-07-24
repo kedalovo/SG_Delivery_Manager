@@ -22,6 +22,8 @@ public partial class Location : Node2D
 	public Dictionary<string, string>[] HazardsData = Array.Empty<Dictionary<string, string>>();
 	private TextureRect[] HazardsIcons = Array.Empty<TextureRect>();
 
+	private int FuelCost = 50;
+
 	private int FuelLevel = 5;
 	private int MaxFuel = 5;
 
@@ -151,6 +153,13 @@ public partial class Location : Node2D
 	public void Choosable() { Animator.Play("Choosable"); }
 
 	public void ClearChoosable() { Animator.Play("RESET"); }
+
+	public int GetFuelCost()
+	{
+		int Cost = FuelCost;
+		if (Hazards.Contains("MarketCrash")) Cost = FuelCost * int.Parse(GetHazardData("MarketCrash")["fuelCost"]);
+		return Cost;
+	}
 
 	public bool BuyFuel(int amount)
 	{

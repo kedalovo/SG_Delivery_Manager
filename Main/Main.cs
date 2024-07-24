@@ -556,11 +556,7 @@ public partial class Main : Node2D
 
 	private void OnFuelButtonPressed()
 	{
-		int Cost = 50;
-		if (CurrentLocation.Hazards.Contains("MarketCrash"))
-		{
-			Cost = 50 * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"]);
-		}
+		int Cost = CurrentLocation.GetFuelCost();
 		if (Balance >= Cost)
 		{
 			if (CurrentLocation.BuyFuel(1))
@@ -571,7 +567,6 @@ public partial class Main : Node2D
 				PopupBalance(-Cost);
 				foreach (Location location in AllLocations.Values) location.MarketCrashUpdate();
 			}
-
 		}
 	}
 
