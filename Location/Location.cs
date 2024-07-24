@@ -16,7 +16,7 @@ public partial class Location : Node2D
 	private Polygon2D QuestPolygon;
 	private AnimationPlayer Animator;
 
-	private int[] quests = Array.Empty<int>();
+	private int[] Quests = Array.Empty<int>();
 
 	public string[] Hazards = Array.Empty<string>();
 	public Dictionary<string, string>[] HazardsData = Array.Empty<Dictionary<string, string>>();
@@ -39,16 +39,16 @@ public partial class Location : Node2D
 		EmitSignal(SignalName.LocationPressed, this);
 	}
 
-	public void AddQuest(int newQuest) { quests = quests.Append(newQuest).ToArray(); UpdateQuests(); }
+	public void AddQuest(int newQuest) { Quests = Quests.Append(newQuest).ToArray(); UpdateQuests(); }
 
-	public void RemoveQuest(int questID) { quests = quests.Where(val => val != questID).ToArray(); UpdateQuests(); }
+	public void RemoveQuest(int questID) { Quests = Quests.Where(val => val != questID).ToArray(); UpdateQuests(); }
 
-	public int[] GetQuests() => quests;
+	public int[] GetQuests() => Quests;
 
 	private void UpdateQuests()
 	{
 		string AddedDeliveries = "";
-		foreach (int quest in quests) AddedDeliveries += "[" + quest.ToString() + "]";
+		foreach (int quest in Quests) AddedDeliveries += "[" + quest.ToString() + "]";
 		NameLabel.Text = LocationName + " " + AddedDeliveries;
 	}
 
