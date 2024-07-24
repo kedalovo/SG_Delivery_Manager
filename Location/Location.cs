@@ -159,4 +159,9 @@ public partial class Location : Node2D
 	{
 		FuelLevel = Math.Clamp(FuelLevel + Math.Abs(amount), 0, MaxFuel);
 	}
+
+	public int GetFuelLevel()
+	{
+		return FuelLevel;
+	}
 }

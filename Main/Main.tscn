@@ -243,10 +243,21 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Buy fuel:"
 
-[node name="FuelButton" type="Button" parent="LeftMenu/PanelContainer/VBox/CenterContainer/VBox"]
+[node name="HBox" type="HBoxContainer" parent="LeftMenu/PanelContainer/VBox/CenterContainer/VBox"]
 layout_mode = 2
+
+[node name="FuelButton" type="Button" parent="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 16
 text = "$50"
+
+[node name="FuelLevelLabel" type="Label" parent="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "15
+left"
+horizontal_alignment = 1
 
 [node name="NPC" type="Node2D" parent="."]
 position = Vector2(72, 96)
@@ -1378,6 +1389,6 @@ vertical_alignment = 1
 [connection signal="LocationPressed" from="Locations/Location14" to="." method="OnLocationPressed"]
 [connection signal="LocationPressed" from="Locations/Location15" to="." method="OnLocationPressed"]
 [connection signal="LocationPressed" from="Locations/Location16" to="." method="OnLocationPressed"]
-[connection signal="pressed" from="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/FuelButton" to="." method="OnFuelButtonPressed"]
+[connection signal="pressed" from="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/DeclineButton" to="." method="OnDeclineQuestButtonPressed"]

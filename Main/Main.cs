@@ -55,6 +55,7 @@ public partial class Main : Node2D
 	private int fuel;
 	private int FuelLevel { get => fuel; set { FuelLabel.Text = "Fuel:" + value; fuel = value; } } 
 	private Label FuelLabel;
+	private Label FuelLevelLabel;
 
 	private HBoxContainer ModifiersHBox;
 	private PackedScene ModifierIconScene;
@@ -188,7 +189,7 @@ public partial class Main : Node2D
 		DeliveryContentsLabel = GetNode<RichTextLabel>(HBoxPath + "DeliveryVBox/DeliveryContentsLabel");
 		AcceptButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/AcceptButton");
 		DeclineButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/DeclineButton");
-		FuelButton = GetNode<Button>("LeftMenu/PanelContainer/VBox/CenterContainer/VBox/FuelButton");
+		FuelButton = GetNode<Button>("LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton");
 		
 		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Wood", Texture = GD.Load<Texture2D>("res://Item Sprites/Wood.png"), Fragility = 1}).ToArray();
 		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Cosmic propaganda", Texture = GD.Load<Texture2D>("res://Item Sprites/Cosmic propaganda.png"), Fragility = 2}).ToArray();
@@ -207,6 +208,7 @@ public partial class Main : Node2D
 		MoneyLabel = GetNode<Label>("Control/InfoVBox/MoneyLabel");
 
 		FuelLabel = GetNode<Label>("Control/InfoVBox/FuelLabel");
+		FuelLevelLabel = GetNode<Label>("LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelLevelLabel");
 
 		ModifiersHBox = GetNode<HBoxContainer>(HBoxPath + "DeliveryVBox/ModifiersHBox");
 		ModifierIconScene = GD.Load<PackedScene>("res://Modifiers/ModifierIcon.tscn");
@@ -227,6 +229,7 @@ public partial class Main : Node2D
 		
 		CurrentLocationLabel.Text = l1.LocationName;
 		CurrentLocation = l2;
+		FuelLevelLabel.Text = CurrentLocation.GetFuelLevel().ToString() + "\nFuel left";
 
 		Balance = 0;
 		FuelLevel = 10;
@@ -401,6 +404,7 @@ public partial class Main : Node2D
 						}
 						CurrentLocation.RemoveHazard("Bacteria");
 					}
+					FuelLevelLabel.Text = CurrentLocation.GetFuelLevel().ToString() + "\nFuel left";
 				}
 			}
 		}
