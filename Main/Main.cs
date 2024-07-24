@@ -72,6 +72,8 @@ public partial class Main : Node2D
 	private Texture2D HecticIcon;
 	private Texture2D BacteriaIcon;
 
+	private bool LeapDay = false;
+
 	private readonly Random Rnd = new();
 
 	#endregion Initialization
@@ -363,6 +365,7 @@ public partial class Main : Node2D
 						Balance += Payout;
 						delivery.QueueFree();
 					}
+					if (CompletedQuestIDs.Length > 0) CurrentLocation.SetCompleteQuest();
 					foreach (Delivery delivery in Deliveries) delivery.Jump();
 					// Creating new hazard every 3'rd jump
 					if (HazardCounter == 2)
@@ -404,6 +407,12 @@ public partial class Main : Node2D
 						}
 						CurrentLocation.RemoveHazard("Bacteria");
 					}
+					if (LeapDay)
+					{
+						LeapDay = false;
+						foreach (Location location in AllLocations.Values) location.AddFuel(1);
+					}
+					else LeapDay = true;
 					UpdateFuelLevelLabel();
 				}
 			}

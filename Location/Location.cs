@@ -22,8 +22,10 @@ public partial class Location : Node2D
 	public Dictionary<string, string>[] HazardsData = Array.Empty<Dictionary<string, string>>();
 	private TextureRect[] HazardsIcons = Array.Empty<TextureRect>();
 
-	private int FuelLevel = 10;
-	private int MaxFuel = 10;
+	private int FuelLevel = 5;
+	private int MaxFuel = 5;
+
+	private int QuestCompleted = 0;
 
 	private HBoxContainer HazardsHBox;
 
@@ -45,6 +47,11 @@ public partial class Location : Node2D
 	public void AddQuest(int newQuest) { Quests = Quests.Append(newQuest).ToArray(); UpdateQuests(); }
 
 	public void RemoveQuest(int questID) { Quests = Quests.Where(val => val != questID).ToArray(); UpdateQuests(); }
+
+	public void SetCompleteQuest()
+	{
+		QuestCompleted = 4;
+	}
 
 	public int[] GetQuests() => Quests;
 
@@ -157,7 +164,8 @@ public partial class Location : Node2D
 
 	public void AddFuel(int amount)
 	{
-		FuelLevel = Math.Clamp(FuelLevel + Math.Abs(amount), 0, MaxFuel);
+		if (QuestCompleted == 0) FuelLevel = Math.Clamp(FuelLevel + Math.Abs(amount), 0, MaxFuel);
+		else QuestCompleted--;
 	}
 
 	public int GetFuelLevel()
