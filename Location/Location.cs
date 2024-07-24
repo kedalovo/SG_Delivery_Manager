@@ -22,6 +22,9 @@ public partial class Location : Node2D
 	public Dictionary<string, string>[] HazardsData = Array.Empty<Dictionary<string, string>>();
 	private TextureRect[] HazardsIcons = Array.Empty<TextureRect>();
 
+	private int FuelLevel = 10;
+	private int MaxFuel = 10;
+
 	private HBoxContainer HazardsHBox;
 
 	public override void _Ready()
@@ -141,4 +144,19 @@ public partial class Location : Node2D
 	public void Choosable() { Animator.Play("Choosable"); }
 
 	public void ClearChoosable() { Animator.Play("RESET"); }
+
+	public bool BuyFuel(int amount)
+	{
+		if (FuelLevel < Math.Abs(amount)) return false;
+		else
+		{
+			FuelLevel -= Math.Abs(amount);
+			return true;
+		}
+	}
+
+	public void AddFuel(int amount)
+	{
+		FuelLevel = Math.Clamp(FuelLevel + Math.Abs(amount), 0, MaxFuel);
+	}
 }
