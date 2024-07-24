@@ -229,7 +229,7 @@ public partial class Main : Node2D
 		
 		CurrentLocationLabel.Text = l1.LocationName;
 		CurrentLocation = l2;
-		FuelLevelLabel.Text = CurrentLocation.GetFuelLevel().ToString() + "\nFuel left";
+		UpdateFuelLevelLabel();
 
 		Balance = 0;
 		FuelLevel = 10;
@@ -404,7 +404,7 @@ public partial class Main : Node2D
 						}
 						CurrentLocation.RemoveHazard("Bacteria");
 					}
-					FuelLevelLabel.Text = CurrentLocation.GetFuelLevel().ToString() + "\nFuel left";
+					UpdateFuelLevelLabel();
 				}
 			}
 		}
@@ -554,10 +554,15 @@ public partial class Main : Node2D
 		}
 		if (Balance >= Cost)
 		{
-			Balance -= Cost;
-			FuelLevel += 1;
-			PopupBalance(-Cost);
-			foreach (Location location in AllLocations.Values) location.MarketCrashUpdate();
+			if (CurrentLocation.BuyFuel(1))
+			{
+				Balance -= Cost;
+				FuelLevel += 1;
+				UpdateFuelLevelLabel();
+				PopupBalance(-Cost);
+				foreach (Location location in AllLocations.Values) location.MarketCrashUpdate();
+			}
+
 		}
 	}
 
@@ -586,6 +591,11 @@ public partial class Main : Node2D
 		LabelTween.TweenProperty(PopupLabel, "position:y", (float)Rnd.NextDouble() * 20.0f + 40.0f, 1.0d);
 		LabelTween.TweenProperty(PopupLabel, "modulate", Colors.Transparent, 0.3d).SetDelay(0.7d);
         LabelTween.TweenCallback(Callable.From(PopupLabel.QueueFree)).SetDelay(1.0d);
+	}
+
+	private void UpdateFuelLevelLabel()
+	{
+		FuelLevelLabel.Text = CurrentLocation.GetFuelLevel().ToString() + "\nFuel left";
 	}
 
 	private int GetLocationID(string NameOfLocation)
