@@ -62,6 +62,7 @@ public partial class Main : Node2D
 
 	private SpriteFrames TimedFrames;
 	private SpriteFrames FragileFrames;
+	private SpriteFrames SegmentedFrames;
 
 	private Dictionary<string, SpriteFrames> TagFrames = new();
 
@@ -217,9 +218,11 @@ public partial class Main : Node2D
 
 		TimedFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Timed.tres");
 		FragileFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Fragile.tres");
+		SegmentedFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Segmented.tres");
 
 		TagFrames["Timed"] = TimedFrames;
 		TagFrames["Fragile"] = FragileFrames;
+		TagFrames["Segmented"] = SegmentedFrames;
 
 		MarketCrashIcon = GD.Load<Texture2D>("res://Location/Hazards/FuelCrash.png");
 		DisenteryIcon = GD.Load<Texture2D>("res://Location/Hazards/HeatLeeches.png");
@@ -305,7 +308,7 @@ public partial class Main : Node2D
 			case 0:
 				string newTag = "";
 				Dictionary<string, string> newTagData = new();
-				switch (Rnd.Next(2))
+				switch (Rnd.Next(3))
 				{
 					case 0:
 						newTag = "Timed";
@@ -314,6 +317,10 @@ public partial class Main : Node2D
 					case 1:
 						newTag = "Fragile";
 						newTagData["jumps"] = (StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length + Rnd.Next(2)).ToString();
+						break;
+					case 2:
+						newTag = "Segmented";
+						newTagData[""] = "";
 						break;
 				}
 				NewQuest.AddTag(newTag, newTagData);
@@ -642,6 +649,9 @@ public partial class Main : Node2D
 				break;
 			case "Fragile":
 				NewModifier.SetData(newTagData["jumps"]);
+				break;
+			case "Segmented":
+				NewModifier.SetData(newTagData[""]);
 				break;
 		}
 		return NewModifier;
