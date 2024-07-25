@@ -300,7 +300,13 @@ public partial class Main : Node2D
 		Location[] PossibleLocations = AllLocations.Values.ToArray();
 		Location ChosenLocation = CurrentLocation;
 		// Choosing a Location that is not a Current Location
-		while (ChosenLocation.LocationName == CurrentLocation.LocationName) ChosenLocation = PossibleLocations[Rnd.Next(PossibleLocations.Length)];
+		while
+		(
+			ChosenLocation.LocationName == CurrentLocation.LocationName
+			|
+			StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length < 3
+		)
+		ChosenLocation = PossibleLocations[Rnd.Next(PossibleLocations.Length)];
 
 		// Adding a modifier
 		switch (Rnd.Next(3))
@@ -320,7 +326,9 @@ public partial class Main : Node2D
 						break;
 					case 2:
 						newTag = "Segmented";
-						newTagData[""] = "";
+						newTagData["middle-man-id"] = StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID)[Rnd.Next(1, StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length-1)].ToString();
+						newTagData["middle-man-name"] = AllLocations[int.Parse(newTagData["middle-man-id"])].LocationName;
+						newTagData["middle-man-met"] = "false";
 						break;
 				}
 				NewQuest.AddTag(newTag, newTagData);
@@ -363,17 +371,20 @@ public partial class Main : Node2D
 					foreach (int id in CompletedQuestIDs)
 					{
 						Delivery delivery = GetDeliveryByID(id);
-						Deliveries = Deliveries.Where(val => val != delivery).ToArray();
-						delivery.OnDeliveryFailed -= DeliveryFailed;
-						AcceptedQuests.Remove(id);
-						CurrentLocation.RemoveQuest(id);
-						int Payout = delivery.GetPayout();
-						PopupBalance(Payout);
-						Balance += Payout;
-						delivery.QueueFree();
+						if (!(delivery.HasTag("Segmented") && delivery.GetTagData("Segmented")["middle-man-met"] == "false"))
+						{
+							Deliveries = Deliveries.Where(val => val != delivery).ToArray();
+							delivery.OnDeliveryFailed -= DeliveryFailed;
+							AcceptedQuests.Remove(id);
+							CurrentLocation.RemoveQuest(id);
+							int Payout = delivery.GetPayout();
+							PopupBalance(Payout);
+							Balance += Payout;
+							delivery.QueueFree();
+						}
 					}
 					if (CompletedQuestIDs.Length > 0) CurrentLocation.SetCompleteQuest();
-					foreach (Delivery delivery in Deliveries) delivery.Jump();
+					foreach (Delivery delivery in Deliveries) delivery.Jump(CurrentLocation.ID);
 					// Creating new hazard every 3'rd jump
 					if (HazardCounter == 2)
 					{
@@ -651,7 +662,7 @@ public partial class Main : Node2D
 				NewModifier.SetData(newTagData["jumps"]);
 				break;
 			case "Segmented":
-				NewModifier.SetData(newTagData[""]);
+				NewModifier.SetData(newTagData["middle-man-name"]);
 				break;
 		}
 		return NewModifier;

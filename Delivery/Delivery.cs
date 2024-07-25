@@ -93,6 +93,11 @@ public partial class Delivery : HBoxContainer
 					Payout = Mathf.FloorToInt(Payout * 1.5f);
 					GD.Print("to ", Payout);
 					break;
+				case "Segmented":
+					GD.Print("Segmented modified payout from ", Payout);
+					Payout = Mathf.FloorToInt(Payout * 1.2f);
+					GD.Print("to ", Payout);
+					break;
 			}
 		}
 		return Payout;
@@ -121,7 +126,7 @@ public partial class Delivery : HBoxContainer
 		TagLabels = TagLabels.Append(newTagIcon.GetDataLabel()).ToArray();
 	}
 
-	public void Jump()
+	public void Jump(int jumped_to_id)
 	{
 		DistanceJumped++;
 		for (int i = 0; i < Tags.Length; i++)
@@ -130,9 +135,21 @@ public partial class Delivery : HBoxContainer
 			{
 				TagLabels[i].Text = (int.Parse(TagsData[i]["jumps"]) - DistanceJumped).ToString();
 				if (int.Parse(TagLabels[i].Text) == 0) FailQuest();
-				break;
+			}
+			if (Tags[i] == "Segmented" && jumped_to_id == int.Parse(TagsData[i]["middle-man-id"]))
+			{
+				TagsData[i]["middle-man-met"] = "true";
+				TagLabels[i].Text = "Done";
 			}
 		}
+	}
+
+	public Dictionary<string, string> GetTagData(string tag)
+	{
+		for (int i = 0; i < Tags.Length; i++)
+		if (Tags[i] == tag) return TagsData[i];
+		GD.Print("Couldn't find tag ", tag);
+		return new();
 	}
 
 	private void FailQuest()
