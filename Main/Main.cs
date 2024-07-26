@@ -10,7 +10,7 @@ public partial class Main : Node2D
 
 	private Location CurrentLocation;
 	private Dictionary<int, Location> AllLocations = new();
-	private int[][] DrawingConnections = Array.Empty<int[]>();
+	private Dictionary<int[], Dictionary<string, string>> DrawingConnections = new();
 	[Export(PropertyHint.Range, "1, 16,")]
 	private int ConSegmentMargin = 1;
 	[Export(PropertyHint.Range, "1, 16,")]
@@ -154,26 +154,26 @@ public partial class Main : Node2D
 		StarMap.ConnectPoints(14, 15);
 		StarMap.ConnectPoints(15, 1);
 
-		DrawingConnections = DrawingConnections.Append(new [] {0, 1, 3}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {1, 2, 1}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {2, 3, 2}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {3, 4, 1}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {4, 5, 2}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {5, 6, 1}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {6, 7, 3}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {6, 8, 3}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {8, 9, 1}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {9, 5, 3}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {9, 2, 2}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {9, 10, 1}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {10, 11, 1}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {11, 12, 1}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {8, 12, 2}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {12, 13, 2}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {13, 0, 3}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {11, 14, 1}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {14, 15, 1}).ToArray();
-		DrawingConnections = DrawingConnections.Append(new [] {15, 1, 1}).ToArray();
+		DrawingConnections[new [] {0, 1}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {1, 2}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {2, 3}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {3, 4}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {4, 5}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {5, 6}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {6, 7}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {6, 8}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {8, 9}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {9, 5}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {9, 2}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {9, 10}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {10, 11}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {11, 12}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {8, 12}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {12, 13}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {13, 0}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {11, 14}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {14, 15}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {15, 1}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
 
 		#endregion ConnectionsDeclaration
 
@@ -246,18 +246,26 @@ public partial class Main : Node2D
 
     public override void _Process(double delta)
     {
-        base._Process(delta);
 		QueueRedraw();
     }
 
+	private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)
+	{
+		Dictionary<string, string> newData = new() {{"color", color}, {"distance", distance.ToString()}, {"segment_margin", segment_margin.ToString()}, {"line_width", line_width.ToString()}};
+		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
+		{
+			if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo)) DrawingConnections[Con.Key] = newData;
+		}
+	}
+
     public override void _Draw()
     {
-        base._Draw();
-		foreach (int [] Line in DrawingConnections)
+		//int distance, string color, int segment_margin, int line_width
+		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
 		{
-			Godot.Vector2 From = AllLocations[Line[0]].Position;
-			Godot.Vector2 To = AllLocations[Line[1]].Position;
-			DrawSegmentedLine(From, To, ConLineColor, Line[2], ConSegmentMargin, ConLineWidth);
+			Godot.Vector2 From = AllLocations[Con.Key[0]].Position;
+			Godot.Vector2 To = AllLocations[Con.Key[1]].Position;
+			DrawSegmentedLine(From, To, new Color(Con.Value["color"]), int.Parse(Con.Value["distance"]), int.Parse(Con.Value["segment_margin"]), int.Parse(Con.Value["line_width"]));
 		}
     }
 
