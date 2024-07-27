@@ -241,7 +241,7 @@ public partial class Main : Node2D
 
 		CreateNewNPC();
 		DisplayQuest(CreateNewQuest(3));
-		HighlightConnections();
+		HighlightNeighbours();
 	}
 
     public override void _Process(double delta)
@@ -258,6 +258,48 @@ public partial class Main : Node2D
 		}
 	}
 
+	private void HighlightSingleConnection(int idFrom, int idTo)
+	{
+		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
+		{
+			if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo))
+			{
+				DrawingConnections[Con.Key]["color"] = "2c9eca";
+			}
+		}
+	}
+
+	private void StopHighlightSingleConnection(int idFrom, int idTo)
+	{
+		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
+		{
+			if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo))
+			{
+				DrawingConnections[Con.Key]["color"] = "2ba69a";
+			}
+		}
+	}
+
+	private void HighlightPath(int idFrom, int idTo, string color = "2ba69a")
+	{
+		long[] pathID = StarMap.GetIdPath(idFrom, idTo);
+		Godot.Vector2[] pathPoint = StarMap.GetPointPath(idFrom, idTo);
+		for (int i = 0; i < pathID.Length - 1; i++)
+		{
+			ChangeConnection((int)pathID[i], (int)pathID[i+1], Mathf.FloorToInt(Math.Abs(pathPoint[i].DistanceTo(pathPoint[i+1]))), color, 3, 4);
+		}
+	}
+
+	private void StopHighlightPath(int idFrom, int idTo)
+	{
+		long[] pathID = StarMap.GetIdPath(idFrom, idTo);
+		Godot.Vector2[] pathPoint = StarMap.GetPointPath(idFrom, idTo);
+		for (int i = 0; i < pathID.Length - 1; i++)
+		{
+			ChangeConnection((int)pathID[i], (int)pathID[i+1], Mathf.FloorToInt(Math.Abs(pathPoint[i].DistanceTo(pathPoint[i+1]))));
+		}
+	}
+
     public override void _Draw()
     {
 		//int distance, string color, int segment_margin, int line_width
@@ -268,6 +310,16 @@ public partial class Main : Node2D
 			DrawSegmentedLine(From, To, new Color(Con.Value["color"]), int.Parse(Con.Value["distance"]), int.Parse(Con.Value["segment_margin"]), int.Parse(Con.Value["line_width"]));
 		}
     }
+
+	private void OnDeliveryHoverStart(int deliveryId)
+	{
+		HighlightPath(CurrentLocation.ID, AcceptedQuests[deliveryId].Destination.ID, "35ee45");
+	}
+
+	private void OnDeliveryHoverFinish(int deliveryId)
+	{
+		StopHighlightPath(CurrentLocation.ID, AcceptedQuests[deliveryId].Destination.ID);
+	}
 
     private void DrawSegmentedLine(Godot.Vector2 From, Godot.Vector2 To, Color LineColor, int Segments = 1, int SegmentMargin = 1, int LineWidth = 1)
 	{
@@ -364,13 +416,14 @@ public partial class Main : Node2D
 				if (JumpDistance <= FuelLevel)
 				{
 					if (CurrentLocation.Hazards.Contains("Disentery")) CurrentLocation.RemoveHazard("Disentery");
+					StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
 					ClearQuestHighlight();
-					ClearHighlightConnections();
+					ClearHighlightNeighbours();
 					FuelLevel -= JumpDistance;
 					CreateNewNPC();
 					UpdateDeliveries(JumpDistance);
 					CurrentLocation = PressedLocation;
-					HighlightConnections();
+					HighlightNeighbours();
 					DisplayQuest(CreateNewQuest(Rnd.Next(11)));
 					CurrentLocationLabel.Text = CurrentLocation.LocationName;
 					Tween NewTween = GetTree().CreateTween();
@@ -512,6 +565,7 @@ public partial class Main : Node2D
 			Dictionary<string, string> tagData = NewQuest.TagsData[i];
 			ModifiersHBox.AddChild(GetNewModifierIcon(tag, tagData));
 		}
+		HighlightPath(CurrentLocation.ID, DeliveryLocation.ID, "00b025");
 	}
 
 	private void EnableQuestButtons()
@@ -532,6 +586,7 @@ public partial class Main : Node2D
 
 	private void OnAcceptQuestButtonPressed()
 	{
+		StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
 		ClearQuestHighlight();
 		DisableQuestButtons();
 		AcceptDisplayedQuest();
@@ -540,6 +595,7 @@ public partial class Main : Node2D
 
 	private void OnDeclineQuestButtonPressed()
 	{
+		StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
 		DisableQuestButtons();
 		ClearQuestHighlight();
 	}
@@ -562,6 +618,8 @@ public partial class Main : Node2D
 		}
 		NewDelivery.SetItems(DisplayedQuest.ID, DisplayedQuest.Items);
 		NewDelivery.OnDeliveryFailed += DeliveryFailed;
+		NewDelivery.OnDeliveryMouseEntered += OnDeliveryHoverStart;
+		NewDelivery.OnDeliveryMouseExited += OnDeliveryHoverFinish;
 		Deliveries = Deliveries.Append(NewDelivery).ToArray();
 	}
 
@@ -572,6 +630,8 @@ public partial class Main : Node2D
 		Delivery FailedDelivery = new();
 		foreach (Delivery delivery in Deliveries) if (FailedDeliveryID == delivery.ID) { FailedDelivery = delivery; break; }
 		FailedDelivery.OnDeliveryFailed -= DeliveryFailed;
+		FailedDelivery.OnDeliveryMouseEntered -= OnDeliveryHoverStart;
+		FailedDelivery.OnDeliveryMouseExited -= OnDeliveryHoverFinish;
 		AcceptedQuests.Remove(FailedDeliveryID);
 		int Payout = FailedDelivery.GetPayout(true);
 		PopupBalance(-Payout);
@@ -598,16 +658,24 @@ public partial class Main : Node2D
 
 	private void ClearQuestHighlight() { DisplayedQuest.Destination.ClearHighlight(); }
 
-	private void HighlightConnections()
+	private void HighlightNeighbours()
 	{
 		long[] Connections = StarMap.GetPointConnections(CurrentLocation.ID);
-		foreach (long id in Connections) AllLocations[(int)id].Choosable();
+		foreach (long id in Connections)
+		{
+			AllLocations[(int)id].Choosable();
+			HighlightSingleConnection(CurrentLocation.ID, (int)id);
+		}
 	}
 
-	private void ClearHighlightConnections()
+	private void ClearHighlightNeighbours()
 	{
 		long[] Connections = StarMap.GetPointConnections(CurrentLocation.ID);
-		foreach (long id in Connections) AllLocations[(int)id].ClearChoosable();
+		foreach (long id in Connections)
+		{
+			AllLocations[(int)id].ClearChoosable();
+			StopHighlightSingleConnection(CurrentLocation.ID, (int)id);
+		}
 	}
 
 	private void PopupBalance(int Difference)

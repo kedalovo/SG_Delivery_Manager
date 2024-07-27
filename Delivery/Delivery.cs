@@ -7,6 +7,10 @@ public partial class Delivery : HBoxContainer
 {
 	[Signal]
 	public delegate void OnDeliveryFailedEventHandler(int DeliveryID);
+	[Signal]
+	public delegate void OnDeliveryMouseEnteredEventHandler(int DeliveryID);
+	[Signal]
+	public delegate void OnDeliveryMouseExitedEventHandler(int DeliveryID);
 
 	private int id;
 
@@ -39,6 +43,8 @@ public partial class Delivery : HBoxContainer
 		ItemScene = GD.Load<PackedScene>("res://Item/Item.tscn");
 		ItemsHFlow = GetNode<HFlowContainer>("ItemsHFlow");
 		DeliveryTimer = GetNode<Timer>("Timer");
+		MouseEntered += () => EmitSignal(SignalName.OnDeliveryMouseEntered, id);
+		MouseExited += () => EmitSignal(SignalName.OnDeliveryMouseExited, id);
 	}
 
     public void SetItems(int newID, ItemData[] newItems)
