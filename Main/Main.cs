@@ -73,6 +73,7 @@ public partial class Main : Node2D
 	private Texture2D HecticIcon;
 	private Texture2D BacteriaIcon;
 	private Texture2D ShutdownIcon;
+	private Texture2D FaultyIcon;
 
 	private bool LeapDay = false;
 
@@ -231,6 +232,7 @@ public partial class Main : Node2D
 		HecticIcon = GD.Load<Texture2D>("res://Location/Hazards/Timed.png");
 		BacteriaIcon = GD.Load<Texture2D>("res://Location/Hazards/Fragile.png");
 		ShutdownIcon = GD.Load<Texture2D>("res://Location/Hazards/Shutdown.png");
+		FaultyIcon = GD.Load<Texture2D>("res://Location/Hazards/Faulty.png");
 
 		#endregion OtherDeclaration
 		
@@ -433,7 +435,12 @@ public partial class Main : Node2D
 				// ClearHighlightNeighbours();
 				FuelLevel -= JumpDistance;
 				CreateNewNPC();
-				UpdateDeliveries(JumpDistance);
+				if (PressedLocation.Hazards.Contains("Faulty"))
+				{
+					UpdateDeliveries(JumpDistance * 2);
+					PressedLocation.RemoveHazard("Faulty");
+				}
+				else UpdateDeliveries(JumpDistance);
 				CurrentLocation = PressedLocation;
 				// HighlightNeighbours();
 				DisplayQuest(CreateNewQuest(Rnd.Next(11)));
@@ -528,7 +535,7 @@ public partial class Main : Node2D
 		string newHazard = "";
 		Dictionary<string, string> newHazardData = new();
 		Texture2D newIcon = new();
-		switch (Rnd.Next(6))
+		switch (Rnd.Next(7))
 		{
 			case 0: // Fuel market crash. Fuel now costs 2x, goes away by buying 10 fuel elsewhere.
 				newHazard = "MarketCrash";
@@ -561,6 +568,11 @@ public partial class Main : Node2D
 				newHazard = "Shutdown";
 				newHazardData["jumps"] = Rnd.Next(2, 5).ToString();
 				newIcon = ShutdownIcon;
+				break;
+			case 6: // Faulty equipment. Jump to this station does 2x durability damage to cargo. Goes away once used of after 10 jumps.
+				newHazard = "Faulty";
+				newHazardData["jumps"] = "10";
+				newIcon = FaultyIcon;
 				break;
 		}
 		if (newHazard == "Shutdown")

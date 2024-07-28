@@ -174,6 +174,15 @@ public partial class Location : Node2D
 					break;
 				}
 			}
+			else if (Hazards[i] == "Faulty")
+			{
+				HazardsData[i]["jumps"] = (int.Parse(HazardsData[i]["jumps"]) - 1).ToString();
+				if (HazardsData[i]["jumps"] == "0")
+				{
+					RemoveHazard("Faulty");
+					break;
+				}
+			}
 		}
 	}
 
