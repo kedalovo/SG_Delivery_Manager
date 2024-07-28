@@ -74,7 +74,6 @@ public partial class Main : Node2D
 	private Texture2D BacteriaIcon;
 	private Texture2D ShutdownIcon;
 	private Texture2D FaultyIcon;
-	private Texture2D SapperIcon;
 
 	private bool LeapDay = false;
 
@@ -234,7 +233,6 @@ public partial class Main : Node2D
 		BacteriaIcon = GD.Load<Texture2D>("res://Location/Hazards/Fragile.png");
 		ShutdownIcon = GD.Load<Texture2D>("res://Location/Hazards/Shutdown.png");
 		FaultyIcon = GD.Load<Texture2D>("res://Location/Hazards/Faulty.png");
-		SapperIcon = GD.Load<Texture2D>("res://Location/Hazards/Sapper.png");
 
 		#endregion OtherDeclaration
 		
