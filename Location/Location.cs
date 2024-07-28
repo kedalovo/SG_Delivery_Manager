@@ -100,6 +100,9 @@ public partial class Location : Node2D
 				case "Shutdown":
 					newRect.TooltipText = "Shutdown! \nThe station is malfuntioning and it won't be available for a while. \nShouldn't take too long.";
 					break;
+				case "Faulty":
+					newRect.TooltipText = "Faulty equipment! \nDue to this station's faulty equipment your cargo will be damaged a bit more than usual.";
+					break;
 			}
 		}
 		else GD.Print("Hazard ", newHazard, " already exists at ", LocationName);
@@ -171,6 +174,15 @@ public partial class Location : Node2D
 					RemoveHazard("Shutdown");
 					EmitSignal(SignalName.LocationAvailable, ID);
 					Modulate = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+					break;
+				}
+			}
+			else if (Hazards[i] == "Faulty")
+			{
+				HazardsData[i]["jumps"] = (int.Parse(HazardsData[i]["jumps"]) - 1).ToString();
+				if (HazardsData[i]["jumps"] == "0")
+				{
+					RemoveHazard("Faulty");
 					break;
 				}
 			}
