@@ -72,6 +72,7 @@ public partial class Main : Node2D
 	private Texture2D RumIcon;
 	private Texture2D HecticIcon;
 	private Texture2D BacteriaIcon;
+	private Texture2D ShutdownIcon;
 
 	private bool LeapDay = false;
 
@@ -229,6 +230,7 @@ public partial class Main : Node2D
 		RumIcon = GD.Load<Texture2D>("res://Location/Hazards/Pirates.png");
 		HecticIcon = GD.Load<Texture2D>("res://Location/Hazards/Timed.png");
 		BacteriaIcon = GD.Load<Texture2D>("res://Location/Hazards/Fragile.png");
+		ShutdownIcon = GD.Load<Texture2D>("res://Location/Hazards/Shutdown.png");
 
 		#endregion OtherDeclaration
 		
@@ -241,7 +243,7 @@ public partial class Main : Node2D
 
 		CreateNewNPC();
 		DisplayQuest(CreateNewQuest(3));
-		HighlightNeighbours();
+		// HighlightNeighbours();
 	}
 
     public override void _Process(double delta)
@@ -249,7 +251,16 @@ public partial class Main : Node2D
 		QueueRedraw();
     }
 
-	private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)
+    public override void _Input(InputEvent @event)
+    {
+        if (@event.IsActionPressed("test"))
+		{
+			GD.Print("PRESSED TEST");
+			CreateNewHazard();
+		}
+    }
+
+    private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)
 	{
 		Dictionary<string, string> newData = new() {{"color", color}, {"distance", distance.ToString()}, {"segment_margin", segment_margin.ToString()}, {"line_width", line_width.ToString()}};
 		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
@@ -359,12 +370,14 @@ public partial class Main : Node2D
 
 		Location[] PossibleLocations = AllLocations.Values.ToArray();
 		Location ChosenLocation = CurrentLocation;
-		// Choosing a Location that is not a Current Location
+		// Choosing a Location that is not a Current Location? is far enough and isn't disabled
 		while
 		(
 			ChosenLocation.LocationName == CurrentLocation.LocationName
 			|
 			StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length < 3
+			|
+			ChosenLocation.Hazards.Contains("Shutdown")
 		)
 		ChosenLocation = PossibleLocations[Rnd.Next(PossibleLocations.Length)];
 
@@ -405,97 +418,101 @@ public partial class Main : Node2D
 		return NewQuest;
 	}
 
-	private void OnLocationPressed(Location PressedLocation)
+	private void OnLocationPressed(int pressedID)
 	{
-		if (CurrentLocation != PressedLocation)
+		Location PressedLocation = AllLocations[pressedID];
+		if (CurrentLocation != PressedLocation && StarMap.ArePointsConnected(CurrentLocation.ID, PressedLocation.ID) && !StarMap.IsPointDisabled(pressedID))
 		{
-			if (StarMap.ArePointsConnected(CurrentLocation.ID, PressedLocation.ID))
+			int JumpDistance = GetJumpDistance(CurrentLocation, PressedLocation);
+			if (CurrentLocation.Hazards.Contains("Disentery")) JumpDistance *= int.Parse(CurrentLocation.GetHazardData("Disentery")["jumpCost"]);
+			if (JumpDistance <= FuelLevel)
 			{
-				int JumpDistance = GetJumpDistance(CurrentLocation, PressedLocation);
-				if (CurrentLocation.Hazards.Contains("Disentery")) JumpDistance *= int.Parse(CurrentLocation.GetHazardData("Disentery")["jumpCost"]);
-				if (JumpDistance <= FuelLevel)
+				if (CurrentLocation.Hazards.Contains("Disentery")) CurrentLocation.RemoveHazard("Disentery");
+				StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
+				ClearQuestHighlight();
+				// ClearHighlightNeighbours();
+				FuelLevel -= JumpDistance;
+				CreateNewNPC();
+				UpdateDeliveries(JumpDistance);
+				CurrentLocation = PressedLocation;
+				// HighlightNeighbours();
+				DisplayQuest(CreateNewQuest(Rnd.Next(11)));
+				CurrentLocationLabel.Text = CurrentLocation.LocationName;
+				Tween NewTween = GetTree().CreateTween();
+				NewTween.TweenProperty(Ship, "position", PressedLocation.Position, .5f).SetTrans(Tween.TransitionType.Circ);
+				int[] CompletedQuestIDs = CurrentLocation.GetQuests();
+				foreach (int id in CompletedQuestIDs)
 				{
-					if (CurrentLocation.Hazards.Contains("Disentery")) CurrentLocation.RemoveHazard("Disentery");
-					StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
-					ClearQuestHighlight();
-					ClearHighlightNeighbours();
-					FuelLevel -= JumpDistance;
-					CreateNewNPC();
-					UpdateDeliveries(JumpDistance);
-					CurrentLocation = PressedLocation;
-					HighlightNeighbours();
-					DisplayQuest(CreateNewQuest(Rnd.Next(11)));
-					CurrentLocationLabel.Text = CurrentLocation.LocationName;
-					Tween NewTween = GetTree().CreateTween();
-					NewTween.TweenProperty(Ship, "position", PressedLocation.Position, .5f).SetTrans(Tween.TransitionType.Circ);
-					int[] CompletedQuestIDs = CurrentLocation.GetQuests();
-					foreach (int id in CompletedQuestIDs)
+					Delivery delivery = GetDeliveryByID(id);
+					if (!(delivery.HasTag("Segmented") && delivery.GetTagData("Segmented")["middle-man-met"] == "false"))
 					{
-						Delivery delivery = GetDeliveryByID(id);
-						if (!(delivery.HasTag("Segmented") && delivery.GetTagData("Segmented")["middle-man-met"] == "false"))
-						{
-							Deliveries = Deliveries.Where(val => val != delivery).ToArray();
-							delivery.OnDeliveryFailed -= DeliveryFailed;
-							AcceptedQuests.Remove(id);
-							CurrentLocation.RemoveQuest(id);
-							int Payout = delivery.GetPayout();
-							PopupBalance(Payout);
-							Balance += Payout;
-							delivery.QueueFree();
-						}
+						Deliveries = Deliveries.Where(val => val != delivery).ToArray();
+						delivery.OnDeliveryFailed -= DeliveryFailed;
+						AcceptedQuests.Remove(id);
+						CurrentLocation.RemoveQuest(id);
+						int Payout = delivery.GetPayout();
+						PopupBalance(Payout);
+						Balance += Payout;
+						delivery.QueueFree();
 					}
-					if (CompletedQuestIDs.Length > 0) CurrentLocation.SetCompleteQuest();
-					foreach (Delivery delivery in Deliveries) delivery.Jump(CurrentLocation.ID);
-					// Creating new hazard every 3'rd jump
-					if (HazardCounter == 2)
-					{
-						HazardCounter = 0;
-						CreateNewHazard();
-					}
-					else HazardCounter++;
-					// Hazard functionality for arriving at the Location
-					if (CurrentLocation.Hazards.Contains("MarketCrash")) FuelButton.Text = "$" + (50 * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])).ToString();
-					else FuelButton.Text = "$50";
-					if (CurrentLocation.Hazards.Contains("Rum"))
-					{
-						int tax = 0;
-						Dictionary<string, string> data = CurrentLocation.GetHazardData("Rum");
-						if (Balance > 700) tax = Mathf.CeilToInt(int.Parse(data["secondThreshold"]) / 100f * Balance);
-						else if (Balance > 300) tax = Mathf.CeilToInt(int.Parse(data["firstThreshold"]) / 100f * Balance);
-						Balance -= tax;
-						CurrentLocation.RemoveHazard("Rum");
-					}
-					if (CurrentLocation.Hazards.Contains("Hectic"))
-					{
-						foreach (Delivery delivery in Deliveries)
-						{
-							Dictionary<string, string> newTagData = new() { { "tier", CurrentLocation.GetHazardData("Hectic")["tier"] } };
-							delivery.AddTag("Timed", newTagData, GetNewModifierIcon("Timed", newTagData));
-						}
-						CurrentLocation.RemoveHazard("Hectic");
-					}
-					if (CurrentLocation.Hazards.Contains("Bacteria"))
-					{
-						foreach (Delivery delivery in Deliveries)
-						{
-							Dictionary<string, string> newTagData = new();
-							Location destination = AcceptedQuests[delivery.ID].Destination;
-							int distance = (StarMap.GetIdPath(CurrentLocation.ID, destination.ID).Length + Rnd.Next(2)) * int.Parse(CurrentLocation.GetHazardData("Bacteria")["multiplier"]);
-							newTagData["jumps"] = distance.ToString();
-							delivery.AddTag("Fragile", newTagData, GetNewModifierIcon("Fragile", newTagData));
-						}
-						CurrentLocation.RemoveHazard("Bacteria");
-					}
-					if (LeapDay)
-					{
-						LeapDay = false;
-						foreach (Location location in AllLocations.Values) location.AddFuel(1);
-					}
-					else LeapDay = true;
-					UpdateFuelLevelLabel();
 				}
+				if (CompletedQuestIDs.Length > 0) CurrentLocation.SetCompleteQuest();
+				foreach (Delivery delivery in Deliveries) delivery.Jump(CurrentLocation.ID);
+				// Creating new hazard every 3'rd jump
+				if (HazardCounter == 2)
+				{
+					HazardCounter = 0;
+					CreateNewHazard();
+				}
+				else HazardCounter++;
+				// Hazard functionality for arriving at the Location
+				if (CurrentLocation.Hazards.Contains("MarketCrash")) FuelButton.Text = "$" + (50 * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])).ToString();
+				else FuelButton.Text = "$50";
+				if (CurrentLocation.Hazards.Contains("Rum"))
+				{
+					int tax = 0;
+					Dictionary<string, string> data = CurrentLocation.GetHazardData("Rum");
+					if (Balance > 700) tax = Mathf.CeilToInt(int.Parse(data["secondThreshold"]) / 100f * Balance);
+					else if (Balance > 300) tax = Mathf.CeilToInt(int.Parse(data["firstThreshold"]) / 100f * Balance);
+					Balance -= tax;
+					CurrentLocation.RemoveHazard("Rum");
+				}
+				if (CurrentLocation.Hazards.Contains("Hectic"))
+				{
+					foreach (Delivery delivery in Deliveries)
+					{
+						Dictionary<string, string> newTagData = new() { { "tier", CurrentLocation.GetHazardData("Hectic")["tier"] } };
+						delivery.AddTag("Timed", newTagData, GetNewModifierIcon("Timed", newTagData));
+					}
+					CurrentLocation.RemoveHazard("Hectic");
+				}
+				if (CurrentLocation.Hazards.Contains("Bacteria"))
+				{
+					foreach (Delivery delivery in Deliveries)
+					{
+						Dictionary<string, string> newTagData = new();
+						Location destination = AcceptedQuests[delivery.ID].Destination;
+						int distance = (StarMap.GetIdPath(CurrentLocation.ID, destination.ID).Length + Rnd.Next(2)) * int.Parse(CurrentLocation.GetHazardData("Bacteria")["multiplier"]);
+						newTagData["jumps"] = distance.ToString();
+						delivery.AddTag("Fragile", newTagData, GetNewModifierIcon("Fragile", newTagData));
+					}
+					CurrentLocation.RemoveHazard("Bacteria");
+				}
+				if (LeapDay)
+				{
+					LeapDay = false;
+					foreach (Location location in AllLocations.Values) location.AddFuel(1);
+				}
+				else LeapDay = true;
+				UpdateFuelLevelLabel();
+				foreach (Location location in AllLocations.Values) location.Jump();
 			}
 		}
+	}
+
+	private void OnLocationAvailable(int locationID)
+	{
+		StarMap.SetPointDisabled(locationID, false);
 	}
 
 	private void CreateNewNPC()
@@ -508,11 +525,10 @@ public partial class Main : Node2D
 	private void CreateNewHazard()
 	{
 		Location location = CurrentLocation;
-		while (location == CurrentLocation) location = AllLocations[Rnd.Next(AllLocations.Count)];
 		string newHazard = "";
 		Dictionary<string, string> newHazardData = new();
 		Texture2D newIcon = new();
-		switch (Rnd.Next(5))
+		switch (Rnd.Next(6))
 		{
 			case 0: // Fuel market crash. Fuel now costs 2x, goes away by buying 10 fuel elsewhere.
 				newHazard = "MarketCrash";
@@ -541,7 +557,24 @@ public partial class Main : Node2D
 				newHazardData["multiplier"] = "2";
 				newIcon = BacteriaIcon;
 				break;
+			case 5: // Shutdown. A location is not available for several jumps.
+				newHazard = "Shutdown";
+				newHazardData["jumps"] = Rnd.Next(2, 5).ToString();
+				newIcon = ShutdownIcon;
+				break;
 		}
+		if (newHazard == "Shutdown")
+		{
+			for (int i = 0; i < 50; i++)
+			{
+				location = AllLocations[Rnd.Next(AllLocations.Count)];
+				if (location != CurrentLocation && location.GetQuests().Length == 0) break;
+				location = CurrentLocation;
+			}
+			StarMap.SetPointDisabled(location.ID);
+			location.Modulate = new Color(1f, 1f, 1f, 0.5f);
+		}
+		else while (location == CurrentLocation) location = AllLocations[Rnd.Next(AllLocations.Count)];
 		location.AddHazard(newHazard, newHazardData, newIcon);
 		GD.Print("Created hazard ", newHazard, " at ", location.LocationName);
 	}

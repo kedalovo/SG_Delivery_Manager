@@ -6,7 +6,9 @@ using Godot;
 public partial class Location : Node2D
 {
 	[Signal]
-	public delegate void LocationPressedEventHandler(Location Itself);
+	public delegate void LocationPressedEventHandler(int id);
+	[Signal]
+	public delegate void LocationAvailableEventHandler(int id);
 	[Export]
 	public string LocationName;
 	[Export]
@@ -43,7 +45,7 @@ public partial class Location : Node2D
 
 	private void OnButtonPressed()
 	{
-		EmitSignal(SignalName.LocationPressed, this);
+		EmitSignal(SignalName.LocationPressed, ID);
 	}
 
 	public void AddQuest(int newQuest) { Quests = Quests.Append(newQuest).ToArray(); UpdateQuests(); }
@@ -94,6 +96,9 @@ public partial class Location : Node2D
 					break;
 				case "Bacteria":
 					newRect.TooltipText = "Omnivorous bacteria! \nSome dangerous bacteria got into your cargo and is eating through it. \nYou have to deliver everything or it will go bad.";
+					break;
+				case "Shutdown":
+					newRect.TooltipText = "Shutdown! \nThe station is malfuntioning and it won't be available for a while. \nShouldn't take too long.";
 					break;
 			}
 		}
@@ -153,6 +158,24 @@ public partial class Location : Node2D
 	public void Choosable() { Animator.Play("Choosable"); }
 
 	public void ClearChoosable() { Animator.Play("RESET"); }
+
+	public void Jump()
+	{
+		for (int i = 0; i < Hazards.Length; i++)
+		{
+			if (Hazards[i] == "Shutdown")
+			{
+				HazardsData[i]["jumps"] = (int.Parse(HazardsData[i]["jumps"]) - 1).ToString();
+				if (HazardsData[i]["jumps"] == "0")
+				{
+					RemoveHazard("Shutdown");
+					EmitSignal(SignalName.LocationAvailable, ID);
+					Modulate = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+					break;
+				}
+			}
+		}
+	}
 
 	public int GetFuelCost()
 	{
