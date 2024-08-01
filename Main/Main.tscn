@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://huvowrxh5x0l"]
+[gd_scene load_steps=30 format=3 uid="uid://huvowrxh5x0l"]
 
 [ext_resource type="Script" path="res://Main/Main.cs" id="1_ei6yb"]
 [ext_resource type="Texture2D" uid="uid://crb4c3qicfnek" path="res://Main/StarMap_Background.png" id="2_p67wq"]
@@ -7,6 +7,24 @@
 [ext_resource type="Texture2D" uid="uid://dfd4qgmg3todd" path="res://NPC/Faces/Faces.png" id="5_mmjq5"]
 [ext_resource type="Texture2D" uid="uid://g0o15jg5f87f" path="res://NPC/Bodies/Bodies.png" id="5_xd0hc"]
 [ext_resource type="Texture2D" uid="uid://d4dje22awji6e" path="res://Location/Star.png" id="7_arlnc"]
+[ext_resource type="Texture2D" uid="uid://2iiemvy07xw0" path="res://Achievements/Sprites/All_Deliveries_Amount_1.png" id="8_oqerx"]
+[ext_resource type="Texture2D" uid="uid://df25arj7toepl" path="res://Achievements/Sprites/All_Deliveries_Amount_2.png" id="9_ntv02"]
+[ext_resource type="Texture2D" uid="uid://d0ev8dq0ufptc" path="res://Achievements/Sprites/All_Deliveries_Amount_3.png" id="10_1km8m"]
+[ext_resource type="Texture2D" uid="uid://col650e5fubpd" path="res://Achievements/Sprites/All_Items_Combined_Amount_1.png" id="11_h8pji"]
+[ext_resource type="Texture2D" uid="uid://nukpiqu784lp" path="res://Achievements/Sprites/All_Items_Combined_Amount_2.png" id="12_idm6s"]
+[ext_resource type="Texture2D" uid="uid://cp7wtxaweb2ke" path="res://Achievements/Sprites/All_Items_Combined_Amount_3.png" id="13_tsg6s"]
+[ext_resource type="Texture2D" uid="uid://bhlmfn7myvbxw" path="res://Achievements/Sprites/All_Items_Individual_Amount_1.png" id="14_4qptk"]
+[ext_resource type="Texture2D" uid="uid://cyvkcxgvm0hxh" path="res://Achievements/Sprites/All_Items_Individual_Amount_2.png" id="15_3qsrs"]
+[ext_resource type="Texture2D" uid="uid://biw6y57iv8owy" path="res://Achievements/Sprites/All_Items_Individual_Amount_3.png" id="16_e3qcq"]
+[ext_resource type="Texture2D" uid="uid://cenbeaaooku3w" path="res://Achievements/Sprites/Failed_Deliveries_Amount_1.png" id="17_eb0qk"]
+[ext_resource type="Texture2D" uid="uid://dpvbc71owftrn" path="res://Achievements/Sprites/Failed_Deliveries_Amount_2.png" id="18_87wap"]
+[ext_resource type="Texture2D" uid="uid://c3wh71pmm82q2" path="res://Achievements/Sprites/Failed_Deliveries_Amount_3.png" id="19_qbok1"]
+[ext_resource type="Texture2D" uid="uid://chmh4ljr3yk5h" path="res://Achievements/Sprites/Having_Multiple_Deliveries_1.png" id="20_633xo"]
+[ext_resource type="Texture2D" uid="uid://f02v71b25cnb" path="res://Achievements/Sprites/Having_Multiple_Deliveries_2.png" id="21_kjnu7"]
+[ext_resource type="Texture2D" uid="uid://disxoutdqccer" path="res://Achievements/Sprites/Having_Multiple_Deliveries_3.png" id="22_mfblu"]
+[ext_resource type="Texture2D" uid="uid://b20hohe44csw6" path="res://Achievements/Sprites/Making_Multiple_Deliveries_1.png" id="23_2txuo"]
+[ext_resource type="Texture2D" uid="uid://dl4aq245e2aso" path="res://Achievements/Sprites/Making_Multiple_Deliveries_2.png" id="24_3yhed"]
+[ext_resource type="Texture2D" uid="uid://da4tdvo4egtp1" path="res://Achievements/Sprites/Making_Multiple_Deliveries_3.png" id="25_cudx6"]
 
 [sub_resource type="Animation" id="Animation_lam5p"]
 resource_name = "Idle"
@@ -258,6 +276,13 @@ size_flags_horizontal = 3
 text = "15
 left"
 horizontal_alignment = 1
+
+[node name="AchievementsButton" type="Button" parent="LeftMenu"]
+layout_mode = 1
+offset_top = 186.0
+offset_right = 29.0
+offset_bottom = 204.0
+text = "[A]"
 
 [node name="NPC" type="Node2D" parent="."]
 position = Vector2(72, 96)
@@ -1373,6 +1398,270 @@ text = "Quatro"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="AchievementsMenu" type="PopupPanel" parent="."]
+transparent_bg = true
+canvas_item_default_texture_filter = 0
+position = Vector2i(50, 50)
+size = Vector2i(500, 300)
+transparent = true
+
+[node name="Margin" type="MarginContainer" parent="AchievementsMenu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Scroll" type="ScrollContainer" parent="AchievementsMenu/Margin"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="AchievementsMenu/Margin/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBox" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox"]
+layout_mode = 2
+texture = ExtResource("8_oqerx")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "all_deliveries_amount_1"
+
+[node name="HBox2" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox2"]
+layout_mode = 2
+texture = ExtResource("9_ntv02")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "all_deliveries_amount_2"
+
+[node name="HBox3" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox3"]
+layout_mode = 2
+texture = ExtResource("10_1km8m")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "all_deliveries_amount_3"
+
+[node name="HBox4" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox4"]
+layout_mode = 2
+texture = ExtResource("11_h8pji")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox4"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "all_items_combined_amount_1"
+
+[node name="HBox5" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox5"]
+layout_mode = 2
+texture = ExtResource("12_idm6s")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox5"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "all_items_combined_amount_2"
+
+[node name="HBox6" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox6"]
+layout_mode = 2
+texture = ExtResource("13_tsg6s")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox6"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "all_items_combined_amount_3"
+
+[node name="HBox7" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox7"]
+layout_mode = 2
+texture = ExtResource("14_4qptk")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox7"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "all_items_individual_amount_1"
+
+[node name="HBox8" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox8"]
+layout_mode = 2
+texture = ExtResource("15_3qsrs")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox8"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "all_items_individual_amount_2"
+
+[node name="HBox9" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox9"]
+layout_mode = 2
+texture = ExtResource("16_e3qcq")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox9"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "all_items_individual_amount_3"
+
+[node name="HBox10" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox10"]
+layout_mode = 2
+texture = ExtResource("17_eb0qk")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox10"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "failed_deliveries_amount_1"
+
+[node name="HBox11" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox11"]
+layout_mode = 2
+texture = ExtResource("18_87wap")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox11"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "failed_deliveries_amount_2"
+
+[node name="HBox12" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox12"]
+layout_mode = 2
+texture = ExtResource("19_qbok1")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox12"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "failed_deliveries_amount_3"
+
+[node name="HBox13" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox13"]
+layout_mode = 2
+texture = ExtResource("20_633xo")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox13"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "having_multiple_deliveries_1"
+
+[node name="HBox14" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox14"]
+layout_mode = 2
+texture = ExtResource("21_kjnu7")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox14"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "having_multiple_deliveries_2"
+
+[node name="HBox15" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox15"]
+layout_mode = 2
+texture = ExtResource("22_mfblu")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox15"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "having_multiple_deliveries_3"
+
+[node name="HBox16" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox16"]
+layout_mode = 2
+texture = ExtResource("23_2txuo")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox16"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "making_multiple_deliveries_1"
+
+[node name="HBox17" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox17"]
+layout_mode = 2
+texture = ExtResource("24_3yhed")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox17"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "making_multiple_deliveries_2"
+
+[node name="HBox18" type="HBoxContainer" parent="AchievementsMenu/Margin/Scroll/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="AchievementsMenu/Margin/Scroll/VBox/HBox18"]
+layout_mode = 2
+texture = ExtResource("25_cudx6")
+
+[node name="Label" type="Label" parent="AchievementsMenu/Margin/Scroll/VBox/HBox18"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "making_multiple_deliveries_3"
+
 [connection signal="LocationAvailable" from="Locations/Location" to="." method="OnLocationAvailable"]
 [connection signal="LocationPressed" from="Locations/Location" to="." method="OnLocationPressed"]
 [connection signal="LocationAvailable" from="Locations/Location2" to="." method="OnLocationAvailable"]
@@ -1406,5 +1695,6 @@ vertical_alignment = 1
 [connection signal="LocationAvailable" from="Locations/Location16" to="." method="OnLocationAvailable"]
 [connection signal="LocationPressed" from="Locations/Location16" to="." method="OnLocationPressed"]
 [connection signal="pressed" from="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
+[connection signal="pressed" from="LeftMenu/AchievementsButton" to="." method="OnAchievementsButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/DeclineButton" to="." method="OnDeclineQuestButtonPressed"]

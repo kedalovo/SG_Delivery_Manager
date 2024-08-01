@@ -75,6 +75,9 @@ public partial class Main : Node2D
 	private Texture2D ShutdownIcon;
 	private Texture2D FaultyIcon;
 
+	private Button AchieventsButton;
+	private PopupPanel AchievementsMenu;
+
 	private bool LeapDay = false;
 
 	private readonly Random Rnd = new();
@@ -233,6 +236,9 @@ public partial class Main : Node2D
 		BacteriaIcon = GD.Load<Texture2D>("res://Location/Hazards/Fragile.png");
 		ShutdownIcon = GD.Load<Texture2D>("res://Location/Hazards/Shutdown.png");
 		FaultyIcon = GD.Load<Texture2D>("res://Location/Hazards/Faulty.png");
+
+		AchieventsButton = GetNode<Button>("LeftMenu/AchievementsButton");
+		AchievementsMenu = GetNode<PopupPanel>("AchievementsMenu");
 
 		#endregion OtherDeclaration
 		
@@ -739,6 +745,12 @@ public partial class Main : Node2D
 	private void UpdateFuelLevelLabel()
 	{
 		FuelLevelLabel.Text = CurrentLocation.GetFuelLevel().ToString() + "\nFuel left";
+	}
+
+	private void OnAchievementsButtonPressed()
+	{
+		if (AchievementsMenu.Visible) AchievementsMenu.Hide();
+		else AchievementsMenu.Show();
 	}
 
 	private int GetLocationID(string NameOfLocation)
