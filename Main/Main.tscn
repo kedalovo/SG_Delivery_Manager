@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://huvowrxh5x0l"]
+[gd_scene load_steps=33 format=3 uid="uid://huvowrxh5x0l"]
 
 [ext_resource type="Script" path="res://Main/Main.cs" id="1_ei6yb"]
 [ext_resource type="Texture2D" uid="uid://crb4c3qicfnek" path="res://Main/StarMap_Background.png" id="2_p67wq"]
@@ -118,6 +118,9 @@ bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_23vaj"]
 bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_b76yp"]
+font_size = 24
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ei6yb")
@@ -423,6 +426,15 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Fuel:"
 horizontal_alignment = 2
+
+[node name="AchievementRect" type="TextureRect" parent="Control"]
+modulate = Color(1, 0.772549, 0, 0)
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 210.0
+offset_top = 298.0
+offset_right = 274.0
+offset_bottom = 362.0
 
 [node name="NewReferenceStartMap" type="Node2D" parent="."]
 position = Vector2(600, 0)
@@ -1405,7 +1417,6 @@ vertical_alignment = 1
 [node name="AchievementsMenu" type="PopupPanel" parent="."]
 disable_3d = true
 transparent_bg = true
-canvas_item_default_texture_filter = 0
 position = Vector2i(50, 50)
 size = Vector2i(500, 300)
 transparent = true
@@ -1431,112 +1442,180 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Achievement" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Novice hauler.
 You've managed to make 15 deliveries total. Keep on keeping on!"
 IconTexture = ExtResource("8_oqerx")
 
 [node name="Achievement2" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Advanced hauler.
 When it comes to delivering packages - you don't mess around. And 25 total deliveries is not the limit for you."
 IconTexture = ExtResource("9_ntv02")
 
 [node name="Achievement3" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Master hauler.
 While delivering packages you've seen it all. You can even smell what each package contains. That's what making 50 deliveries does to a person."
 IconTexture = ExtResource("10_1km8m")
 
 [node name="Achievement4" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Small collector.
 You like collecting lots of items - doesn't matter what they are, the quantity is all that matters. And that quantity is 20."
 IconTexture = ExtResource("11_h8pji")
 
 [node name="Achievement5" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Mediocre collector.
 You might want to get a separate ship just to carry the stuff you pick. 50 items might be pushing it."
 IconTexture = ExtResource("12_idm6s")
 
 [node name="Achievement6" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Expert collector.
 Your collection knows no bounds. It's time to have a garage sale, because a 100 items is just too many."
 IconTexture = ExtResource("13_tsg6s")
 
 [node name="Achievement7" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Variety newbie.
 You took an interest to delivering every kind of item. In fact, you just delivered 5 of each, which is just the beginning."
 IconTexture = ExtResource("14_4qptk")
 
 [node name="Achievement8" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Variety enthusiast.
 It's always \"more\" and always \"different\". 10 of each item is not enough for you, however, you strive for perfection."
 IconTexture = ExtResource("15_3qsrs")
 
 [node name="Achievement9" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Variety perfectionist.
 You've achieved variety worthy of a museum. Each item was delivered 15 times, what an achievement!"
 IconTexture = ExtResource("16_e3qcq")
 
 [node name="Achievement10" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "It happens.
 You failed a couple of deliveries, but you know what? You keep on going, because failure is only complete when you don't pick yourself up again."
 IconTexture = ExtResource("17_eb0qk")
 
 [node name="Achievement11" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "We learn from your mistakes.
 Failing a couple times was not enough, you've decided to show everyone how determined you are by failing another delivery."
 IconTexture = ExtResource("18_87wap")
 
 [node name="Achievement12" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Self induced suffering.
 At this point no one knows anymore. Is it a bit? Do you just like losing money? Picking up too many deliveries? All we know is that you don't lose, even if your balance is getting thinner."
 IconTexture = ExtResource("19_qbok1")
 
 [node name="Achievement13" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Beginner multitasker.
 You like to have multiple focuses at the same time. Having 3 deliveries helps you be on your toes."
 IconTexture = ExtResource("20_633xo")
 
 [node name="Achievement14" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Multitasking addict.
 You just can't get enough of having multiple deliveries. Will you be able to deliver all of those 5 that you have? We'll find out soon enough."
 IconTexture = ExtResource("21_kjnu7")
 
 [node name="Achievement15" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Indian god.
 You seem to have several hands, maybe even several heads to handle all of the deliveries you maintain. No one doubts your abilities anymore."
 IconTexture = ExtResource("22_mfblu")
 
 [node name="Achievement16" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Keeping promises.
 Who said multitasking doesn't work? Here you are, making 3 deliveries at the same time without batting an eye."
 IconTexture = ExtResource("23_2txuo")
 
 [node name="Achievement17" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Oathkeeper.
 A promise is sacred to you, so when you say you will deliver 5 packages, you just do it."
 IconTexture = ExtResource("24_3yhed")
 
 [node name="Achievement18" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
 layout_mode = 2
 Description = "Sworn protector.
 You save stations by deliveries alone, bringing them 10 packages in one go, feeding many and providing to all."
 IconTexture = ExtResource("26_1qdlg")
+
+[node name="VictoryMenu" type="PopupPanel" parent="."]
+disable_3d = true
+transparent_bg = true
+position = Vector2i(25, 25)
+size = Vector2i(550, 350)
+transparent = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
+
+[node name="Control" type="Control" parent="VictoryMenu"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="VictoryMenu/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VictoryMenu/Control/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VictoryMenu/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Victory!"
+label_settings = SubResource("LabelSettings_b76yp")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VictoryMenu/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+text = "Congratulations! You have managed to complete all the achievements. It must have been tough. You can keep playing by pressing the button below, if you want, but you can consider this game finished. Thank you for playing!"
+
+[node name="KeepPlayingButton" type="Button" parent="VictoryMenu/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Keep playing"
 
 [connection signal="LocationAvailable" from="Locations/Location" to="." method="OnLocationAvailable"]
 [connection signal="LocationPressed" from="Locations/Location" to="." method="OnLocationPressed"]
@@ -1574,3 +1653,4 @@ IconTexture = ExtResource("26_1qdlg")
 [connection signal="pressed" from="LeftMenu/AchievementsButton" to="." method="OnAchievementsButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/DeclineButton" to="." method="OnDeclineQuestButtonPressed"]
+[connection signal="pressed" from="VictoryMenu/Control/MarginContainer/VBoxContainer/KeepPlayingButton" to="." method="OnKeepPlayingButtonPressed"]
