@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://krk0tryxukwu"]
+
+[ext_resource type="Script" path="res://Achievements/Achievement.cs" id="1_kg31w"]
+
+[node name="Achievement" type="HBoxContainer"]
+modulate = Color(0.282353, 0.282353, 0.282353, 1)
+script = ExtResource("1_kg31w")
+
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="DescriptionLabel" type="Label" parent="."]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+autowrap_mode = 3

@@ -78,6 +78,20 @@ public partial class Delivery : HBoxContainer
 		return ItemsDurability;
 	}
 
+	public int GetItemsSurvivedNum()
+	{
+		int c = 0;
+		foreach (Item _Item in Items) if (_Item.HP > 0) c++;
+		return c;
+	}
+
+	public Item[] GetItemsSurvived()
+	{
+		Item[] survived_items = Array.Empty<Item>();
+		foreach (Item _Item in Items) if (_Item.HP > 0) survived_items = survived_items.Append(_Item).ToArray();
+		return survived_items;
+	}
+
 	public int GetPayout(bool IsPenalty = false)
 	{
 		int Payout = 0;

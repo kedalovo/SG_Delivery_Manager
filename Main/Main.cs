@@ -3,6 +3,8 @@ using GodotArray = Godot.Collections.Array;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
+using System.Security;
 
 public partial class Main : Node2D
 {
@@ -77,6 +79,36 @@ public partial class Main : Node2D
 
 	private Button AchieventsButton;
 	private PopupPanel AchievementsMenu;
+
+	private enum Achievements
+	{
+		TOTAL_DELIVERIES_1,
+		TOTAL_DELIVERIES_2,
+		TOTAL_DELIVERIES_3,
+		TOTAL_ITEMS_1,
+		TOTAL_ITEMS_2,
+		TOTAL_ITEMS_3,
+		TOTAL_DIFFERENT_ITEMS_1,
+		TOTAL_DIFFERENT_ITEMS_2,
+		TOTAL_DIFFERENT_ITEMS_3,
+		TOTAL_FAILS_1,
+		TOTAL_FAILS_2,
+		TOTAL_FAILS_3,
+		HAVING_MULTIPLE_DELIVERIES_1,
+		HAVING_MULTIPLE_DELIVERIES_2,
+		HAVING_MULTIPLE_DELIVERIES_3,
+		MAKING_MULTIPLE_DELIVERIES_1,
+		MAKING_MULTIPLE_DELIVERIES_2,
+		MAKING_MULTIPLE_DELIVERIES_3,
+	}
+
+	private VBoxContainer AchievementsContainer;
+
+	private int ACH_TotalDeliveries = 0;
+	private int ACH_TotalItems = 0;
+	private Dictionary<string, int> ACH_TotalDifferentItems = new();
+	private int ACH_TotalFails = 0;
+	private int ACH_CompletedQuests = 0;
 
 	private bool LeapDay = false;
 
@@ -239,6 +271,19 @@ public partial class Main : Node2D
 
 		AchieventsButton = GetNode<Button>("LeftMenu/AchievementsButton");
 		AchievementsMenu = GetNode<PopupPanel>("AchievementsMenu");
+
+		AchievementsContainer = AchievementsMenu.GetNode<VBoxContainer>("Margin/Scroll/VBox");
+
+		ACH_TotalDifferentItems["Wood"] = 0;
+		ACH_TotalDifferentItems["Cosmic propaganda"] = 0;
+		ACH_TotalDifferentItems["Asteroid samples"] = 0;
+		ACH_TotalDifferentItems["Pencils"] = 0;
+		ACH_TotalDifferentItems["Lab vials"] = 0;
+		ACH_TotalDifferentItems["Miniature Glass City"] = 0;
+		ACH_TotalDifferentItems["Cheesecake"] = 0;
+		ACH_TotalDifferentItems["Stuffed Crust Pizza"] = 0;
+		ACH_TotalDifferentItems["Archeology Findings"] = 0;
+		ACH_TotalDifferentItems["Old explosives"] = 0;
 
 		#endregion OtherDeclaration
 		
@@ -454,6 +499,8 @@ public partial class Main : Node2D
 				Tween NewTween = GetTree().CreateTween();
 				NewTween.TweenProperty(Ship, "position", PressedLocation.Position, .5f).SetTrans(Tween.TransitionType.Circ);
 				int[] CompletedQuestIDs = CurrentLocation.GetQuests();
+				ACH_CompletedQuests = 0;
+				ACH_TotalFails = 0;
 				foreach (int id in CompletedQuestIDs)
 				{
 					Delivery delivery = GetDeliveryByID(id);
@@ -466,11 +513,16 @@ public partial class Main : Node2D
 						int Payout = delivery.GetPayout();
 						PopupBalance(Payout);
 						Balance += Payout;
+						ACH_TotalDeliveries++;
+						ACH_TotalItems += delivery.GetItemsSurvivedNum();
+						foreach (Item item in delivery.GetItemsSurvived()) ACH_TotalDifferentItems[item.ItemName]++;
 						delivery.QueueFree();
+						ACH_CompletedQuests++;
 					}
 				}
 				if (CompletedQuestIDs.Length > 0) CurrentLocation.SetCompleteQuest();
 				foreach (Delivery delivery in Deliveries) delivery.Jump(CurrentLocation.ID);
+				CheckAchievements();
 				// Creating new hazard every 3'rd jump
 				if (HazardCounter == 2)
 				{
@@ -672,6 +724,7 @@ public partial class Main : Node2D
 		NewDelivery.OnDeliveryMouseEntered += OnDeliveryHoverStart;
 		NewDelivery.OnDeliveryMouseExited += OnDeliveryHoverFinish;
 		Deliveries = Deliveries.Append(NewDelivery).ToArray();
+		CheckAchievements();
 	}
 
 	private void UpdateDeliveries(int Distance) { foreach (Delivery delivery in Deliveries) delivery.Damage(Distance); }
@@ -689,6 +742,7 @@ public partial class Main : Node2D
 		Balance -= Payout;
 		FailedDelivery.QueueFree();
 		GD.Print(string.Format("Delivery [{0}] failed!", FailedDeliveryID));
+		ACH_TotalFails++;
 	}
 
 	private void OnFuelButtonPressed()
@@ -751,6 +805,107 @@ public partial class Main : Node2D
 	{
 		if (AchievementsMenu.Visible) AchievementsMenu.Hide();
 		else AchievementsMenu.Show();
+	}
+
+	private void CheckAchievements()
+	{
+		if (ACH_CompletedQuests > 9) CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_3);
+		else if (ACH_CompletedQuests > 4) CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_2);
+		else if (ACH_CompletedQuests > 2) CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_1);
+
+		if (Deliveries.Length > 9) CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_3);
+		else if (Deliveries.Length > 4) CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_2);
+		else if (Deliveries.Length > 2) CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_1);
+
+		if (ACH_TotalFails > 4) CompleteAchievement(Achievements.TOTAL_FAILS_3);
+		else if (ACH_TotalFails > 2) CompleteAchievement(Achievements.TOTAL_FAILS_2);
+		else if (ACH_TotalFails > 1) CompleteAchievement(Achievements.TOTAL_FAILS_1);
+
+		int tier = 3;
+		foreach (KeyValuePair<string, int> item in ACH_TotalDifferentItems) if (item.Value < 15) { tier--; break; }
+		foreach (KeyValuePair<string, int> item in ACH_TotalDifferentItems) if (item.Value < 10) { tier--; break; }
+		foreach (KeyValuePair<string, int> item in ACH_TotalDifferentItems) if (item.Value < 5) { tier--; break; }
+		switch (tier)
+		{
+			case 1:
+				CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_1);
+				break;
+			case 2:
+				CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_2);
+				break;
+			case 3:
+				CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_3);
+				break;
+		}
+
+		if (ACH_TotalItems > 99) CompleteAchievement(Achievements.TOTAL_ITEMS_3);
+		else if (ACH_TotalItems > 49) CompleteAchievement(Achievements.TOTAL_ITEMS_2);
+		else if (ACH_TotalItems > 19) CompleteAchievement(Achievements.TOTAL_ITEMS_1);
+
+		if (ACH_TotalDeliveries > 49) CompleteAchievement(Achievements.TOTAL_DELIVERIES_3);
+		else if (ACH_TotalDeliveries > 24) CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
+		else if (ACH_TotalDeliveries > 14) CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
+	}
+
+	private void CompleteAchievement(Achievements achievement)
+	{
+		switch (achievement)
+		{
+			case Achievements.TOTAL_DELIVERIES_1:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Novice hauler")) { child.Enabled = true; break; }
+				break;
+			case Achievements.TOTAL_DELIVERIES_2:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Advanced hauler")) { child.Enabled = true; break; }
+				break;
+			case Achievements.TOTAL_DELIVERIES_3:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Master hauler")) { child.Enabled = true; break; }
+				break;
+			case Achievements.TOTAL_ITEMS_1:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Small collector")) { child.Enabled = true; break; }
+				break;
+			case Achievements.TOTAL_ITEMS_2:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Mediocre collector")) { child.Enabled = true; break; }
+				break;
+			case Achievements.TOTAL_ITEMS_3:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Expert collector")) { child.Enabled = true; break; }
+				break;
+			case Achievements.TOTAL_DIFFERENT_ITEMS_1:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety newbie")) { child.Enabled = true; break; }
+				break;
+			case Achievements.TOTAL_DIFFERENT_ITEMS_2:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety enthusiast")) { child.Enabled = true; break; }
+				break;
+			case Achievements.TOTAL_DIFFERENT_ITEMS_3:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety perfectionist")) { child.Enabled = true; break; }
+				break;
+			case Achievements.TOTAL_FAILS_1:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("It happens")) { child.Enabled = true; break; }
+				break;
+			case Achievements.TOTAL_FAILS_2:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("We learn from your mistakes")) { child.Enabled = true; break; }
+				break;
+			case Achievements.TOTAL_FAILS_3:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Self induced suffering")) { child.Enabled = true; break; }
+				break;
+			case Achievements.HAVING_MULTIPLE_DELIVERIES_1:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Beginner multitasker")) { child.Enabled = true; break; }
+				break;
+			case Achievements.HAVING_MULTIPLE_DELIVERIES_2:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Multitasking addict")) { child.Enabled = true; break; }
+				break;
+			case Achievements.HAVING_MULTIPLE_DELIVERIES_3:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Indian god")) { child.Enabled = true; break; }
+				break;
+			case Achievements.MAKING_MULTIPLE_DELIVERIES_1:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Keeping promises")) { child.Enabled = true; break; }
+				break;
+			case Achievements.MAKING_MULTIPLE_DELIVERIES_2:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Oathkeeper")) { child.Enabled = true; break; }
+				break;
+			case Achievements.MAKING_MULTIPLE_DELIVERIES_3:
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Sworn protector")) { child.Enabled = true; break; }
+				break;
+		}
 	}
 
 	private int GetLocationID(string NameOfLocation)
