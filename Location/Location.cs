@@ -18,23 +18,33 @@ public partial class Location : Node2D
 	private Polygon2D QuestPolygon;
 	private AnimationPlayer Animator;
 
-	private int[] Quests = Array.Empty<int>();
+	private int[] Quests;
 
-	public string[] Hazards = Array.Empty<string>();
-	public Dictionary<string, string>[] HazardsData = Array.Empty<Dictionary<string, string>>();
-	private TextureRect[] HazardsIcons = Array.Empty<TextureRect>();
+	public string[] Hazards;
+	public Dictionary<string, string>[] HazardsData;
+	private TextureRect[] HazardsIcons;
 
-	private int FuelCost = 50;
+	private int FuelCost;
 
-	private int FuelLevel = 5;
-	private int MaxFuel = 5;
+	private int FuelLevel;
+	private int MaxFuel;
 
-	private int QuestCompleted = 0;
+	private int QuestCompleted;
 
 	private HBoxContainer HazardsHBox;
 
 	public override void _Ready()
 	{
+		Quests = Array.Empty<int>();
+		Hazards = Array.Empty<string>();
+		HazardsData = Array.Empty<Dictionary<string, string>>();
+		HazardsIcons = Array.Empty<TextureRect>();
+
+		FuelCost = 50;
+		FuelLevel = 5;
+		MaxFuel = 5;
+		QuestCompleted = 0;
+
 		NameLabel = GetNode<Label>("VBox/Label");
 		StarSprite = GetNode<Sprite2D>("StarSprite");
 		QuestPolygon = GetNode<Polygon2D>("QuestPolygon");

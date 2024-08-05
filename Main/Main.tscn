@@ -1426,6 +1426,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 500.0
+offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 16
@@ -1567,7 +1569,7 @@ Description = "Sworn protector.
 You save stations by deliveries alone, bringing them 10 packages in one go, feeding many and providing to all."
 IconTexture = ExtResource("26_1qdlg")
 
-[node name="VictoryMenu" type="PopupPanel" parent="."]
+[node name="VictoryScreen" type="PopupPanel" parent="."]
 disable_3d = true
 transparent_bg = true
 position = Vector2i(25, 25)
@@ -1575,16 +1577,18 @@ size = Vector2i(550, 350)
 transparent = true
 theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
 
-[node name="Control" type="Control" parent="VictoryMenu"]
+[node name="Control" type="Control" parent="VictoryScreen"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 550.0
+offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="VictoryMenu/Control"]
+[node name="MarginContainer" type="MarginContainer" parent="VictoryScreen/Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1596,26 +1600,86 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VictoryMenu/Control/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VictoryScreen/Control/MarginContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="VictoryMenu/Control/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="VictoryScreen/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Victory!"
 label_settings = SubResource("LabelSettings_b76yp")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VictoryMenu/Control/MarginContainer/VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="VictoryScreen/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 16
-text = "Congratulations! You have managed to complete all the achievements. It must have been tough. You can keep playing by pressing the button below, if you want, but you can consider this game finished. Thank you for playing!"
+text = "
+Congratulations! You have managed to complete all the achievements. It must have been tough. You can keep playing by pressing the button below, if you want, but you can consider this game finished. Thank you for playing!"
 
-[node name="KeepPlayingButton" type="Button" parent="VictoryMenu/Control/MarginContainer/VBoxContainer"]
+[node name="KeepPlayingButton" type="Button" parent="VictoryScreen/Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Keep playing"
+
+[node name="FailScreen" type="PopupPanel" parent="."]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(600, 400)
+transparent = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
+
+[node name="Control" type="Control" parent="FailScreen"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 600.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="FailScreen/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="FailScreen/Control/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="FailScreen/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "GameOver
+"
+label_settings = SubResource("LabelSettings_b76yp")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="FailScreen/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+text = "
+You have played well, but it seems you are stuck with no money to buy more fuel for a warp jump.
+
+Sorry, but you'll have to try again..."
+
+[node name="RetryButton" type="Button" parent="FailScreen/Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Retry"
 
 [connection signal="LocationAvailable" from="Locations/Location" to="." method="OnLocationAvailable"]
 [connection signal="LocationPressed" from="Locations/Location" to="." method="OnLocationPressed"]
@@ -1653,4 +1717,5 @@ text = "Keep playing"
 [connection signal="pressed" from="LeftMenu/AchievementsButton" to="." method="OnAchievementsButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/DeclineButton" to="." method="OnDeclineQuestButtonPressed"]
-[connection signal="pressed" from="VictoryMenu/Control/MarginContainer/VBoxContainer/KeepPlayingButton" to="." method="OnKeepPlayingButtonPressed"]
+[connection signal="pressed" from="VictoryScreen/Control/MarginContainer/VBoxContainer/KeepPlayingButton" to="." method="OnKeepPlayingButtonPressed"]
+[connection signal="pressed" from="FailScreen/Control/MarginContainer/VBoxContainer/RetryButton" to="." method="OnRetryButtonPressed"]

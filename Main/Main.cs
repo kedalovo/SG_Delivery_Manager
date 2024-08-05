@@ -11,8 +11,8 @@ public partial class Main : Node2D
 	#region Initialization
 
 	private Location CurrentLocation;
-	private Dictionary<int, Location> AllLocations = new();
-	private Dictionary<int[], Dictionary<string, string>> DrawingConnections = new();
+	private Dictionary<int, Location> AllLocations;
+	private Dictionary<int[], Dictionary<string, string>> DrawingConnections;
 	[Export(PropertyHint.Range, "1, 16,")]
 	private int ConSegmentMargin = 1;
 	[Export(PropertyHint.Range, "1, 16,")]
@@ -20,7 +20,7 @@ public partial class Main : Node2D
 	[Export]
 	private Color ConLineColor = new();
 
-	private AStar2D StarMap = new();
+	private AStar2D StarMap;
 
 	private Node2D Ship;
 	private Label CurrentLocationLabel;
@@ -35,12 +35,12 @@ public partial class Main : Node2D
 	private Label DestinationLabel;
 	private RichTextLabel DeliveryContentsLabel;
 	// A list of items to deliver with additional info about them. Key is a string: Name, value is GodotArray: Item texture, durability.
-	private ItemData[] DeliveryItems = Array.Empty<ItemData>();
-	private int QuestCounter = 1;
+	private ItemData[] DeliveryItems;
+	private int QuestCounter;
 	// Displayed quest is a quest that is currently displayed on the quest screen.
 	private Quest DisplayedQuest;
 	// Accepted quests are formerly displayed quests that have been accepted
-	private Dictionary<int, Quest> AcceptedQuests = new();
+	private Dictionary<int, Quest> AcceptedQuests;
 	private Button AcceptButton;
 	private Button DeclineButton;
 	private Button FuelButton;
@@ -48,7 +48,7 @@ public partial class Main : Node2D
 	private VBoxContainer CargoVBox;
 	private PackedScene DeliveryScene;
 
-	private Delivery[] Deliveries = Array.Empty<Delivery>();
+	private Delivery[] Deliveries;
 
 	private Label MoneyLabel;
 	private int balance;
@@ -66,9 +66,9 @@ public partial class Main : Node2D
 	private SpriteFrames FragileFrames;
 	private SpriteFrames SegmentedFrames;
 
-	private Dictionary<string, SpriteFrames> TagFrames = new();
+	private Dictionary<string, SpriteFrames> TagFrames;
 
-	private int HazardCounter = 0;
+	private int HazardCounter;
 	private Texture2D MarketCrashIcon;
 	private Texture2D DisenteryIcon;
 	private Texture2D RumIcon;
@@ -104,19 +104,22 @@ public partial class Main : Node2D
 
 	private VBoxContainer AchievementsContainer;
 	private TextureRect AchievementRect;
-	private Achievement[] AchievementQueue = Array.Empty<Achievement>();
+	private Achievement[] AchievementQueue;
 
-	private int ACH_TotalDeliveries = 0;
-	private int ACH_TotalItems = 0;
-	private Dictionary<string, int> ACH_TotalDifferentItems = new();
-	private int ACH_TotalFails = 0;
-	private int ACH_CompletedQuests = 0;
+	private int ACH_TotalDeliveries;
+	private int ACH_TotalItems;
+	private Dictionary<string, int> ACH_TotalDifferentItems;
+	private int ACH_TotalFails;
+	private int ACH_CompletedQuests;
 
-	private PopupPanel VictoryMenu;
+	private PopupPanel VictoryScreen;
+	private PopupPanel FailScreen;
+
+	private Tween AchievementTween;
 
 	private bool LeapDay = false;
 
-	private readonly Random Rnd = new();
+	private Random Rnd;
 
 	#endregion Initialization
 
@@ -140,6 +143,8 @@ public partial class Main : Node2D
 		Location l15 = GetNode<Location>("Locations/Location15");
 		Location l16 = GetNode<Location>("Locations/Location16");
 
+		AllLocations = new();
+
 		AllLocations[l1.ID] = l1;
 		AllLocations[l2.ID] = l2;
 		AllLocations[l3.ID] = l3;
@@ -156,6 +161,8 @@ public partial class Main : Node2D
 		AllLocations[l14.ID] = l14;
 		AllLocations[l15.ID] = l15;
 		AllLocations[l16.ID] = l16;
+
+		StarMap = new();
 
 		StarMap.AddPoint(l1.ID, Godot.Vector2.Zero);
 		StarMap.AddPoint(l2.ID, new(3f, 0f));
@@ -194,6 +201,8 @@ public partial class Main : Node2D
 		StarMap.ConnectPoints(11, 14);
 		StarMap.ConnectPoints(14, 15);
 		StarMap.ConnectPoints(15, 1);
+
+		DrawingConnections = new();
 
 		DrawingConnections[new [] {0, 1}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
 		DrawingConnections[new [] {1, 2}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
@@ -234,6 +243,8 @@ public partial class Main : Node2D
 		AcceptButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/AcceptButton");
 		DeclineButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/DeclineButton");
 		FuelButton = GetNode<Button>("LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton");
+
+		DeliveryItems = Array.Empty<ItemData>();
 		
 		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Wood", Texture = GD.Load<Texture2D>("res://Item Sprites/Wood.png"), Fragility = 1}).ToArray();
 		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Cosmic propaganda", Texture = GD.Load<Texture2D>("res://Item Sprites/Cosmic propaganda.png"), Fragility = 2}).ToArray();
@@ -245,6 +256,12 @@ public partial class Main : Node2D
 		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Stuffed Crust Pizza", Texture = GD.Load<Texture2D>("res://Item Sprites/Stuffed crust pizza.png"), Fragility = 8}).ToArray();
 		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Archeology Findings", Texture = GD.Load<Texture2D>("res://Item Sprites/Archeology findings.png"), Fragility = 9}).ToArray();
 		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Old explosives", Texture = GD.Load<Texture2D>("res://Item Sprites/Old explosives.png"), Fragility = 10}).ToArray();
+
+		QuestCounter = 1;
+		HazardCounter = 0;
+
+		AcceptedQuests = new();
+		Deliveries = Array.Empty<Delivery>();
 		
 		CargoVBox = GetNode<VBoxContainer>(HBoxPath + "CargoVBox/Scroll/CargoVBox");
 		DeliveryScene = GD.Load<PackedScene>("res://Delivery/Delivery.tscn");
@@ -261,6 +278,8 @@ public partial class Main : Node2D
 		FragileFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Fragile.tres");
 		SegmentedFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Segmented.tres");
 
+		TagFrames = new();
+
 		TagFrames["Timed"] = TimedFrames;
 		TagFrames["Fragile"] = FragileFrames;
 		TagFrames["Segmented"] = SegmentedFrames;
@@ -273,11 +292,15 @@ public partial class Main : Node2D
 		ShutdownIcon = GD.Load<Texture2D>("res://Location/Hazards/Shutdown.png");
 		FaultyIcon = GD.Load<Texture2D>("res://Location/Hazards/Faulty.png");
 
+		AchievementQueue = Array.Empty<Achievement>();
+
 		AchieventsButton = GetNode<Button>("LeftMenu/AchievementsButton");
 		AchievementsMenu = GetNode<PopupPanel>("AchievementsMenu");
 
 		AchievementsContainer = AchievementsMenu.GetNode<VBoxContainer>("Margin/Scroll/VBox");
 		AchievementRect = GetNode<TextureRect>("Control/AchievementRect");
+
+		ACH_TotalDifferentItems = new();
 
 		ACH_TotalDifferentItems["Wood"] = 0;
 		ACH_TotalDifferentItems["Cosmic propaganda"] = 0;
@@ -290,12 +313,21 @@ public partial class Main : Node2D
 		ACH_TotalDifferentItems["Archeology Findings"] = 0;
 		ACH_TotalDifferentItems["Old explosives"] = 0;
 
-		VictoryMenu = GetNode<PopupPanel>("VictoryMenu");
+		ACH_TotalDeliveries = 0;
+		ACH_TotalItems = 0;
+		ACH_TotalFails = 0;
+		ACH_CompletedQuests = 0;
+
+		VictoryScreen = GetNode<PopupPanel>("VictoryScreen");
+		FailScreen = GetNode<PopupPanel>("FailScreen");
+
+		Rnd = new();
 
 		#endregion OtherDeclaration
-		
-		CurrentLocationLabel.Text = l1.LocationName;
+
+		CurrentLocationLabel.Text = l2.LocationName;
 		CurrentLocation = l2;
+		Ship.Transform = CurrentLocation.Transform;
 		UpdateFuelLevelLabel();
 
 		Balance = 0;
@@ -303,6 +335,11 @@ public partial class Main : Node2D
 
 		CreateNewNPC();
 		DisplayQuest(CreateNewQuest(3));
+		FailScreen.Hide();
+
+		AchievementTween = GetTree().CreateTween();
+		AchievementTween.Stop();
+
 		// HighlightNeighbours();
 	}
 
@@ -316,24 +353,25 @@ public partial class Main : Node2D
         if (@event.IsActionPressed("test"))
 		{
 			GD.Print("TESTING");
-			CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
-			CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
-			CompleteAchievement(Achievements.TOTAL_DELIVERIES_3);
-			CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_1);
-			CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_2);
-			CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_3);
-			CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_1);
-			CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_2);
-			CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_3);
-			CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_1);
-			CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_2);
-			CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_3);
-			CompleteAchievement(Achievements.TOTAL_FAILS_1);
-			CompleteAchievement(Achievements.TOTAL_FAILS_2);
-			CompleteAchievement(Achievements.TOTAL_FAILS_3);
-			CompleteAchievement(Achievements.TOTAL_ITEMS_1);
-			CompleteAchievement(Achievements.TOTAL_ITEMS_2);
-			CompleteAchievement(Achievements.TOTAL_ITEMS_3);
+			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
+			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
+			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_3);
+			// CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_1);
+			// CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_2);
+			// CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_3);
+			// CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_1);
+			// CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_2);
+			// CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_3);
+			// CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_1);
+			// CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_2);
+			// CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_3);
+			// CompleteAchievement(Achievements.TOTAL_FAILS_1);
+			// CompleteAchievement(Achievements.TOTAL_FAILS_2);
+			// CompleteAchievement(Achievements.TOTAL_FAILS_3);
+			// CompleteAchievement(Achievements.TOTAL_ITEMS_1);
+			// CompleteAchievement(Achievements.TOTAL_ITEMS_2);
+			// CompleteAchievement(Achievements.TOTAL_ITEMS_3);
+			GameOver();
 		}
     }
 
@@ -595,6 +633,19 @@ public partial class Main : Node2D
 				else LeapDay = true;
 				UpdateFuelLevelLabel();
 				foreach (Location location in AllLocations.Values) location.Jump();
+
+				foreach (long i in StarMap.GetPointConnections(CurrentLocation.ID))
+				{
+					JumpDistance = GetJumpDistance(CurrentLocation, AllLocations[(int)i]);
+					if (CurrentLocation.Hazards.Contains("Disentery")) JumpDistance *= int.Parse(CurrentLocation.GetHazardData("Disentery")["jumpCost"]);
+					if (FuelLevel >= JumpDistance) return;
+				}
+				if (CurrentLocation.Hazards.Contains("MarketCrash"))
+				{
+					if (Balance >= 50 * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])) return;
+				}
+				else if (Balance >= 50) return;
+				GameOver();
 			}
 		}
 	}
@@ -675,6 +726,7 @@ public partial class Main : Node2D
 
 	private void DisplayQuest(Quest NewQuest)
 	{
+		if (DisplayedQuest is not null)	DisplayedQuest.QueueFree();
 		DeliveryContentsLabel.Clear();
 		foreach (Node child in ModifiersHBox.GetChildren()) child.QueueFree();
 		EnableQuestButtons();
@@ -757,10 +809,12 @@ public partial class Main : Node2D
 	{
 		Delivery FailedDelivery = new();
 		foreach (Delivery delivery in Deliveries) if (FailedDeliveryID == delivery.ID) { FailedDelivery = delivery; break; }
+		Deliveries = Deliveries.Where(v => v != FailedDelivery).ToArray();
 		FailedDelivery.OnDeliveryFailed -= DeliveryFailed;
 		FailedDelivery.OnDeliveryMouseEntered -= OnDeliveryHoverStart;
 		FailedDelivery.OnDeliveryMouseExited -= OnDeliveryHoverFinish;
 		AcceptedQuests.Remove(FailedDeliveryID);
+		foreach (Location location in AllLocations.Values) if (location.GetQuests().Contains(FailedDeliveryID)) { location.RemoveQuest(FailedDeliveryID); break; }
 		int Payout = FailedDelivery.GetPayout(true);
 		PopupBalance(-Payout);
 		Balance -= Payout;
@@ -876,82 +930,100 @@ public partial class Main : Node2D
 		switch (achievement)
 		{
 			case Achievements.TOTAL_DELIVERIES_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Novice hauler")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Novice hauler")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_DELIVERIES_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Advanced hauler")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Advanced hauler")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_DELIVERIES_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Master hauler")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Master hauler")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_ITEMS_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Small collector")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Small collector")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_ITEMS_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Mediocre collector")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Mediocre collector")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_ITEMS_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Expert collector")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Expert collector")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_DIFFERENT_ITEMS_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety newbie")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety newbie")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_DIFFERENT_ITEMS_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety enthusiast")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety enthusiast")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_DIFFERENT_ITEMS_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety perfectionist")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety perfectionist")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_FAILS_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("It happens")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("It happens")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_FAILS_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("We learn from your mistakes")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("We learn from your mistakes")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_FAILS_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Self induced suffering")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Self induced suffering")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.HAVING_MULTIPLE_DELIVERIES_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Beginner multitasker")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Beginner multitasker")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.HAVING_MULTIPLE_DELIVERIES_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Multitasking addict")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Multitasking addict")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.HAVING_MULTIPLE_DELIVERIES_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Indian god")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Indian god")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.MAKING_MULTIPLE_DELIVERIES_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Keeping promises")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Keeping promises")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.MAKING_MULTIPLE_DELIVERIES_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Oathkeeper")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Oathkeeper")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.MAKING_MULTIPLE_DELIVERIES_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Sworn protector")) { child.Enabled = true; QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Sworn protector")) { QueueAchievement(child); break; }
 				break;
 		}
 	}
 
 	private void QueueAchievement(Achievement newAchievement)
 	{
-		AchievementQueue = AchievementQueue.Append(newAchievement).ToArray();
-		if (GetTree().GetProcessedTweens().Count > 0) 
+		if (!newAchievement.Enabled)
 		{
-			if (!GetTree().GetProcessedTweens().Last().IsRunning()) PlayNextAchievement();
+			GD.Print("Queued achievement: ", newAchievement.Description.Substring(0, newAchievement.Description.IndexOf('.')));
+			newAchievement.Enabled = true;
+			AchievementQueue = AchievementQueue.Append(newAchievement).ToArray();
+			if (!AchievementTween.IsRunning())
+			{
+				PlayNextAchievement();
+				GD.Print("\tPlaying...");
+			}
 		}
-		else PlayNextAchievement();
 	}
 
 	private void PlayNextAchievement()
 	{
-		if (AchievementQueue.Length == 0) { CheckCompletion(); return; }
-		Tween anim = GetTree().CreateTween();
+		if (AchievementQueue.Length == 0)
+		{
+			CheckCompletion();
+			GD.Print("Animation queue is clear");
+			return;
+		}
 		AchievementRect.Texture = (Texture2D)AchievementQueue[0].IconTexture.Duplicate();
-		anim.TweenProperty(AchievementRect, "modulate:a", 1.0f, 2.0d);
-		anim.TweenProperty(AchievementRect, "modulate:a", 0.0f, 2.0d).SetDelay(2.0d);
-		anim.Finished += PlayNextAchievement;
-		if (AchievementQueue.Length == 1) AchievementQueue = Array.Empty<Achievement>();
-		else AchievementQueue = AchievementQueue[1..AchievementQueue.Length];
+		AchievementTween = GetTree().CreateTween();
+		AchievementTween.TweenProperty(AchievementRect, "modulate:a", 1.0f, 2.0d);
+		AchievementTween.TweenProperty(AchievementRect, "modulate:a", 0.0f, 2.0d).SetDelay(2.0d);
+		AchievementTween.Finished += PlayNextAchievement;
+		if (AchievementQueue.Length == 1)
+		{
+			AchievementQueue = Array.Empty<Achievement>();
+			GD.Print("Clearing animation queue...");
+		}
+		else
+		{
+			AchievementQueue = AchievementQueue[1..AchievementQueue.Length];
+			GD.Print("Animation queue reduced by 1");
+		}
 	}
 
 	private int GetLocationID(string NameOfLocation)
@@ -972,12 +1044,40 @@ public partial class Main : Node2D
 	private void CheckCompletion()
 	{
 		foreach (Achievement achievement in AchievementsContainer.GetChildren()) if (!achievement.Enabled) return;
-		VictoryMenu.Show();
+		VictoryScreen.Show();
 	}
 
 	private void OnKeepPlayingButtonPressed()
 	{
-		VictoryMenu.Hide();
+		VictoryScreen.Hide();
+	}
+
+	private void GameOver()
+	{
+		FailScreen.Show();
+	}
+
+	private void OnRetryButtonPressed()
+	{
+		foreach (ItemData item in DeliveryItems) item.QueueFree();
+		foreach (KeyValuePair<int, Quest> item in AcceptedQuests) item.Value.QueueFree();
+		foreach (Delivery item in Deliveries)
+		{
+			item.OnDeliveryFailed -= DeliveryFailed;
+			item.OnDeliveryMouseEntered -= OnDeliveryHoverStart;
+			item.OnDeliveryMouseExited -= OnDeliveryHoverFinish;
+			item.QueueFree();
+		}
+		foreach (KeyValuePair<int, Location> item in AllLocations) 
+		{
+			item.Value.ClearHighlight();
+			string[] hazards = Array.Empty<string>();
+			// item.Value.Hazards.CopyTo(hazards, 0);
+			foreach (string hazard in item.Value.Hazards) item.Value.RemoveHazard(hazard);
+			item.Value._Ready();
+		}
+		foreach (Achievement item in AchievementsContainer.GetChildren()) item.Enabled = false;
+		_Ready();
 	}
 
 	private ItemData GetItemByName(string NameOfItem)
