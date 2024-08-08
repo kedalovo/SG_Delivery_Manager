@@ -34,6 +34,8 @@ public partial class Delivery : HBoxContainer
 
 	private Timer DeliveryTimer;
 
+	public int TotalDistance;
+
 	private int DistanceJumped = 0;
 	private int TimedTagIdx = 0;
 	private int FragileTagIdx = 0;
@@ -47,7 +49,7 @@ public partial class Delivery : HBoxContainer
 		MouseExited += () => EmitSignal(SignalName.OnDeliveryMouseExited, id);
 	}
 
-    public void SetItems(int newID, ItemData[] newItems)
+    public void SetItems(int newID, ItemData[] newItems, int newDistance)
 	{
 		id = newID;
 		GetNode<Label>("VBox/IDLabel").Text = "[" + id + "]";
@@ -58,6 +60,7 @@ public partial class Delivery : HBoxContainer
             Items = Items.Append(NewItem).ToArray();
 			NewItem.SetItem(newItemData);
 		}
+		TotalDistance = newDistance;
 	}
 
 	public void Damage(int Distance)
@@ -92,36 +95,41 @@ public partial class Delivery : HBoxContainer
 		return survived_items;
 	}
 
-	public int GetPayout(bool IsPenalty = false)
+	public Item[] GetItems()
 	{
-		int Payout = 0;
-		if (IsPenalty) foreach (Item _Item in Items) { Payout += _Item.Fragility * 10; }
-		else foreach (Item _Item in Items) { Payout += (int)Mathf.Floor(_Item.Fragility * 10 * _Item.HP / 100); }
-		for (int i = 0; i < Tags.Length; i++)
-		{
-			string tag = Tags[i];
-			Dictionary<string, string> tagData = TagsData[i];
-			switch (tag)
-			{
-				case "Timed":
-					GD.Print("Timed modified payout from ", Payout);
-					Payout = Mathf.FloorToInt(Payout * (1f + .2f * int.Parse(tagData["tier"])));
-					GD.Print("to ", Payout);
-					break;
-				case "Fragile":
-					GD.Print("Fragile modified payout from ", Payout);
-					Payout = Mathf.FloorToInt(Payout * 1.5f);
-					GD.Print("to ", Payout);
-					break;
-				case "Segmented":
-					GD.Print("Segmented modified payout from ", Payout);
-					Payout = Mathf.FloorToInt(Payout * 1.2f);
-					GD.Print("to ", Payout);
-					break;
-			}
-		}
-		return Payout;
+		return Items;
 	}
+
+	// public int GetPayout(bool IsPenalty = false)
+	// {
+	// 	int Payout = 0;
+	// 	if (IsPenalty) foreach (Item _Item in Items) { Payout += _Item.Fragility * 10; }
+	// 	else foreach (Item _Item in Items) { Payout += (int)Mathf.Floor(_Item.Fragility * 10 * _Item.HP / 100); }
+	// 	for (int i = 0; i < Tags.Length; i++)
+	// 	{
+	// 		string tag = Tags[i];
+	// 		Dictionary<string, string> tagData = TagsData[i];
+	// 		switch (tag)
+	// 		{
+	// 			case "Timed":
+	// 				GD.Print("Timed modified payout from ", Payout);
+	// 				Payout = Mathf.FloorToInt(Payout * (1f + .2f * int.Parse(tagData["tier"])));
+	// 				GD.Print("to ", Payout);
+	// 				break;
+	// 			case "Fragile":
+	// 				GD.Print("Fragile modified payout from ", Payout);
+	// 				Payout = Mathf.FloorToInt(Payout * 1.5f);
+	// 				GD.Print("to ", Payout);
+	// 				break;
+	// 			case "Segmented":
+	// 				GD.Print("Segmented modified payout from ", Payout);
+	// 				Payout = Mathf.FloorToInt(Payout * 1.2f);
+	// 				GD.Print("to ", Payout);
+	// 				break;
+	// 		}
+	// 	}
+	// 	return Payout;
+	// }
 
 	public bool HasTag(string tag) { return Tags.Contains(tag); }
 

@@ -334,7 +334,7 @@ public partial class Main : Node2D
 		FuelLevel = 10;
 
 		CreateNewNPC();
-		DisplayQuest(CreateNewQuest(3));
+		DisplayQuest(CreateNewQuest(0, 1));
 		FailScreen.Hide();
 
 		AchievementTween = GetTree().CreateTween();
@@ -371,7 +371,12 @@ public partial class Main : Node2D
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_1);
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_2);
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_3);
-			GameOver();
+			// GameOver();
+			Quest newQuest = CreateNewQuest(0, 5);
+			foreach (ItemData item in newQuest.Items)
+			GD.PrintS(item.ItemName, item.Fragility);
+			GD.PrintS("\t" + newQuest.Destination.LocationName, StarMap.GetIdPath(CurrentLocation.ID, newQuest.Destination.ID).Length);
+			GD.Print("\n");
 		}
     }
 
@@ -464,18 +469,25 @@ public partial class Main : Node2D
 		}
 	}
 
-    private Quest CreateNewQuest(int NumOfItems = 1)
+    private Quest CreateNewQuest(int NumOfItems = 0, int newQuestTier = -1)
 	{
-		NumOfItems = Math.Clamp(NumOfItems, 1, 10);
+		NumOfItems = Math.Clamp(NumOfItems, 0, 5);
 		string[] PossibleItems = Array.Empty<string>();
 		foreach (ItemData itemData in DeliveryItems) PossibleItems = PossibleItems.Append(itemData.ItemName).ToArray();
 		Quest NewQuest = new();
 		int i = 0;
 		ItemData[] QuestItems = Array.Empty<ItemData>();
+
+		if (NumOfItems == 0) NumOfItems = Rnd.Next(3, 6);
+
+		int QuestTier = Rnd.Next(3);
+		if (newQuestTier > -1) QuestTier = Math.Clamp(newQuestTier, 0, 2);
+		int[][] ItemsTiers = new int[][] {new int[] {6, 7, 8, 9, 10}, new int[] {3, 4, 5, 6, 7}, new int[] {1, 2, 3, 4, 5}};
+
 		while (i < NumOfItems)
 		{
 			ItemData NewItem = DeliveryItems[Rnd.Next(DeliveryItems.Length)];
-			if (!QuestItems.Contains(NewItem))
+			if (!QuestItems.Contains(NewItem) & ItemsTiers[QuestTier].Contains(NewItem.Fragility))
 			{
 				QuestItems = QuestItems.Append(NewItem).ToArray();
 				i++;
@@ -483,18 +495,39 @@ public partial class Main : Node2D
 		}
 		NewQuest.Items = QuestItems;
 
-		Location[] PossibleLocations = AllLocations.Values.ToArray();
-		Location ChosenLocation = CurrentLocation;
-		// Choosing a Location that is not a Current Location? is far enough and isn't disabled
-		while
-		(
-			ChosenLocation.LocationName == CurrentLocation.LocationName
-			|
-			StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length < 3
-			|
-			ChosenLocation.Hazards.Contains("Shutdown")
-		)
-		ChosenLocation = PossibleLocations[Rnd.Next(PossibleLocations.Length)];
+		int[][] DistanceTiers = new int[][] {new int[] {2, 3, 4}, new int[] {3, 4, 5}, new int[] {5, 6, 7}};
+
+		Location[] PossibleLocations = Array.Empty<Location>();
+		// Choosing a Location that is not a Current Location, is far enough and isn't disabled
+		foreach (Location location in AllLocations.Values)
+		{
+			if
+			(
+				location.LocationName != CurrentLocation.LocationName
+				&&
+				DistanceTiers[QuestTier].Contains(StarMap.GetIdPath(CurrentLocation.ID, location.ID).Length - 1)
+				&&
+				!location.Hazards.Contains("Shutdown")
+			)
+			PossibleLocations = PossibleLocations.Append(location).ToArray();
+		}
+		if (PossibleLocations.Length == 0)
+		foreach (Location location in AllLocations.Values)
+		{
+			if
+			(
+				location.LocationName != CurrentLocation.LocationName
+				&&
+				DistanceTiers[QuestTier].Contains(StarMap.GetIdPath(CurrentLocation.ID, location.ID).Length)
+				&&
+				!location.Hazards.Contains("Shutdown")
+			)
+			PossibleLocations = PossibleLocations.Append(location).ToArray();
+		}
+		Location ChosenLocation = PossibleLocations[Rnd.Next(PossibleLocations.Length)];
+
+		// GD.PrintS(ChosenLocation.LocationName, StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length - 1, GD.VarToStr(DistanceTiers[QuestTier]));
+		// GD.PrintS(ChosenLocation.LocationName != CurrentLocation.LocationName, DistanceTiers[QuestTier].Contains(StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length), !ChosenLocation.Hazards.Contains("Shutdown"));
 
 		// Adding a modifier
 		switch (Rnd.Next(3))
@@ -563,6 +596,7 @@ public partial class Main : Node2D
 				int[] CompletedQuestIDs = CurrentLocation.GetQuests();
 				ACH_CompletedQuests = 0;
 				ACH_TotalFails = 0;
+				// Getting the payout for completing deliveries
 				foreach (int id in CompletedQuestIDs)
 				{
 					Delivery delivery = GetDeliveryByID(id);
@@ -572,7 +606,13 @@ public partial class Main : Node2D
 						delivery.OnDeliveryFailed -= DeliveryFailed;
 						AcceptedQuests.Remove(id);
 						CurrentLocation.RemoveQuest(id);
-						int Payout = delivery.GetPayout();
+						int Payout = 0;
+						Item[] items = delivery.GetItems();
+						foreach (Item item in items) Payout += (int)Mathf.Floor(item.Fragility * 10 * item.HP / 100);
+						if (delivery.HasTag("Timed")) Payout = Mathf.FloorToInt(Payout * (1f + .15f * int.Parse(delivery.GetTagData("Timed")["tier"])));
+						if (delivery.HasTag("Fragile")) Payout = Mathf.FloorToInt(Payout * 1.2f);
+						if (delivery.HasTag("Segmented")) Payout = Mathf.FloorToInt(Payout * 1.2f);
+						Payout = Mathf.FloorToInt(Payout * (1.0f + delivery.TotalDistance / 10.0f));
 						PopupBalance(Payout);
 						Balance += Payout;
 						ACH_TotalDeliveries++;
@@ -644,7 +684,7 @@ public partial class Main : Node2D
 				{
 					if (Balance >= 50 * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])) return;
 				}
-				else if (Balance >= 50) return;
+				else if (Balance >= 50 && CurrentLocation.GetFuelLevel() > 0) return;
 				GameOver();
 			}
 		}
@@ -795,7 +835,7 @@ public partial class Main : Node2D
 			Dictionary<string, string> tagData = DisplayedQuest.TagsData[idx];
 			NewDelivery.AddTag(tag, tagData, GetNewModifierIcon(tag, tagData));
 		}
-		NewDelivery.SetItems(DisplayedQuest.ID, DisplayedQuest.Items);
+		NewDelivery.SetItems(DisplayedQuest.ID, DisplayedQuest.Items, StarMap.GetIdPath(CurrentLocation.ID, DisplayedQuest.Destination.ID).Length);
 		NewDelivery.OnDeliveryFailed += DeliveryFailed;
 		NewDelivery.OnDeliveryMouseEntered += OnDeliveryHoverStart;
 		NewDelivery.OnDeliveryMouseExited += OnDeliveryHoverFinish;
@@ -815,7 +855,10 @@ public partial class Main : Node2D
 		FailedDelivery.OnDeliveryMouseExited -= OnDeliveryHoverFinish;
 		AcceptedQuests.Remove(FailedDeliveryID);
 		foreach (Location location in AllLocations.Values) if (location.GetQuests().Contains(FailedDeliveryID)) { location.RemoveQuest(FailedDeliveryID); break; }
-		int Payout = FailedDelivery.GetPayout(true);
+		int Payout = 0;
+		Item[] items = FailedDelivery.GetItems();
+		foreach (Item item in items) Payout += item.Fragility * 10;
+		Payout = Mathf.FloorToInt(Payout * (1.0f + FailedDelivery.TotalDistance / 10.0f));
 		PopupBalance(-Payout);
 		Balance -= Payout;
 		FailedDelivery.QueueFree();

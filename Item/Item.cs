@@ -25,7 +25,7 @@ public partial class Item : HBoxContainer
 
 	public void Damage(int Distance)
 	{
-		Distance = Math.Clamp(Distance, 1, 3);
+		Distance = Math.Clamp(Distance, 1, 6);
 		int Damage = Fragility * Distance;
 		if (ItemHP.Value > Damage)
 		{

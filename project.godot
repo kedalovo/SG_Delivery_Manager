@@ -26,6 +26,10 @@ window/stretch/mode="viewport"
 
 project/assembly_name="[SG] Delivery Management"
 
+[filesystem]
+
+import/blender/enabled=false
+
 [gui]
 
 theme/custom="res://MainTheme.tres"
