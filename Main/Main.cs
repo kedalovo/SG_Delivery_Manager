@@ -119,6 +119,23 @@ public partial class Main : Node2D
 
 	private bool LeapDay = false;
 
+	private Texture2D AlphaMini;
+	private Texture2D AuroraMini;
+	private Texture2D BetaMini;
+	private Texture2D BorealisMini;
+	private Texture2D CupidMini;
+	private Texture2D DreadMini;
+	private Texture2D EpsilonMini;
+	private Texture2D FateMini;
+	private Texture2D GammaMini;
+	private Texture2D OmegaMini;
+	private Texture2D QuatroMini;
+	private Texture2D SigmaMini;
+	private Texture2D ThetaMini;
+	private Texture2D TitanMini;
+	private Texture2D TrifectaMini;
+	private Texture2D ZeppelinMini;
+
 	private Random Rnd;
 
 	#endregion Initialization
@@ -321,6 +338,40 @@ public partial class Main : Node2D
 		VictoryScreen = GetNode<PopupPanel>("VictoryScreen");
 		FailScreen = GetNode<PopupPanel>("FailScreen");
 
+		AlphaMini = GD.Load<Texture2D>("res://UI/Locations/Alpha/Alpha_mini.png");
+		AuroraMini = GD.Load<Texture2D>("res://UI/Locations/Aurora/Aurora_mini.png");
+		BetaMini = GD.Load<Texture2D>("res://UI/Locations/Beta/Beta_mini.png");
+		BorealisMini = GD.Load<Texture2D>("res://UI/Locations/Borealis/Borealis_mini.png");
+		CupidMini = GD.Load<Texture2D>("res://UI/Locations/Cupid/Cupid_mini.png");
+		DreadMini = GD.Load<Texture2D>("res://UI/Locations/Dread/Dread_mini.png");
+		EpsilonMini = GD.Load<Texture2D>("res://UI/Locations/Epsilon/Epsilon_mini.png");
+		FateMini = GD.Load<Texture2D>("res://UI/Locations/Fate/Fate_mini.png");
+		GammaMini = GD.Load<Texture2D>("res://UI/Locations/Gamma/Gamma_mini.png");
+		OmegaMini = GD.Load<Texture2D>("res://UI/Locations/Omega/Omega_mini.png");
+		QuatroMini = GD.Load<Texture2D>("res://UI/Locations/Quatro/Quatro_mini.png");
+		SigmaMini = GD.Load<Texture2D>("res://UI/Locations/Sigma/Sigma_mini.png");
+		ThetaMini = GD.Load<Texture2D>("res://UI/Locations/Theta/Theta_mini.png");
+		TitanMini = GD.Load<Texture2D>("res://UI/Locations/Titan/Titan_mini.png");
+		TrifectaMini = GD.Load<Texture2D>("res://UI/Locations/Trifecta/Trifecta_mini.png");
+		ZeppelinMini = GD.Load<Texture2D>("res://UI/Locations/Zeppelin/Zeppelin_mini.png");
+
+		l1.SetTexture(AuroraMini);
+		l2.SetTexture(AlphaMini);
+		l3.SetTexture(BetaMini);
+		l4.SetTexture(GammaMini);
+		l5.SetTexture(EpsilonMini);
+		l6.SetTexture(BorealisMini);
+		l7.SetTexture(OmegaMini);
+		l8.SetTexture(ZeppelinMini);
+		l9.SetTexture(TrifectaMini);
+		l10.SetTexture(CupidMini);
+		l11.SetTexture(ThetaMini);
+		l12.SetTexture(FateMini);
+		l13.SetTexture(SigmaMini);
+		l14.SetTexture(QuatroMini);
+		l15.SetTexture(TitanMini);
+		l16.SetTexture(DreadMini);
+
 		Rnd = new();
 
 		#endregion OtherDeclaration
@@ -343,14 +394,14 @@ public partial class Main : Node2D
 		// HighlightNeighbours();
 	}
 
-    public override void _Process(double delta)
-    {
+	public override void _Process(double delta)
+	{
 		QueueRedraw();
-    }
+	}
 
-    public override void _Input(InputEvent @event)
-    {
-        if (@event.IsActionPressed("test"))
+	public override void _Input(InputEvent @event)
+	{
+		if (@event.IsActionPressed("test"))
 		{
 			GD.Print("TESTING");
 			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
@@ -378,9 +429,13 @@ public partial class Main : Node2D
 			GD.PrintS("\t" + newQuest.Destination.LocationName, StarMap.GetIdPath(CurrentLocation.ID, newQuest.Destination.ID).Length);
 			GD.Print("\n");
 		}
-    }
+		if (@event.IsActionPressed("esc"))
+		{
+			GetTree().Quit();
+		}
+	}
 
-    private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)
+	private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)
 	{
 		Dictionary<string, string> newData = new() {{"color", color}, {"distance", distance.ToString()}, {"segment_margin", segment_margin.ToString()}, {"line_width", line_width.ToString()}};
 		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
@@ -431,16 +486,43 @@ public partial class Main : Node2D
 		}
 	}
 
-    public override void _Draw()
-    {
+	public override void _Draw()
+	{
 		//int distance, string color, int segment_margin, int line_width
+		// foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
+		// {
+		// 	Godot.Vector2 From = AllLocations[Con.Key[0]].Position;
+		// 	Godot.Vector2 To = AllLocations[Con.Key[1]].Position;
+		// 	DrawSegmentedLine(From, To, new Color(Con.Value["color"]), int.Parse(Con.Value["distance"]), int.Parse(Con.Value["segment_margin"]), int.Parse(Con.Value["line_width"]));
+		// }
 		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
 		{
-			Godot.Vector2 From = AllLocations[Con.Key[0]].Position;
-			Godot.Vector2 To = AllLocations[Con.Key[1]].Position;
-			DrawSegmentedLine(From, To, new Color(Con.Value["color"]), int.Parse(Con.Value["distance"]), int.Parse(Con.Value["segment_margin"]), int.Parse(Con.Value["line_width"]));
+			Node2D From = AllLocations[Con.Key[0]];
+			Node2D To = AllLocations[Con.Key[1]];
+			DrawConnection(From, To, int.Parse(Con.Value["distance"]));
 		}
-    }
+	}
+
+	private void DrawConnection(Node2D From, Node2D To, int Distance = 1)
+	{
+		Vector2 Diff = (From.GlobalPosition - To.GlobalPosition).Normalized() * 70;
+		DrawLine(From.GlobalPosition - Diff, To.GlobalPosition + Diff, Colors.White, 1.0f);
+		for (int i = 0; i < Distance; i++)
+		{
+			DrawTriangle(From, To, i);
+			DrawTriangle(To, From, i);
+		}
+	}
+
+	private void DrawTriangle(Node2D From, Node2D To, int Offset = 0)
+	{
+		Vector2 Direction = (From.GlobalPosition - To.GlobalPosition).Normalized();
+		Vector2 Base = Direction * 70;
+		Vector2 p1 = From.GlobalPosition - Base * 1.25f - Offset * Direction * 17.5f;
+		Vector2 p2 = From.GlobalPosition - Base - Offset * Direction * 17.5f + new Vector2(Base.Y, -Base.X) * 0.075f;
+		Vector2 p3 = From.GlobalPosition - Base - Offset * Direction * 17.5f + new Vector2(-Base.Y, Base.X) * 0.075f;
+		DrawPolygon(new Vector2[] {p1, p2, p3}, new Color[] {Colors.White, Colors.White, Colors.White});
+	}
 
 	private void OnDeliveryHoverStart(int deliveryId)
 	{
@@ -452,7 +534,7 @@ public partial class Main : Node2D
 		StopHighlightPath(CurrentLocation.ID, AcceptedQuests[deliveryId].Destination.ID);
 	}
 
-    private void DrawSegmentedLine(Godot.Vector2 From, Godot.Vector2 To, Color LineColor, int Segments = 1, int SegmentMargin = 1, int LineWidth = 1)
+	private void DrawSegmentedLine(Vector2 From, Vector2 To, Color LineColor, int Segments = 1, int SegmentMargin = 1, int LineWidth = 1)
 	{
 		Godot.Vector2[] LineDrawQueue = Array.Empty<Godot.Vector2>();
 		foreach (int i in Enumerable.Range(0, Segments)) LineDrawQueue = LineDrawQueue.Append((To-From)/Segments*i).ToArray();
@@ -469,7 +551,7 @@ public partial class Main : Node2D
 		}
 	}
 
-    private Quest CreateNewQuest(int NumOfItems = 0, int newQuestTier = -1)
+	private Quest CreateNewQuest(int NumOfItems = 0, int newQuestTier = -1)
 	{
 		NumOfItems = Math.Clamp(NumOfItems, 0, 5);
 		string[] PossibleItems = Array.Empty<string>();
@@ -555,7 +637,7 @@ public partial class Main : Node2D
 				NewQuest.AddTag(newTag, newTagData);
 				break;
 			case 1:
-                NewQuest.AddTag("Timed", new Dictionary<string, string>() { {"tier", (Rnd.Next(3) + 1).ToString()} });
+				NewQuest.AddTag("Timed", new Dictionary<string, string>() { {"tier", (Rnd.Next(3) + 1).ToString()} });
 				NewQuest.AddTag("Fragile", new Dictionary<string, string>() { {"jumps", (StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length + Rnd.Next(2)).ToString()} });
 				GD.Print("COMBO");
 				break;
@@ -914,7 +996,7 @@ public partial class Main : Node2D
 		Tween LabelTween = GetTree().CreateTween();
 		LabelTween.TweenProperty(PopupLabel, "position:y", (float)Rnd.NextDouble() * 20.0f + 40.0f, 1.0d);
 		LabelTween.TweenProperty(PopupLabel, "modulate", Colors.Transparent, 0.3d).SetDelay(0.7d);
-        LabelTween.TweenCallback(Callable.From(PopupLabel.QueueFree)).SetDelay(1.0d);
+		LabelTween.TweenCallback(Callable.From(PopupLabel.QueueFree)).SetDelay(1.0d);
 	}
 
 	private void UpdateFuelLevelLabel()
@@ -1102,25 +1184,26 @@ public partial class Main : Node2D
 
 	private void OnRetryButtonPressed()
 	{
-		foreach (ItemData item in DeliveryItems) item.QueueFree();
-		foreach (KeyValuePair<int, Quest> item in AcceptedQuests) item.Value.QueueFree();
-		foreach (Delivery item in Deliveries)
-		{
-			item.OnDeliveryFailed -= DeliveryFailed;
-			item.OnDeliveryMouseEntered -= OnDeliveryHoverStart;
-			item.OnDeliveryMouseExited -= OnDeliveryHoverFinish;
-			item.QueueFree();
-		}
-		foreach (KeyValuePair<int, Location> item in AllLocations) 
-		{
-			item.Value.ClearHighlight();
-			string[] hazards = Array.Empty<string>();
-			// item.Value.Hazards.CopyTo(hazards, 0);
-			foreach (string hazard in item.Value.Hazards) item.Value.RemoveHazard(hazard);
-			item.Value._Ready();
-		}
-		foreach (Achievement item in AchievementsContainer.GetChildren()) item.Enabled = false;
-		_Ready();
+		GD.Print("Reload: " + GetTree().ReloadCurrentScene());
+		// foreach (ItemData item in DeliveryItems) item.QueueFree();
+		// foreach (KeyValuePair<int, Quest> item in AcceptedQuests) item.Value.QueueFree();
+		// foreach (Delivery item in Deliveries)
+		// {
+		// 	item.OnDeliveryFailed -= DeliveryFailed;
+		// 	item.OnDeliveryMouseEntered -= OnDeliveryHoverStart;
+		// 	item.OnDeliveryMouseExited -= OnDeliveryHoverFinish;
+		// 	item.QueueFree();
+		// }
+		// foreach (KeyValuePair<int, Location> item in AllLocations) 
+		// {
+		// 	item.Value.ClearHighlight();
+		// 	string[] hazards = Array.Empty<string>();
+		// 	// item.Value.Hazards.CopyTo(hazards, 0);
+		// 	foreach (string hazard in item.Value.Hazards) item.Value.RemoveHazard(hazard);
+		// 	item.Value._Ready();
+		// }
+		// foreach (Achievement item in AchievementsContainer.GetChildren()) item.Enabled = false;
+		// _Ready();
 	}
 
 	private ItemData GetItemByName(string NameOfItem)

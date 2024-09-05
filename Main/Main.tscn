@@ -1,7 +1,6 @@
-[gd_scene load_steps=33 format=3 uid="uid://huvowrxh5x0l"]
+[gd_scene load_steps=40 format=3 uid="uid://huvowrxh5x0l"]
 
 [ext_resource type="Script" path="res://Main/Main.cs" id="1_ei6yb"]
-[ext_resource type="Texture2D" uid="uid://crb4c3qicfnek" path="res://Main/StarMap_Background.png" id="2_p67wq"]
 [ext_resource type="PackedScene" uid="uid://bvwjgxmq2ro5h" path="res://Location/Location.tscn" id="3_dt0bp"]
 [ext_resource type="PackedScene" uid="uid://ck7a82me5xux0" path="res://Ship/Ship.tscn" id="4_tp5ri"]
 [ext_resource type="Texture2D" uid="uid://dfd4qgmg3todd" path="res://NPC/Faces/Faces.png" id="5_mmjq5"]
@@ -26,6 +25,14 @@
 [ext_resource type="Texture2D" uid="uid://b20hohe44csw6" path="res://Achievements/Sprites/Making_Multiple_Deliveries_1.png" id="23_2txuo"]
 [ext_resource type="Texture2D" uid="uid://dl4aq245e2aso" path="res://Achievements/Sprites/Making_Multiple_Deliveries_2.png" id="24_3yhed"]
 [ext_resource type="Texture2D" uid="uid://da4tdvo4egtp1" path="res://Achievements/Sprites/Making_Multiple_Deliveries_3.png" id="26_1qdlg"]
+[ext_resource type="Texture2D" uid="uid://cnd44eaxmi8br" path="res://UI/BCG_3.jpg" id="27_n8v4t"]
+[ext_resource type="Theme" uid="uid://b2qtdaxrtr5jx" path="res://UI/new_theme.tres" id="28_5dl8r"]
+[ext_resource type="Shader" path="res://UI/NPC_shader.gdshader" id="29_6bxq1"]
+[ext_resource type="Texture2D" uid="uid://b6xs4jw7s4w45" path="res://NPC/Faces/Face1.png" id="30_25cqg"]
+[ext_resource type="Texture2D" uid="uid://bxqkupavelcvv" path="res://NPC/Bodies/Body1.png" id="31_7mvwg"]
+[ext_resource type="Texture2D" uid="uid://c304x05ny6g2a" path="res://Modifiers/TimedSpritesheet.png" id="32_eo83j"]
+[ext_resource type="Texture2D" uid="uid://dmixk6gaf6twm" path="res://Modifiers/SegmentedSpritesheet.png" id="33_nutbx"]
+[ext_resource type="Texture2D" uid="uid://bkkkgq6qe71g" path="res://Modifiers/FragileSpritesheet.png" id="34_wbhj3"]
 
 [sub_resource type="Animation" id="Animation_lam5p"]
 resource_name = "Idle"
@@ -113,14 +120,28 @@ _data = {
 "RESET": SubResource("Animation_n8nk5")
 }
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ic3lu"]
-bg_color = Color(0, 0, 0, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_23vaj"]
 bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_b76yp"]
 font_size = 24
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nk3h4"]
+shader = ExtResource("29_6bxq1")
+shader_parameter/resolution = Vector2(896, 1408)
+shader_parameter/scan_line_amount = 1.0
+shader_parameter/warp_amount = 0.0
+shader_parameter/noise_amount = 0.2
+shader_parameter/interference_amount = 0.2
+shader_parameter/grille_amount = 0.1
+shader_parameter/grille_size = 1.0
+shader_parameter/vignette_amount = 0.0
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/aberation_amount = 0.5
+shader_parameter/roll_line_amount = 0.3
+shader_parameter/roll_speed = 1.0
+shader_parameter/scan_line_strength = -8.0
+shader_parameter/pixel_strength = -2.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ei6yb")
@@ -128,99 +149,93 @@ ConSegmentMargin = 4
 ConLineWidth = 3
 ConLineColor = Color(0.168543, 0.650288, 0.605149, 1)
 
-[node name="ReferenceStarMap" type="Sprite2D" parent="."]
-self_modulate = Color(0.351563, 0.351563, 0.351563, 1)
-show_behind_parent = true
-position = Vector2(144, 0)
-texture = ExtResource("2_p67wq")
-centered = false
-metadata/_edit_lock_ = true
-
-[node name="Locations" type="Node" parent="."]
+[node name="Locations" type="Node2D" parent="."]
 
 [node name="Location" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(190, 26)
+position = Vector2(227, 131)
 LocationName = "Aurora"
 
 [node name="Location2" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(305, 25)
+position = Vector2(686.564, 126.771)
 LocationName = "Alpha"
 ID = 1
 
 [node name="Location3" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(366, 43)
+position = Vector2(931, 199)
 LocationName = "Beta"
 ID = 2
 
 [node name="Location4" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(451, 12)
+position = Vector2(1271, 75)
 LocationName = "Gamma"
 ID = 3
 
 [node name="Location5" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(512, 24)
+position = Vector2(1515, 123)
 LocationName = "Epsilon"
 ID = 4
 
 [node name="Location6" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(471, 90)
+position = Vector2(1351, 387)
 LocationName = "Borealis"
 ID = 5
 
 [node name="Location7" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(493, 140)
+position = Vector2(1439, 587)
 LocationName = "Omega"
 ID = 6
 
 [node name="Location8" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(567, 231)
+position = Vector2(1735, 951)
 LocationName = "Zeppelin"
 ID = 7
 
 [node name="Location9" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(382, 197)
+position = Vector2(995, 815)
 LocationName = "Trifecta"
 ID = 8
 
 [node name="Location10" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(356, 150)
+position = Vector2(891, 627)
 LocationName = "Cupid"
 ID = 9
 
 [node name="Location11" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(310, 160)
+position = Vector2(707, 667)
 LocationName = "Theta"
 ID = 10
 
 [node name="Location12" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(258, 135)
+position = Vector2(499, 567)
 LocationName = "Fate"
 ID = 11
 
 [node name="Location13" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(261, 186)
+position = Vector2(511, 771)
 LocationName = "Sigma"
 ID = 12
 
 [node name="Location14" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(171, 149)
+position = Vector2(151, 623)
 LocationName = "Quatro"
 ID = 13
 
 [node name="Location15" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(269, 70)
+position = Vector2(543, 307)
 LocationName = "Titan"
 ID = 14
 
 [node name="Location16" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(318, 84)
+position = Vector2(739, 363)
 LocationName = "Dread"
 ID = 15
 
 [node name="Ship" parent="." instance=ExtResource("4_tp5ri")]
+visible = false
 position = Vector2(305, 25)
 
 [node name="LeftMenu" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 144.0
@@ -291,6 +306,7 @@ offset_bottom = 204.0
 text = "[A]"
 
 [node name="NPC" type="Node2D" parent="."]
+visible = false
 position = Vector2(72, 96)
 
 [node name="BodySprite" type="Sprite2D" parent="NPC"]
@@ -318,6 +334,7 @@ libraries = {
 autoplay = "Idle"
 
 [node name="BottomMenu" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_top = 256.0
@@ -397,6 +414,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Control" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 600.0
@@ -436,121 +454,121 @@ offset_top = 298.0
 offset_right = 274.0
 offset_bottom = 362.0
 
-[node name="NewReferenceStartMap" type="Node2D" parent="."]
-position = Vector2(600, 0)
+[node name="ReferenceStartMap" type="Node2D" parent="."]
+position = Vector2(669, -520)
 
-[node name="Connections" type="Node2D" parent="NewReferenceStartMap"]
+[node name="Connections" type="Node2D" parent="ReferenceStartMap"]
 
-[node name="Line2D" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(72, 48, 72, 192)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D2" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D2" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(72, 48, 216, 48)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D3" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D3" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(264, 48, 216, 48)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D4" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D4" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(264, 48, 360, 48)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D5" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D5" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(408, 48, 360, 48)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D6" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D6" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(408, 48, 408, 144)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D7" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D7" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(408, 192, 408, 144)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D8" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D8" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(408, 192, 264, 192)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D9" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D9" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(408, 192, 408, 336)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D10" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D10" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(264, 144, 408, 144)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D11" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D11" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(264, 144, 264, 192)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D12" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D12" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(168, 192, 264, 192)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D13" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D13" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(168, 192, 168, 144)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D14" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D14" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(168, 144, 216, 144)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D15" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D15" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(264, 144, 216, 144)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D16" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D16" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(216, 96, 168, 96)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D17" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D17" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(168, 144, 168, 96)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D18" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D18" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(216, 96, 216, 48)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D19" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D19" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(168, 192, 72, 192)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Line2D20" type="Line2D" parent="NewReferenceStartMap/Connections"]
+[node name="Line2D20" type="Line2D" parent="ReferenceStartMap/Connections"]
 points = PackedVector2Array(264, 144, 264, 48)
 width = 4.0
 default_color = Color(0, 0.905882, 1, 0.47451)
 
-[node name="Locations" type="Node2D" parent="NewReferenceStartMap"]
+[node name="Locations" type="Node2D" parent="ReferenceStartMap"]
 
-[node name="Location" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(72, 48)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -566,14 +584,14 @@ text = "Aurora"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location2" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location2" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(216, 48)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location2"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location2"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location2"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location2"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -589,14 +607,14 @@ text = "Alpha"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location3" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location3" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(264, 48)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location3"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location3"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location3"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location3"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -612,14 +630,14 @@ text = "Beta"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location4" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location4" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(360, 48)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location4"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location4"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location4"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location4"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -635,14 +653,14 @@ text = "Gamma"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location5" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location5" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(408, 48)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location5"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location5"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location5"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location5"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -658,14 +676,14 @@ text = "Epsilon"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location6" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location6" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(408, 144)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location6"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location6"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location6"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location6"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -681,14 +699,14 @@ text = "Borealis"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location7" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location7" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(408, 192)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location7"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location7"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location7"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location7"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -704,14 +722,14 @@ text = "Omega"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location8" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location8" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(408, 336)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location8"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location8"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location8"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location8"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -727,14 +745,14 @@ text = "Zeppelin"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location9" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location9" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(264, 192)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location9"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location9"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location9"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location9"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -750,14 +768,14 @@ text = "Trifecta"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location10" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location10" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(264, 144)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location10"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location10"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location10"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location10"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -773,14 +791,14 @@ text = "Cupid"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location11" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location11" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(216, 144)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location11"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location11"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location11"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location11"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -796,14 +814,14 @@ text = "Theta"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location12" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location12" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(168, 144)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location12"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location12"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location12"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location12"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -819,14 +837,14 @@ text = "Fate"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location13" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location13" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(168, 96)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location13"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location13"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location13"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location13"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -842,14 +860,14 @@ text = "Titan"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location14" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location14" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(216, 96)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location14"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location14"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location14"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location14"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -865,14 +883,14 @@ text = "Dread"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location15" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location15" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(168, 192)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location15"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location15"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location15"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location15"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -888,517 +906,14 @@ text = "Sigma"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Location16" type="Node2D" parent="NewReferenceStartMap/Locations"]
+[node name="Location16" type="Node2D" parent="ReferenceStartMap/Locations"]
 position = Vector2(72, 192)
 
-[node name="StarSprite" type="Sprite2D" parent="NewReferenceStartMap/Locations/Location16"]
+[node name="StarSprite" type="Sprite2D" parent="ReferenceStartMap/Locations/Location16"]
 texture_filter = 1
 texture = ExtResource("7_arlnc")
 
-[node name="Label" type="Label" parent="NewReferenceStartMap/Locations/Location16"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Quatro"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Reference" type="Node2D" parent="."]
-visible = false
-modulate = Color(1, 1, 1, 0.384314)
-position = Vector2(144, 0)
-metadata/_edit_group_ = true
-
-[node name="Panel" type="Panel" parent="Reference"]
-visible = false
-offset_right = 456.0
-offset_bottom = 256.0
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ic3lu")
-metadata/_edit_lock_ = true
-
-[node name="Connections" type="Node2D" parent="Reference"]
-
-[node name="Line2D" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(46, 26, 27, 149)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D2" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(117, 186, 27, 149)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D3" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(117, 186, 114, 135)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D4" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(166, 160, 114, 135)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D5" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(166, 160, 212, 150)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D6" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(238, 197, 212, 150)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D7" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(238, 197, 117, 186)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D8" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(125, 70, 114, 135)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D9" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(125, 70, 174, 84)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D10" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(161, 25, 174, 84)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D11" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(161, 25, 46, 26)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D12" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(161, 25, 222, 43)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D13" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(307, 12, 222, 43)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D14" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(307, 12, 368, 24)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D15" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(327, 90, 368, 24)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D16" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(327, 90, 349, 140)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D17" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(327, 90, 212, 150)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D18" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(349, 140, 238, 197)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D19" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(349, 140, 423, 231)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Line2D20" type="Line2D" parent="Reference/Connections"]
-points = PackedVector2Array(222, 43, 212, 150)
-width = 4.0
-default_color = Color(0, 0.905882, 1, 0.47451)
-
-[node name="Locations" type="Node2D" parent="Reference"]
-visible = false
-
-[node name="Location" type="Node2D" parent="Reference/Locations"]
-position = Vector2(46, 26)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Aurora"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location2" type="Node2D" parent="Reference/Locations"]
-position = Vector2(161, 25)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location2"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location2"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Alpha"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location3" type="Node2D" parent="Reference/Locations"]
-position = Vector2(222, 43)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location3"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location3"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Beta"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location4" type="Node2D" parent="Reference/Locations"]
-position = Vector2(307, 12)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location4"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location4"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Gamma"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location5" type="Node2D" parent="Reference/Locations"]
-position = Vector2(368, 24)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location5"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location5"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Epsilon"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location6" type="Node2D" parent="Reference/Locations"]
-position = Vector2(327, 90)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location6"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location6"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Borealis"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location7" type="Node2D" parent="Reference/Locations"]
-position = Vector2(349, 140)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location7"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location7"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Omega"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location8" type="Node2D" parent="Reference/Locations"]
-position = Vector2(423, 231)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location8"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location8"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Zeppelin"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location9" type="Node2D" parent="Reference/Locations"]
-position = Vector2(238, 197)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location9"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location9"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Trifecta"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location10" type="Node2D" parent="Reference/Locations"]
-position = Vector2(212, 150)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location10"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location10"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Cupid"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location11" type="Node2D" parent="Reference/Locations"]
-position = Vector2(166, 160)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location11"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location11"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Theta"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location12" type="Node2D" parent="Reference/Locations"]
-position = Vector2(114, 135)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location12"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location12"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Fate"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location13" type="Node2D" parent="Reference/Locations"]
-position = Vector2(125, 70)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location13"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location13"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Titan"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location14" type="Node2D" parent="Reference/Locations"]
-position = Vector2(174, 84)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location14"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location14"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Dread"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location15" type="Node2D" parent="Reference/Locations"]
-position = Vector2(117, 186)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location15"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location15"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -23.5
-offset_top = 5.0
-offset_right = 23.5
-offset_bottom = 28.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Sigma"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Location16" type="Node2D" parent="Reference/Locations"]
-position = Vector2(27, 149)
-metadata/_edit_group_ = true
-
-[node name="StarSprite" type="Sprite2D" parent="Reference/Locations/Location16"]
-texture_filter = 1
-texture = ExtResource("7_arlnc")
-
-[node name="Label" type="Label" parent="Reference/Locations/Location16"]
+[node name="Label" type="Label" parent="ReferenceStartMap/Locations/Location16"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -1426,8 +941,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 500.0
-offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 16
@@ -1582,8 +1095,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 550.0
-offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1636,8 +1147,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 600.0
-offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1681,38 +1190,364 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Retry"
 
-[connection signal="LocationAvailable" from="Locations/Location" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location2" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location2" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location3" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location3" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location4" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location4" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location5" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location5" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location6" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location6" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location7" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location7" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location8" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location8" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location9" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location9" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location10" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location10" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location11" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location11" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location12" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location12" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location13" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location13" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location14" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location14" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location15" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location15" to="." method="OnLocationPressed"]
-[connection signal="LocationAvailable" from="Locations/Location16" to="." method="OnLocationAvailable"]
-[connection signal="LocationPressed" from="Locations/Location16" to="." method="OnLocationPressed"]
+[node name="UI" type="Control" parent="."]
+z_index = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("28_5dl8r")
+metadata/_edit_lock_ = true
+
+[node name="Background" type="TextureRect" parent="UI"]
+z_index = -2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("27_n8v4t")
+expand_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="NPCPanel" type="Panel" parent="UI"]
+visible = false
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 152.0
+offset_bottom = 192.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/NPCPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/NPCPanel/MarginContainer"]
+modulate = Color(0, 0.466064, 0.71875, 1)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/NPCPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("30_25cqg")
+expand_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="UI/NPCPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("31_7mvwg")
+expand_mode = 2
+
+[node name="CRTRect" type="ColorRect" parent="UI"]
+visible = false
+material = SubResource("ShaderMaterial_nk3h4")
+layout_mode = 0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 136.0
+offset_bottom = 176.0
+
+[node name="NewQuestContainer" type="PanelContainer" parent="UI"]
+visible = false
+layout_mode = 0
+offset_left = 8.0
+offset_top = 200.0
+offset_right = 461.0
+offset_bottom = 493.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/NewQuestContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/NewQuestContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Hello! I want you to deliver these to station Zeppelin:
+1.
+2.
+3.
+4.
+5.
+6.
+Good luck!"
+
+[node name="AcceptButton" type="Button" parent="UI/NewQuestContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = "Accept"
+
+[node name="DeliveriesContainer" type="MarginContainer" parent="UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -118.0
+offset_top = -390.0
+offset_bottom = 390.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/DeliveriesContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox/HBox"]
+custom_minimum_size = Vector2(48, 16)
+layout_mode = 2
+texture = ExtResource("32_eo83j")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox/HBox"]
+layout_mode = 2
+text = "15"
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox"]
+modulate = Color(0.125, 1, 0, 1)
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+value = 75.0
+show_percentage = false
+
+[node name="VBox2" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2/HBox"]
+custom_minimum_size = Vector2(48, 16)
+layout_mode = 2
+texture = ExtResource("33_nutbx")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2/HBox"]
+layout_mode = 2
+text = "al"
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2"]
+visible = false
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+show_percentage = false
+
+[node name="VBox3" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3/HBox"]
+custom_minimum_size = Vector2(48, 16)
+layout_mode = 2
+texture = ExtResource("34_wbhj3")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3/HBox"]
+layout_mode = 2
+text = "4"
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3"]
+modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+value = 23.0
+show_percentage = false
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox"]
+custom_minimum_size = Vector2(4, 64)
+layout_mode = 2
+size_flags_vertical = 1
+value = 85.0
+fill_mode = 3
+show_percentage = false
+
+[node name="PanelContainer2" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox/VBox"]
+layout_mode = 2
+text = "No data"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox"]
+custom_minimum_size = Vector2(4, 64)
+layout_mode = 2
+size_flags_vertical = 1
+value = 85.0
+fill_mode = 3
+show_percentage = false
+
+[node name="PanelContainer3" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox/HBox"]
+custom_minimum_size = Vector2(48, 16)
+layout_mode = 2
+texture = ExtResource("32_eo83j")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox/HBox"]
+layout_mode = 2
+text = "5"
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox"]
+modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+value = 15.0
+show_percentage = false
+
+[node name="VBox3" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3/HBox"]
+custom_minimum_size = Vector2(48, 16)
+layout_mode = 2
+texture = ExtResource("34_wbhj3")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3/HBox"]
+layout_mode = 2
+text = "6"
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3"]
+modulate = Color(0.992188, 1, 0, 1)
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+value = 68.0
+show_percentage = false
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox"]
+custom_minimum_size = Vector2(4, 64)
+layout_mode = 2
+size_flags_vertical = 1
+value = 85.0
+fill_mode = 3
+show_percentage = false
+
+[node name="TestingConnections" type="Node2D" parent="."]
+visible = false
+
+[node name="Con1" type="Node2D" parent="TestingConnections"]
+
+[node name="Line2D" type="Line2D" parent="TestingConnections/Con1"]
+points = PackedVector2Array(940, 601, 1300, 409)
+width = 1.0
+
+[node name="ColorRect" type="ColorRect" parent="TestingConnections/Con1"]
+offset_left = 1095.0
+offset_top = 514.0
+offset_right = 1120.0
+offset_bottom = 522.0
+rotation = -0.488692
+
+[node name="Polygon2D" type="Polygon2D" parent="TestingConnections/Con1/ColorRect"]
+polygon = PackedVector2Array(0, 0, -7.70105, 3.83337, 0.245483, 8.05859)
+
+[node name="ColorRect2" type="ColorRect" parent="TestingConnections/Con1"]
+offset_left = 1120.0
+offset_top = 501.0
+offset_right = 1144.0
+offset_bottom = 509.0
+rotation = -0.488692
+
+[node name="ColorRect3" type="ColorRect" parent="TestingConnections/Con1"]
+offset_left = 1144.0
+offset_top = 488.0
+offset_right = 1170.2
+offset_bottom = 496.0
+rotation = -0.488692
+
+[node name="Polygon2D" type="Polygon2D" parent="TestingConnections/Con1/ColorRect3"]
+polygon = PackedVector2Array(25.9414, 0.202515, 33.8879, 4.42773, 26.187, 8.26099)
+
+[node name="Con2" type="Node2D" parent="TestingConnections"]
+position = Vector2(1302, 484)
+
+[node name="Line2D" type="Line2D" parent="TestingConnections/Con2"]
+points = PackedVector2Array(78, -51, 117, 54)
+width = 1.0
+
+[node name="ColorRect" type="ColorRect" parent="TestingConnections/Con2"]
+offset_left = 90.0
+offset_top = -5.0
+offset_right = 99.0
+offset_bottom = 21.0
+rotation = -0.356047
+
+[node name="Polygon2D" type="Polygon2D" parent="TestingConnections/Con2/ColorRect"]
+polygon = PackedVector2Array(-0.348511, 0.937256, 4.77161, -9.96155, 9.13269, 1.26257)
+
+[node name="Polygon2D2" type="Polygon2D" parent="TestingConnections/Con2/ColorRect"]
+polygon = PackedVector2Array(8.61389, 25.6086, 5.12817, 34.9814, 0.0698242, 25.6319)
+
 [connection signal="pressed" from="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
 [connection signal="pressed" from="LeftMenu/AchievementsButton" to="." method="OnAchievementsButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]

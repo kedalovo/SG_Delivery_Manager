@@ -1,0 +1,66 @@
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://b2qtdaxrtr5jx"]
+
+[ext_resource type="Texture2D" uid="uid://j41biow82fc2" path="res://UI/button_disabled.png" id="1_a8nwi"]
+[ext_resource type="Texture2D" uid="uid://cne4py8jrjwss" path="res://UI/button_hover.png" id="2_5l3oj"]
+[ext_resource type="Texture2D" uid="uid://dnssuj048bhoh" path="res://UI/button_normal.png" id="3_3rj4e"]
+[ext_resource type="Texture2D" uid="uid://dvx42028kar0h" path="res://UI/button_pressed.png" id="4_uojbf"]
+[ext_resource type="Texture2D" uid="uid://4o8tfiej4lwc" path="res://UI/9patch_test.png" id="5_e1das"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h17ba"]
+texture = ExtResource("1_a8nwi")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t5s6y"]
+texture = ExtResource("2_5l3oj")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_74tgg"]
+texture = ExtResource("3_3rj4e")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wh6h1"]
+texture = ExtResource("4_uojbf")
+texture_margin_left = 8.0
+texture_margin_top = 16.0
+texture_margin_right = 8.0
+texture_margin_bottom = 11.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dcqk8"]
+texture = ExtResource("5_e1das")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qf4o5"]
+texture = ExtResource("5_e1das")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[resource]
+default_font_size = 16
+Button/styles/disabled = SubResource("StyleBoxTexture_h17ba")
+Button/styles/hover = SubResource("StyleBoxTexture_t5s6y")
+Button/styles/normal = SubResource("StyleBoxTexture_74tgg")
+Button/styles/pressed = SubResource("StyleBoxTexture_wh6h1")
+MarginContainer/constants/margin_bottom = 8
+MarginContainer/constants/margin_left = 8
+MarginContainer/constants/margin_right = 8
+MarginContainer/constants/margin_top = 8
+Panel/styles/panel = SubResource("StyleBoxTexture_dcqk8")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_qf4o5")

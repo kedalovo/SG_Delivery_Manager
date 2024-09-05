@@ -62,6 +62,11 @@ public partial class Location : Node2D
 
 	public void RemoveQuest(int questID) { Quests = Quests.Where(val => val != questID).ToArray(); UpdateQuests(); }
 
+	public void SetTexture(Texture2D newTexture)
+	{
+		StarSprite.Texture = newTexture;
+	}
+
 	public void SetCompleteQuest()
 	{
 		QuestCompleted = 4;

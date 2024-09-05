@@ -44,6 +44,9 @@ _data = {
 texture_filter = 1
 script = ExtResource("1_v8j7d")
 
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+autoplay = "default"
+
 [node name="StarSprite" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("1_lnqws")
@@ -61,9 +64,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -24.0
-offset_top = 10.0
+offset_top = 56.0
 offset_right = 24.0
-offset_bottom = 40.0
+offset_bottom = 86.0
 grow_horizontal = 2
 
 [node name="Label" type="Label" parent="VBox"]
