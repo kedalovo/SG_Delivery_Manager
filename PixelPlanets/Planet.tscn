@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://crd8arw37jpav"]
+
+[ext_resource type="Script" path="res://PixelPlanets/Planet.cs" id="1_bi3g6"]
+
+[node name="Planet" type="Control"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -312.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_bi3g6")

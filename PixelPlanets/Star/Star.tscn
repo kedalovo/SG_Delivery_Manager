@@ -1,0 +1,86 @@
+[gd_scene load_steps=8 format=3 uid="uid://clqvlybt45o7r"]
+
+[ext_resource type="Script" path="res://PixelPlanets/Star/Star.cs" id="1_ey1tx"]
+[ext_resource type="Shader" path="res://PixelPlanets/Star/StarBlobs.gdshader" id="2"]
+[ext_resource type="Shader" path="res://PixelPlanets/Star/StarFlares.gdshader" id="3"]
+[ext_resource type="Shader" path="res://PixelPlanets/Star/Star.gdshader" id="4"]
+
+[sub_resource type="ShaderMaterial" id="1"]
+shader = ExtResource("2")
+shader_parameter/pixels = 200.0
+shader_parameter/colors = PackedColorArray(1, 1, 0.894118, 1)
+shader_parameter/time_speed = 0.05
+shader_parameter/time = 0.0
+shader_parameter/rotation = 0.0
+shader_parameter/seed = 3.078
+shader_parameter/circle_amount = 2.0
+shader_parameter/circle_size = 1.0
+shader_parameter/size = 4.93
+shader_parameter/OCTAVES = 4
+
+[sub_resource type="ShaderMaterial" id="4"]
+shader = ExtResource("4")
+shader_parameter/pixels = 100.0
+shader_parameter/time_speed = 0.05
+shader_parameter/time = 51.877
+shader_parameter/rotation = 0.0
+shader_parameter/colors = PackedColorArray(0.960784, 1, 0.909804, 1, 0.466667, 0.839216, 0.756863, 1, 0.109804, 0.572549, 0.654902, 1, 0.0117647, 0.243137, 0.368627, 1)
+shader_parameter/n_colors = 4
+shader_parameter/should_dither = true
+shader_parameter/seed = 4.837
+shader_parameter/size = 4.463
+shader_parameter/OCTAVES = 4
+shader_parameter/TILES = 1.0
+
+[sub_resource type="ShaderMaterial" id="7"]
+shader = ExtResource("3")
+shader_parameter/pixels = 200.0
+shader_parameter/colors = PackedColorArray(0.466667, 0.839216, 0.756863, 1, 1, 1, 0.894118, 1)
+shader_parameter/time_speed = 0.05
+shader_parameter/time = null
+shader_parameter/rotation = 0.0
+shader_parameter/should_dither = true
+shader_parameter/storm_width = 0.3
+shader_parameter/storm_dither_width = 0.0
+shader_parameter/scale = 1.0
+shader_parameter/seed = 3.078
+shader_parameter/circle_amount = 2.0
+shader_parameter/circle_scale = 1.0
+shader_parameter/size = 1.6
+shader_parameter/OCTAVES = 4
+
+[node name="Star" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -412.0
+offset_bottom = -200.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 100)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_ey1tx")
+
+[node name="Blobs" type="ColorRect" parent="."]
+material = SubResource("1")
+layout_mode = 0
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 150.0
+offset_bottom = 150.0
+
+[node name="Star" type="ColorRect" parent="."]
+material = SubResource("4")
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+
+[node name="StarFlares" type="ColorRect" parent="."]
+material = SubResource("7")
+layout_mode = 0
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 150.0
+offset_bottom = 150.0

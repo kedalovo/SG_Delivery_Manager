@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=3 uid="uid://crdxh2i35dorc"]
+
+[ext_resource type="Shader" path="res://PixelPlanets/Rivers/LandRivers.gdshader" id="1"]
+[ext_resource type="Script" path="res://PixelPlanets/Rivers/Rivers.cs" id="1_pby1o"]
+[ext_resource type="Shader" path="res://PixelPlanets/LandMasses/Clouds.gdshader" id="2"]
+
+[sub_resource type="ShaderMaterial" id="1"]
+shader = ExtResource("1")
+shader_parameter/pixels = 100.0
+shader_parameter/rotation = 0.2
+shader_parameter/light_origin = Vector2(0.39, 0.39)
+shader_parameter/time_speed = 0.1
+shader_parameter/dither_size = 3.951
+shader_parameter/should_dither = true
+shader_parameter/light_border_1 = 0.287
+shader_parameter/light_border_2 = 0.476
+shader_parameter/river_cutoff = 0.368
+shader_parameter/colors = PackedColorArray(0.388235, 0.670588, 0.247059, 1, 0.231373, 0.490196, 0.309804, 1, 0.184314, 0.341176, 0.32549, 1, 0.156863, 0.207843, 0.25098, 1, 0.309804, 0.643137, 0.721569, 1, 0.25098, 0.286275, 0.45098, 1)
+shader_parameter/size = 4.6
+shader_parameter/OCTAVES = 6
+shader_parameter/seed = 8.98
+shader_parameter/time = 0.0
+
+[sub_resource type="ShaderMaterial" id="2"]
+shader = ExtResource("2")
+shader_parameter/pixels = 100.0
+shader_parameter/rotation = 0.0
+shader_parameter/cloud_cover = 0.47
+shader_parameter/light_origin = Vector2(0.39, 0.39)
+shader_parameter/time_speed = 0.1
+shader_parameter/stretch = 2.0
+shader_parameter/cloud_curve = 1.3
+shader_parameter/light_border_1 = 0.52
+shader_parameter/light_border_2 = 0.62
+shader_parameter/colors = PackedColorArray(0.960784, 1, 0.909804, 1, 0.87451, 0.878431, 0.909804, 1, 0.407843, 0.435294, 0.6, 1, 0.25098, 0.286275, 0.45098, 1)
+shader_parameter/size = 7.315
+shader_parameter/OCTAVES = 2
+shader_parameter/seed = 5.939
+shader_parameter/time = 0.0
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -412.0
+offset_bottom = -200.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pby1o")
+
+[node name="Land" type="ColorRect" parent="."]
+material = SubResource("1")
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+
+[node name="Cloud" type="ColorRect" parent="."]
+material = SubResource("2")
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0

@@ -136,6 +136,10 @@ public partial class Main : Node2D
 	private Texture2D TrifectaMini;
 	private Texture2D ZeppelinMini;
 
+	private Dictionary<string, PackedScene> PlanetScenes;
+	private Dictionary<string, Color[]> PlanetColorPresets;
+	private Dictionary<string, uint> PlanetSeeds;
+
 	private Random Rnd;
 
 	#endregion Initialization
@@ -295,11 +299,12 @@ public partial class Main : Node2D
 		FragileFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Fragile.tres");
 		SegmentedFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Segmented.tres");
 
-		TagFrames = new();
-
-		TagFrames["Timed"] = TimedFrames;
-		TagFrames["Fragile"] = FragileFrames;
-		TagFrames["Segmented"] = SegmentedFrames;
+		TagFrames = new()
+        {
+            ["Timed"] = TimedFrames,
+            ["Fragile"] = FragileFrames,
+            ["Segmented"] = SegmentedFrames
+        };
 
 		MarketCrashIcon = GD.Load<Texture2D>("res://Location/Hazards/FuelCrash.png");
 		DisenteryIcon = GD.Load<Texture2D>("res://Location/Hazards/HeatLeeches.png");
@@ -355,22 +360,122 @@ public partial class Main : Node2D
 		TrifectaMini = GD.Load<Texture2D>("res://UI/Locations/Trifecta/Trifecta_mini.png");
 		ZeppelinMini = GD.Load<Texture2D>("res://UI/Locations/Zeppelin/Zeppelin_mini.png");
 
-		l1.SetTexture(AuroraMini);
-		l2.SetTexture(AlphaMini);
-		l3.SetTexture(BetaMini);
-		l4.SetTexture(GammaMini);
-		l5.SetTexture(EpsilonMini);
-		l6.SetTexture(BorealisMini);
-		l7.SetTexture(OmegaMini);
-		l8.SetTexture(ZeppelinMini);
-		l9.SetTexture(TrifectaMini);
-		l10.SetTexture(CupidMini);
-		l11.SetTexture(ThetaMini);
-		l12.SetTexture(FateMini);
-		l13.SetTexture(SigmaMini);
-		l14.SetTexture(QuatroMini);
-		l15.SetTexture(TitanMini);
-		l16.SetTexture(DreadMini);
+		// l1.SetTexture(AuroraMini);
+		// l2.SetTexture(AlphaMini);
+		// l3.SetTexture(BetaMini);
+		// l4.SetTexture(GammaMini);
+		// l5.SetTexture(EpsilonMini);
+		// l6.SetTexture(BorealisMini);
+		// l7.SetTexture(OmegaMini);
+		// l8.SetTexture(ZeppelinMini);
+		// l9.SetTexture(TrifectaMini);
+		// l10.SetTexture(CupidMini);
+		// l11.SetTexture(ThetaMini);
+		// l12.SetTexture(FateMini);
+		// l13.SetTexture(SigmaMini);
+		// l14.SetTexture(QuatroMini);
+		// l15.SetTexture(TitanMini);
+		// l16.SetTexture(DreadMini);
+
+		PlanetScenes = new() {
+			{"Asteroids", GD.Load<PackedScene>("res://PixelPlanets/Asteroids/Asteroid.tscn")},
+			{"BlackHole", GD.Load<PackedScene>("res://PixelPlanets/BlackHole/BlackHole.tscn")},
+			{"DryTerran", GD.Load<PackedScene>("res://PixelPlanets/DryTerran/DryTerran.tscn")},
+			{"Galaxy", GD.Load<PackedScene>("res://PixelPlanets/Galaxy/Galaxy.tscn")},
+			{"GasPlanet", GD.Load<PackedScene>("res://PixelPlanets/GasPlanet/GasPlanet.tscn")},
+			{"GasPlanetLayers", GD.Load<PackedScene>("res://PixelPlanets/GasPlanetLayers/GasPlanetLayers.tscn")},
+			{"IceWorld", GD.Load<PackedScene>("res://PixelPlanets/IceWorld/IceWorld.tscn")},
+			{"LandMasses", GD.Load<PackedScene>("res://PixelPlanets/LandMasses/LandMasses.tscn")},
+			{"LavaWorld", GD.Load<PackedScene>("res://PixelPlanets/LavaWorld/LavaWorld.tscn")},
+			{"NoAtmosphere", GD.Load<PackedScene>("res://PixelPlanets/NoAtmosphere/NoAtmosphere.tscn")},
+			{"Rivers", GD.Load<PackedScene>("res://PixelPlanets/Rivers/Rivers.tscn")},
+			{"Star", GD.Load<PackedScene>("res://PixelPlanets/Star/Star.tscn")}
+		};
+
+		PlanetColorPresets = new() {
+			{"Alpha", new Color[] {
+				new("ad4860"), new("823a36"), new("563624"), new("2b2312"), new("94aac1"),
+				new("4c4a61"), new("d8f0da"), new("b1e1c2"), new("8bd2ba"), new("64c3bf")}},
+			{"Aurora", new Color[] {
+				new("d69fdc"), new("916fa0"), new("524568"), new("242539"), new("0a0e17"),
+				new("000003")}},
+			{"Beta", new Color[] {
+				new("feb9e8"), new("c8b6cd"), new("899da5"), new("4c7272"), new("1d3a39")}},
+			{"Borealis", new Color[] {
+				new("23332e"), new("15302e"), new("0a2a2b"), new("042123"), new("84f5fc"),
+				new("60d3d7"), new("419e9e"), new("235855")}},
+			{"Cupid", new Color[] {
+				new("30ffff"), new("2acece"), new("58677b"), new("871d36"), new("8b070d"),
+				new("5c1200")}},
+			{"Dread", new Color[] {
+				new("1a1212"), new("100a0b"), new("000000"), new("2b1519"), new("060606")}},
+			{"Epsilon", new Color[] {
+				new("96da61"), new("3a7446"), new("2a2549"), new("3a7446"), new("2a2549")}},
+			{"Fate", new Color[] {
+				new("be4f48"), new("7f4d30"), new("3f3218"), new("50418c"), new("492c5e"),
+				new("2f162f"), new("e2e4f3"), new("cac4e6"), new("bfa7da"), new("be8acd")}},
+			{"Gamma", new Color[] {
+				new("457b9f"), new("374d7f"), new("2a2a5f"), new("aba843"), new("6b8032"),
+				new("385622"), new("142b11"), new("e9dfea"), new("d5bfd1"), new("c09eb0"),
+				new("ab7e88")}},
+			{"Omega", new Color[] {
+				new("e3ffff"), new("a6c5e4"), new("7a75b6"), new("7090fa"), new("3972ae"),
+				new("2e397f"), new("a5d8ff"), new("c7e6ff"), new("5e70a5"), new("404973")}},
+			{"Quatro", new Color[] {
+				new("8c3b3b"), new("592d2d"), new("3a1f20"), new("472c2f"), new("301d1d"),
+				new("ff6e33"), new("df3327"), new("be102e")}},
+			{"Sigma", new Color[] {
+				new("41b2be"), new("31698e"), new("21345f"), new("10102f"), new("644658"),
+				new("322323"), new("ede7e2"), new("dcd6c5"), new("c9caa9"), new("a9b88c")}},
+			{"Theta", new Color[] {
+				new("fdf5fa"), new("fdf5fa"), new("ff7aa0"), new("e13c4f"), new("751f13"),
+				new("ff7aa0"), new("fdf5fa")}},
+			{"Titan", new Color[] {
+				new("8c3b3b"), new("592d2d"), new("3a1f20"), new("472c2f"), new("301d1d"),
+				new("ff5c1a"), new("e31f10"), new("ff002d")}},
+			{"Trifecta", new Color[] {
+				new("f6fef3"), new("f6fef3"), new("81b576"), new("3c5b3c"), new("181619"),
+				new("81b576"), new("f6fef3")}},
+			{"Zeppelin", new Color[] {
+				new("000000"), new("ffffeb"), new("ed7b39"), new("ffffeb"), new("fff540"),
+				new("ffb84a"), new("ed7b39"), new("bd4035")}},
+		};
+
+		PlanetSeeds = new() {
+			{"Alpha", 261590536},
+			{"Aurora", 1858028818},
+			{"Beta", 2085605575},
+			{"Borealis", 1977630260},
+			{"Cupid", 2195664270},
+			{"Dread", 2446316385},
+			{"Epsilon", 416601145},
+			{"Fate", 2150406137},
+			{"Gamma", 4102919597},
+			{"Omega", 2195664270},
+			{"Quatro", 3652283469},
+			{"Sigma", 1862326554},
+			{"Theta", 58942833},
+			{"Titan", 1889712776},
+			{"Trifecta", 692943967},
+			{"Zeppelin", 2069105553}
+		};
+
+		CreateNewPlanet(l1, "GasPlanetLayers", "Aurora");
+		CreateNewPlanet(l2, "Rivers", "Alpha");
+		CreateNewPlanet(l3, "DryTerran", "Beta");
+		CreateNewPlanet(l4, "LandMasses", "Gamma");
+		CreateNewPlanet(l5, "NoAtmosphere", "Epsilon");
+		CreateNewPlanet(l6, "GasPlanet", "Borealis");
+		CreateNewPlanet(l7, "IceWorld", "Omega");
+		CreateNewPlanet(l8, "BlackHole", "Zeppelin");
+		CreateNewPlanet(l9, "Star", "Trifecta");
+		CreateNewPlanet(l10, "GasPlanetLayers", "Cupid");
+		CreateNewPlanet(l11, "Star", "Theta");
+		CreateNewPlanet(l12, "Rivers", "Fate");
+		CreateNewPlanet(l13, "Rivers", "Sigma");
+		CreateNewPlanet(l14, "LavaWorld", "Quatro");
+		CreateNewPlanet(l15, "LavaWorld", "Titan");
+		CreateNewPlanet(l16, "NoAtmosphere", "Dread");
 
 		Rnd = new();
 
@@ -433,6 +538,44 @@ public partial class Main : Node2D
 		{
 			GetTree().Quit();
 		}
+	}
+
+	private void CreateNewPlanet(Node Parent, string PlanetType, string PlanetPreset)
+	{
+		switch (PlanetType)
+		{
+			case "Asteroids":
+				break;
+			case "BlackHole":
+				break;
+			case "DryTerran":
+				break;
+			case "Galaxy":
+				break;
+			case "GasPlanet":
+				break;
+			case "GasPlanetLayers":
+				break;
+			case "IceWorld":
+				break;
+			case "LandMasses":
+				break;
+			case "LavaWorld":
+				break;
+			case "NoAtmosphere":
+				break;
+			case "Rivers":
+				break;
+			case "Star":
+				break;
+		}
+		Planet NewPlanet = PlanetScenes[PlanetType].Instantiate<Planet>();
+		Parent.AddChild(NewPlanet);
+		NewPlanet.Position = new Vector2(-50, -50);
+		NewPlanet.SetPixels(100);
+		NewPlanet.SetSeed(PlanetSeeds[PlanetPreset]);
+		NewPlanet.SetRotation(-0.75f);
+		NewPlanet.SetColors(PlanetColorPresets[PlanetPreset]);
 	}
 
 	private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)
