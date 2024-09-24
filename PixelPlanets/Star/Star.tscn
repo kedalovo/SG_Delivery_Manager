@@ -61,6 +61,7 @@ grow_vertical = 2
 pivot_offset = Vector2(100, 100)
 size_flags_horizontal = 0
 size_flags_vertical = 0
+mouse_filter = 1
 script = ExtResource("1_ey1tx")
 
 [node name="Blobs" type="ColorRect" parent="."]
@@ -70,12 +71,14 @@ offset_left = -50.0
 offset_top = -50.0
 offset_right = 150.0
 offset_bottom = 150.0
+mouse_filter = 1
 
 [node name="Star" type="ColorRect" parent="."]
 material = SubResource("4")
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
+mouse_filter = 1
 
 [node name="StarFlares" type="ColorRect" parent="."]
 material = SubResource("7")
@@ -84,3 +87,4 @@ offset_left = -50.0
 offset_top = -50.0
 offset_right = 150.0
 offset_bottom = 150.0
+mouse_filter = 1

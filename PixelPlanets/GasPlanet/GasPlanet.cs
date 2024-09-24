@@ -20,6 +20,8 @@ public partial class GasPlanet : Planet
 	{
 		CloudColorRect = GetNode<ColorRect>("Cloud");
         Cloud2ColorRect = GetNode<ColorRect>("Cloud2");
+		CloudColorRect.Material = (Material)CloudColorRect.Material.Duplicate(true);
+		Cloud2ColorRect.Material = (Material)Cloud2ColorRect.Material.Duplicate(true);
 		base._Ready();
 	}
 
@@ -75,11 +77,11 @@ public partial class GasPlanet : Planet
 	public override void UpdateTime(float _time)
 	{
         ShaderMaterial _mat = (ShaderMaterial)CloudColorRect.Material;
-		_mat.SetShaderParameter("time", _time * 0.005f);
+		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat) * 0.005f);
 		CloudColorRect.Material = _mat;
 
         ShaderMaterial _mat2 = (ShaderMaterial)Cloud2ColorRect.Material;
-		_mat2.SetShaderParameter("time", _time * 0.005f);
+		_mat2.SetShaderParameter("time", _time * GetMultiplier(_mat2) * 0.005f);
 		Cloud2ColorRect.Material = _mat2;
 	}
 

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Linq;
+using System.Reflection.Metadata;
 
 public partial class Star : Planet
 {
@@ -27,6 +28,9 @@ public partial class Star : Planet
 		BlobsColorRect = GetNode<ColorRect>("Blobs");
         StarColorRect = GetNode<ColorRect>("Star");
         StarFlaresColorRect = GetNode<ColorRect>("StarFlares");
+		BlobsColorRect.Material = (Material)BlobsColorRect.Material.Duplicate(true);
+		StarColorRect.Material = (Material)StarColorRect.Material.Duplicate(true);
+		StarFlaresColorRect.Material = (Material)StarFlaresColorRect.Material.Duplicate(true);
 		base._Ready();
 
         StarColor1 = new Gradient() {
@@ -65,6 +69,9 @@ public partial class Star : Planet
         _mat3.SetShaderParameter("pixels", _amount * RelativeScale);
 		StarFlaresColorRect.Material = _mat3;
 		StarFlaresColorRect.Size = new Vector2(_amount, _amount) * RelativeScale;
+
+		StarFlaresColorRect.Position = Vector2.Zero;
+		BlobsColorRect.Position = Vector2.Zero;
 	}
 
 	public override void SetLight(Vector2 _pos)
@@ -106,15 +113,15 @@ public partial class Star : Planet
 	public override void UpdateTime(float _time)
 	{
         ShaderMaterial _mat = (ShaderMaterial)BlobsColorRect.Material;
-		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat) * 0.01f);
+		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat) * 0.01f * TimeVariation);
 		BlobsColorRect.Material = _mat;
 
         ShaderMaterial _mat2 = (ShaderMaterial)StarColorRect.Material;
-		_mat2.SetShaderParameter("time", _time * GetMultiplier(_mat2) * 0.005f);
+		_mat2.SetShaderParameter("time", _time * GetMultiplier(_mat2) * 0.005f * TimeVariation);
 		StarColorRect.Material = _mat2;
 
         ShaderMaterial _mat3 = (ShaderMaterial)StarFlaresColorRect.Material;
-		_mat3.SetShaderParameter("time", _time * GetMultiplier(_mat3) * 0.015f);
+		_mat3.SetShaderParameter("time", _time * GetMultiplier(_mat3) * 0.015f * TimeVariation);
 		StarFlaresColorRect.Material = _mat3;
 	}
 

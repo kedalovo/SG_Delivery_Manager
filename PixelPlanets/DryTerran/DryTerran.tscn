@@ -145,6 +145,7 @@ offset_right = -412.0
 offset_bottom = -200.0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+mouse_filter = 1
 script = ExtResource("2_kqxyk")
 
 [node name="Land" type="ColorRect" parent="." index="0"]
@@ -152,3 +153,4 @@ material = SubResource("4")
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
+mouse_filter = 1

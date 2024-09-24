@@ -20,6 +20,8 @@ public partial class NoAtmosphere : Planet
 	{
 		GroundColorRect = GetNode<ColorRect>("Ground");
         CratersColorRect = GetNode<ColorRect>("Craters");
+		GroundColorRect.Material = (Material)GroundColorRect.Material.Duplicate(true);
+		CratersColorRect.Material = (Material)CratersColorRect.Material.Duplicate(true);
 		base._Ready();
 	}
 
@@ -74,11 +76,11 @@ public partial class NoAtmosphere : Planet
 	public override void UpdateTime(float _time)
 	{
         ShaderMaterial _mat = (ShaderMaterial)GroundColorRect.Material;
-		_mat.SetShaderParameter("time", _time * 0.02f);
+		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat) * 0.02f);
 		GroundColorRect.Material = _mat;
 
         ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
-		_mat2.SetShaderParameter("time", _time * 0.02f);
+		_mat2.SetShaderParameter("time", _time * GetMultiplier(_mat2) * 0.02f);
 		CratersColorRect.Material = _mat2;
 	}
 

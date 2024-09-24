@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=12 format=3 uid="uid://b2qtdaxrtr5jx"]
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://b2qtdaxrtr5jx"]
 
 [ext_resource type="Texture2D" uid="uid://j41biow82fc2" path="res://UI/button_disabled.png" id="1_a8nwi"]
 [ext_resource type="Texture2D" uid="uid://cne4py8jrjwss" path="res://UI/button_hover.png" id="2_5l3oj"]
@@ -34,6 +34,16 @@ texture_margin_top = 16.0
 texture_margin_right = 8.0
 texture_margin_bottom = 11.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_smmu1"]
+texture = ExtResource("5_e1das")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+draw_center = false
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dcqk8"]
 texture = ExtResource("5_e1das")
 texture_margin_left = 8.0
@@ -58,6 +68,13 @@ Button/styles/disabled = SubResource("StyleBoxTexture_h17ba")
 Button/styles/hover = SubResource("StyleBoxTexture_t5s6y")
 Button/styles/normal = SubResource("StyleBoxTexture_74tgg")
 Button/styles/pressed = SubResource("StyleBoxTexture_wh6h1")
+FlatPanel/base_type = &"Panel"
+FlatPanel/styles/panel = SubResource("StyleBoxTexture_smmu1")
+LowMarginContainer/base_type = &"MarginContainer"
+LowMarginContainer/constants/margin_bottom = 4
+LowMarginContainer/constants/margin_left = 4
+LowMarginContainer/constants/margin_right = 4
+LowMarginContainer/constants/margin_top = 4
 MarginContainer/constants/margin_bottom = 8
 MarginContainer/constants/margin_left = 8
 MarginContainer/constants/margin_right = 8

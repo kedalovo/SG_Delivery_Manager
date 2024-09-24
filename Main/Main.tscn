@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://huvowrxh5x0l"]
+[gd_scene load_steps=38 format=3 uid="uid://huvowrxh5x0l"]
 
 [ext_resource type="Script" path="res://Main/Main.cs" id="1_ei6yb"]
 [ext_resource type="PackedScene" uid="uid://bvwjgxmq2ro5h" path="res://Location/Location.tscn" id="3_dt0bp"]
@@ -28,8 +28,6 @@
 [ext_resource type="Texture2D" uid="uid://cnd44eaxmi8br" path="res://UI/BCG_3.jpg" id="27_n8v4t"]
 [ext_resource type="Theme" uid="uid://b2qtdaxrtr5jx" path="res://UI/new_theme.tres" id="28_5dl8r"]
 [ext_resource type="Shader" path="res://UI/NPC_shader.gdshader" id="29_6bxq1"]
-[ext_resource type="Texture2D" uid="uid://b6xs4jw7s4w45" path="res://NPC/Faces/Face1.png" id="30_25cqg"]
-[ext_resource type="Texture2D" uid="uid://bxqkupavelcvv" path="res://NPC/Bodies/Body1.png" id="31_7mvwg"]
 [ext_resource type="Texture2D" uid="uid://c304x05ny6g2a" path="res://Modifiers/TimedSpritesheet.png" id="32_eo83j"]
 [ext_resource type="Texture2D" uid="uid://dmixk6gaf6twm" path="res://Modifiers/SegmentedSpritesheet.png" id="33_nutbx"]
 [ext_resource type="Texture2D" uid="uid://bkkkgq6qe71g" path="res://Modifiers/FragileSpritesheet.png" id="34_wbhj3"]
@@ -72,7 +70,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(3.5, 3.5), Vector2(3.6, 3.6)]
+"values": [Vector2(2.5, 2.5), Vector2(2.6, 2.6)]
 }
 
 [sub_resource type="Animation" id="Animation_n8nk5"]
@@ -111,7 +109,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(3.5, 3.5)]
+"values": [Vector2(2.5, 2.5)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rhkjq"]
@@ -119,12 +117,6 @@ _data = {
 "Idle": SubResource("Animation_lam5p"),
 "RESET": SubResource("Animation_n8nk5")
 }
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_23vaj"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_b76yp"]
-font_size = 24
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nk3h4"]
 shader = ExtResource("29_6bxq1")
@@ -143,11 +135,363 @@ shader_parameter/roll_speed = 1.0
 shader_parameter/scan_line_strength = -8.0
 shader_parameter/pixel_strength = -2.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_23vaj"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_b76yp"]
+font_size = 24
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ei6yb")
 ConSegmentMargin = 4
 ConLineWidth = 3
 ConLineColor = Color(0.168543, 0.650288, 0.605149, 1)
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("28_5dl8r")
+metadata/_edit_lock_ = true
+
+[node name="Background" type="TextureRect" parent="UI"]
+z_index = -2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("27_n8v4t")
+expand_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="NPCControl" type="Control" parent="UI"]
+anchors_preset = 0
+offset_left = 460.0
+offset_top = 845.0
+offset_right = 604.0
+offset_bottom = 1072.0
+
+[node name="NameLabel" type="Label" parent="UI/NPCControl"]
+layout_mode = 0
+offset_right = 144.0
+offset_bottom = 43.0
+text = "NPC Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="SpriteContainer" type="Node2D" parent="UI/NPCControl"]
+position = Vector2(0, 43)
+
+[node name="FaceSprite" type="Sprite2D" parent="UI/NPCControl/SpriteContainer"]
+position = Vector2(73, 39)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("5_mmjq5")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="BodySprite" type="Sprite2D" parent="UI/NPCControl/SpriteContainer"]
+position = Vector2(73, 122)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("5_xd0hc")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 48)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/NPCControl/SpriteContainer"]
+libraries = {
+"": SubResource("AnimationLibrary_rhkjq")
+}
+autoplay = "Idle"
+speed_scale = 2.0
+
+[node name="CRTRect" type="ColorRect" parent="UI/NPCControl"]
+material = SubResource("ShaderMaterial_nk3h4")
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -66.0
+offset_top = -178.0
+offset_right = 66.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Panel" type="Panel" parent="UI/NPCControl"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -72.0
+offset_top = -184.0
+offset_right = 72.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"FlatPanel"
+
+[node name="DeliveriesContainer" type="MarginContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -118.0
+offset_top = -390.0
+offset_bottom = 390.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/DeliveriesContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox/HBox"]
+custom_minimum_size = Vector2(48, 16)
+layout_mode = 2
+texture = ExtResource("32_eo83j")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox/HBox"]
+layout_mode = 2
+text = "15"
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox"]
+modulate = Color(0.125, 1, 0, 1)
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+value = 75.0
+show_percentage = false
+
+[node name="VBox2" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2/HBox"]
+custom_minimum_size = Vector2(48, 16)
+layout_mode = 2
+texture = ExtResource("33_nutbx")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2/HBox"]
+layout_mode = 2
+text = "al"
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2"]
+visible = false
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+show_percentage = false
+
+[node name="VBox3" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3/HBox"]
+custom_minimum_size = Vector2(48, 16)
+layout_mode = 2
+texture = ExtResource("34_wbhj3")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3/HBox"]
+layout_mode = 2
+text = "4"
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3"]
+modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+value = 23.0
+show_percentage = false
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox"]
+custom_minimum_size = Vector2(4, 64)
+layout_mode = 2
+size_flags_vertical = 1
+value = 85.0
+fill_mode = 3
+show_percentage = false
+
+[node name="PanelContainer2" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox/VBox"]
+layout_mode = 2
+text = "No data"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox"]
+custom_minimum_size = Vector2(4, 64)
+layout_mode = 2
+size_flags_vertical = 1
+value = 85.0
+fill_mode = 3
+show_percentage = false
+
+[node name="PanelContainer3" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox/HBox"]
+custom_minimum_size = Vector2(48, 16)
+layout_mode = 2
+texture = ExtResource("32_eo83j")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox/HBox"]
+layout_mode = 2
+text = "5"
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox"]
+modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+value = 15.0
+show_percentage = false
+
+[node name="VBox3" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3/HBox"]
+custom_minimum_size = Vector2(48, 16)
+layout_mode = 2
+texture = ExtResource("34_wbhj3")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3/HBox"]
+layout_mode = 2
+text = "6"
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3"]
+modulate = Color(0.992188, 1, 0, 1)
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+value = 68.0
+show_percentage = false
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox"]
+custom_minimum_size = Vector2(4, 64)
+layout_mode = 2
+size_flags_vertical = 1
+value = 85.0
+fill_mode = 3
+show_percentage = false
+
+[node name="NewQuestContainer" type="MarginContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -302.0
+offset_right = 460.0
+grow_vertical = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/NewQuestContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/NewQuestContainer/PanelContainer"]
+layout_mode = 2
+theme_type_variation = &"LowMarginContainer"
+
+[node name="VBox" type="VBoxContainer" parent="UI/NewQuestContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Hello! I want you to deliver these to station Zeppelin:
+1.
+2.
+3.
+4.
+5.
+6.
+Good luck!"
+
+[node name="HBox" type="HBoxContainer" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
+
+[node name="PlanetSpace" type="Control" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+
+[node name="DestinationLabel" type="Label" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Destination"
+
+[node name="AcceptButton" type="Button" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+text = "Accept"
 
 [node name="Locations" type="Node2D" parent="."]
 
@@ -231,8 +575,7 @@ LocationName = "Dread"
 ID = 15
 
 [node name="Ship" parent="." instance=ExtResource("4_tp5ri")]
-visible = false
-position = Vector2(305, 25)
+position = Vector2(687, 127)
 
 [node name="LeftMenu" type="Control" parent="."]
 visible = false
@@ -326,12 +669,6 @@ scale = Vector2(3.5, 3.5)
 texture = ExtResource("5_mmjq5")
 region_enabled = true
 region_rect = Rect2(0, 0, 32, 32)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="NPC"]
-libraries = {
-"": SubResource("AnimationLibrary_rhkjq")
-}
-autoplay = "Idle"
 
 [node name="BottomMenu" type="Control" parent="."]
 visible = false
@@ -941,6 +1278,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 500.0
+offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 16
@@ -1095,6 +1434,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 550.0
+offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1147,6 +1488,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 600.0
+offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1189,308 +1532,6 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Retry"
-
-[node name="UI" type="Control" parent="."]
-z_index = 1
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 1920.0
-offset_bottom = 1080.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("28_5dl8r")
-metadata/_edit_lock_ = true
-
-[node name="Background" type="TextureRect" parent="UI"]
-z_index = -2
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("27_n8v4t")
-expand_mode = 2
-metadata/_edit_lock_ = true
-
-[node name="NPCPanel" type="Panel" parent="UI"]
-visible = false
-layout_mode = 0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 152.0
-offset_bottom = 192.0
-
-[node name="MarginContainer" type="MarginContainer" parent="UI/NPCPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/NPCPanel/MarginContainer"]
-modulate = Color(0, 0.466064, 0.71875, 1)
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/NPCPanel/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-size_flags_horizontal = 4
-texture = ExtResource("30_25cqg")
-expand_mode = 2
-
-[node name="TextureRect2" type="TextureRect" parent="UI/NPCPanel/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-size_flags_horizontal = 4
-texture = ExtResource("31_7mvwg")
-expand_mode = 2
-
-[node name="CRTRect" type="ColorRect" parent="UI"]
-visible = false
-material = SubResource("ShaderMaterial_nk3h4")
-layout_mode = 0
-offset_left = 24.0
-offset_top = 24.0
-offset_right = 136.0
-offset_bottom = 176.0
-
-[node name="NewQuestContainer" type="PanelContainer" parent="UI"]
-visible = false
-layout_mode = 0
-offset_left = 8.0
-offset_top = 200.0
-offset_right = 461.0
-offset_bottom = 493.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/NewQuestContainer"]
-layout_mode = 2
-
-[node name="RichTextLabel" type="RichTextLabel" parent="UI/NewQuestContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Hello! I want you to deliver these to station Zeppelin:
-1.
-2.
-3.
-4.
-5.
-6.
-Good luck!"
-
-[node name="AcceptButton" type="Button" parent="UI/NewQuestContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-focus_mode = 0
-text = "Accept"
-
-[node name="DeliveriesContainer" type="MarginContainer" parent="UI"]
-visible = false
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -118.0
-offset_top = -390.0
-offset_bottom = 390.0
-grow_horizontal = 0
-grow_vertical = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="UI/DeliveriesContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-alignment = 1
-
-[node name="PanelContainer" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-
-[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox/HBox"]
-custom_minimum_size = Vector2(48, 16)
-layout_mode = 2
-texture = ExtResource("32_eo83j")
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox/HBox"]
-layout_mode = 2
-text = "15"
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox"]
-modulate = Color(0.125, 1, 0, 1)
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-step = 1.0
-value = 75.0
-show_percentage = false
-
-[node name="VBox2" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2/HBox"]
-custom_minimum_size = Vector2(48, 16)
-layout_mode = 2
-texture = ExtResource("33_nutbx")
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2/HBox"]
-layout_mode = 2
-text = "al"
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2"]
-visible = false
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-step = 1.0
-show_percentage = false
-
-[node name="VBox3" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3/HBox"]
-custom_minimum_size = Vector2(48, 16)
-layout_mode = 2
-texture = ExtResource("34_wbhj3")
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3/HBox"]
-layout_mode = 2
-text = "4"
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3"]
-modulate = Color(1, 0, 0, 1)
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-step = 1.0
-value = 23.0
-show_percentage = false
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox"]
-custom_minimum_size = Vector2(4, 64)
-layout_mode = 2
-size_flags_vertical = 1
-value = 85.0
-fill_mode = 3
-show_percentage = false
-
-[node name="PanelContainer2" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2"]
-layout_mode = 2
-
-[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox/VBox"]
-layout_mode = 2
-text = "No data"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox"]
-custom_minimum_size = Vector2(4, 64)
-layout_mode = 2
-size_flags_vertical = 1
-value = 85.0
-fill_mode = 3
-show_percentage = false
-
-[node name="PanelContainer3" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3"]
-layout_mode = 2
-
-[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox/HBox"]
-custom_minimum_size = Vector2(48, 16)
-layout_mode = 2
-texture = ExtResource("32_eo83j")
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox/HBox"]
-layout_mode = 2
-text = "5"
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox"]
-modulate = Color(1, 0, 0, 1)
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-step = 1.0
-value = 15.0
-show_percentage = false
-
-[node name="VBox3" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3/HBox"]
-custom_minimum_size = Vector2(48, 16)
-layout_mode = 2
-texture = ExtResource("34_wbhj3")
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3/HBox"]
-layout_mode = 2
-text = "6"
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3"]
-modulate = Color(0.992188, 1, 0, 1)
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-step = 1.0
-value = 68.0
-show_percentage = false
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox"]
-custom_minimum_size = Vector2(4, 64)
-layout_mode = 2
-size_flags_vertical = 1
-value = 85.0
-fill_mode = 3
-show_percentage = false
 
 [node name="TestingConnections" type="Node2D" parent="."]
 visible = false

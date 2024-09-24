@@ -17,6 +17,7 @@ public partial class Asteroid : Planet
 	public override void _Ready()
 	{
 		AsteroidColorRect = GetNode<ColorRect>("Asteroid");
+		AsteroidColorRect.Material = (Material)AsteroidColorRect.Material.Duplicate(true);
 		base._Ready();
 	}
 

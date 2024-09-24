@@ -8,6 +8,8 @@ public partial class Planet : Control
 	public virtual bool OverrideTime {get; set;}
 	public virtual Color[] OriginalColors {get; set;}
 
+	public float TimeVariation;
+
 	[Export]
 	public virtual float RelativeScale {get; set;}
 	[Export]
@@ -19,6 +21,8 @@ public partial class Planet : Control
 		OverrideTime = false;
 		RelativeScale = 1.0f;
 		GUIZoom = 1.0f;
+
+		TimeVariation = new Random().Next(70, 130) / 100.0f;
 	}
 
 	public virtual void SetPixels(int _amount) {}

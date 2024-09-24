@@ -65,6 +65,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+mouse_filter = 1
 script = ExtResource("1_2kbmm")
 
 [node name="Water" type="ColorRect" parent="."]
@@ -72,15 +73,18 @@ material = SubResource("1")
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
+mouse_filter = 1
 
 [node name="Land" type="ColorRect" parent="."]
 material = SubResource("2")
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
+mouse_filter = 1
 
 [node name="Cloud" type="ColorRect" parent="."]
 material = SubResource("3")
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
+mouse_filter = 1

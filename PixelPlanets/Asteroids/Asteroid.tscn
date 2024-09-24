@@ -20,14 +20,12 @@ shader_parameter/should_dither = true
 custom_minimum_size = Vector2(100, 100)
 offset_right = -412.0
 offset_bottom = -200.0
+mouse_filter = 1
 script = ExtResource("2_px650")
-RelativeScale = 0.0
-GUIZoom = 0.0
-RelativeScale = 0.0
-GUIZoom = 0.0
 
 [node name="Asteroid" type="ColorRect" parent="." index="0"]
 material = SubResource("1")
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
+mouse_filter = 1

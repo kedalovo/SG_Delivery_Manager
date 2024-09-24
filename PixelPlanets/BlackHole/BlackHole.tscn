@@ -32,6 +32,7 @@ shader_parameter/time = 0.0
 custom_minimum_size = Vector2(0, 0)
 offset_right = -412.0
 offset_bottom = -200.0
+mouse_filter = 1
 script = ExtResource("2_kjnsk")
 
 [node name="BlackHole" type="ColorRect" parent="." index="0"]
@@ -39,6 +40,7 @@ material = SubResource("3")
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
+mouse_filter = 1
 
 [node name="Disk" type="ColorRect" parent="." index="1"]
 material = SubResource("6")
@@ -47,3 +49,4 @@ offset_left = -100.0
 offset_top = -100.0
 offset_right = 200.0
 offset_bottom = 200.0
+mouse_filter = 1

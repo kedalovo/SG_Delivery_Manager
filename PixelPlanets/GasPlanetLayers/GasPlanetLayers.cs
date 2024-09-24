@@ -20,6 +20,8 @@ public partial class GasPlanetLayers : Planet
 	{
 		GasLayersColorRect = GetNode<ColorRect>("GasLayers");
         RingColorRect = GetNode<ColorRect>("Ring");
+		GasLayersColorRect.Material = (Material)GasLayersColorRect.Material.Duplicate(true);
+		RingColorRect.Material = (Material)RingColorRect.Material.Duplicate(true);
 		base._Ready();
 	}
 
@@ -66,7 +68,7 @@ public partial class GasPlanetLayers : Planet
 	{
         ShaderMaterial _mat = (ShaderMaterial)GasLayersColorRect.Material;
 		_mat.SetShaderParameter("rotation", _rotation);
-		RingColorRect.Material = _mat;
+		GasLayersColorRect.Material = _mat;
 
 		ShaderMaterial _mat2 = (ShaderMaterial)RingColorRect.Material;
 		_mat2.SetShaderParameter("rotation", _rotation + 0.7f);

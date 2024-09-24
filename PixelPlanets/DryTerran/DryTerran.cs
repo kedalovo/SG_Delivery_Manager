@@ -17,6 +17,7 @@ public partial class DryTerran : Planet
 	public override void _Ready()
 	{
 		LandColorRect = GetNode<ColorRect>("Land");
+		LandColorRect.Material = (Material)LandColorRect.Material.Duplicate(true);
 		base._Ready();
 	}
 

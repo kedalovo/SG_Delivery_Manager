@@ -33,6 +33,11 @@ public partial class Location : Node2D
 
 	private HBoxContainer HazardsHBox;
 
+	public Control Visuals;
+
+	public string PlanetType = "";
+	public string PlanetPreset = "";
+
 	public override void _Ready()
 	{
 		Quests = Array.Empty<int>();
@@ -45,17 +50,36 @@ public partial class Location : Node2D
 		MaxFuel = 5;
 		QuestCompleted = 0;
 
-		NameLabel = GetNode<Label>("VBox/Label");
+		NameLabel = GetNode<Label>("Visuals/VBox/Label");
 		StarSprite = GetNode<Sprite2D>("StarSprite");
 		QuestPolygon = GetNode<Polygon2D>("QuestPolygon");
 		Animator = GetNode<AnimationPlayer>("Animator");
-		HazardsHBox = GetNode<HBoxContainer>("VBox/HBox");
+		HazardsHBox = GetNode<HBoxContainer>("Visuals/VBox/HBox");
+		Visuals = GetNode<Control>("Visuals");
 		ClearDestinations();
 	}
 
-	private void OnButtonPressed()
+    private void OnButtonPressed()
 	{
 		EmitSignal(SignalName.LocationPressed, ID);
+	}
+
+	public void SetMovement(float scaleX, float scaleY)
+	{
+		AnimationPlayer AnimatorX = GetNode<AnimationPlayer>("Visuals/AnimatorX");
+		AnimationPlayer AnimatorY = GetNode<AnimationPlayer>("Visuals/AnimatorY");
+		AnimatorX.SpeedScale = scaleX;
+		AnimatorY.SpeedScale = scaleY;
+		if (scaleY > 0.5)
+		{
+			AnimatorX.PlayBackwards("idle");
+			AnimatorY.PlayBackwards("idle");
+		}
+		else
+		{
+			AnimatorX.Play("idle");
+			AnimatorY.Play("idle");
+		}
 	}
 
 	public void AddQuest(int newQuest) { Quests = Quests.Append(newQuest).ToArray(); UpdateQuests(); }
@@ -169,9 +193,15 @@ public partial class Location : Node2D
 
 	public void ClearHighlight() { QuestPolygon.Hide(); }
 
-	private void OnButtonMouseEntered() { StarSprite.Scale = new(1.5f, 1.5f); }
+	private void OnButtonMouseEntered()
+	{
+		Animator.Play("select");
+	}
 
-	private void OnButtonMouseExited() { StarSprite.Scale = new(1.0f, 1.0f); }
+	private void OnButtonMouseExited()
+	{
+		Animator.PlayBackwards("select");
+	}
 
 	public void Choosable() { Animator.Play("Choosable"); }
 

@@ -19,7 +19,6 @@ uniform float seed: hint_range(1, 10);
 
 uniform float time = 0.0;
 
-
 float rand(vec2 coord) {
 	// land has to be tiled (or the contintents on this planet have to be changing very fast)
 	// tiling only works for integer values, thus the rounding

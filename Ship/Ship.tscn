@@ -1,10 +1,105 @@
-[gd_scene load_steps=2 format=3 uid="uid://ck7a82me5xux0"]
+[gd_scene load_steps=9 format=3 uid="uid://ck7a82me5xux0"]
 
-[ext_resource type="Texture2D" uid="uid://dlhm4spmj0qhd" path="res://Ship/Ship.png" id="1_c8lfj"]
+[ext_resource type="Script" path="res://Ship/Ship.cs" id="1_6mnlf"]
+[ext_resource type="Texture2D" uid="uid://c8ct1jduhj2b" path="res://Ship/Spaceships/06/Spaceship_06_RED.png" id="1_b67oc"]
+[ext_resource type="Texture2D" uid="uid://cmdwqioasfw4c" path="res://Ship/Flame_01.png" id="2_ymg1j"]
+[ext_resource type="Texture2D" uid="uid://dwnpklsms4lbg" path="res://Ship/Flame_02.png" id="3_52rot"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rnjkw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ymg1j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_52rot")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="Animation" id="Animation_64sox"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_1pqtk"]
+resource_name = "rotating"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 3.14159, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nmw7i"]
+_data = {
+"RESET": SubResource("Animation_64sox"),
+"rotating": SubResource("Animation_1pqtk")
+}
 
 [node name="Ship" type="Node2D"]
 top_level = true
+script = ExtResource("1_6mnlf")
 
-[node name="ShipSprite" type="Sprite2D" parent="."]
+[node name="Pivot" type="Node2D" parent="."]
+
+[node name="ShipSprite" type="Sprite2D" parent="Pivot"]
 texture_filter = 1
-texture = ExtResource("1_c8lfj")
+position = Vector2(-100, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_b67oc")
+
+[node name="FlameSprite1" type="AnimatedSprite2D" parent="Pivot/ShipSprite"]
+position = Vector2(-130, 165)
+sprite_frames = SubResource("SpriteFrames_rnjkw")
+autoplay = "default"
+
+[node name="FlameSprite2" type="AnimatedSprite2D" parent="Pivot/ShipSprite"]
+position = Vector2(130, 165)
+sprite_frames = SubResource("SpriteFrames_rnjkw")
+autoplay = "default"
+
+[node name="Animator" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nmw7i")
+}
+autoplay = "rotating"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_font_sizes/font_size = 16
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_font_sizes/font_size = 16
+
+[node name="Label3" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_font_sizes/font_size = 16

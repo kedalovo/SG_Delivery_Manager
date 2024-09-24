@@ -22,6 +22,9 @@ public partial class IceWorld : Planet
 		LandColorRect = GetNode<ColorRect>("Land");
         LakesColorRect = GetNode<ColorRect>("Lakes");
         CloudsColorRect = GetNode<ColorRect>("Clouds");
+		LandColorRect.Material = (Material)LandColorRect.Material.Duplicate(true);
+		LakesColorRect.Material = (Material)LakesColorRect.Material.Duplicate(true);
+		CloudsColorRect.Material = (Material)CloudsColorRect.Material.Duplicate(true);
 		base._Ready();
 	}
 
@@ -93,15 +96,15 @@ public partial class IceWorld : Planet
 	public override void UpdateTime(float _time)
 	{
         ShaderMaterial _mat = (ShaderMaterial)LandColorRect.Material;
-		_mat.SetShaderParameter("time", _time * 0.02f);
+		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat) * 0.02f);
 		LandColorRect.Material = _mat;
 
         ShaderMaterial _mat2 = (ShaderMaterial)LakesColorRect.Material;
-		_mat2.SetShaderParameter("time", _time * 0.02f);
+		_mat2.SetShaderParameter("time", _time * GetMultiplier(_mat2) * 0.02f);
 		LakesColorRect.Material = _mat2;
 
         ShaderMaterial _mat3 = (ShaderMaterial)CloudsColorRect.Material;
-		_mat3.SetShaderParameter("time", _time * 0.01f);
+		_mat3.SetShaderParameter("time", _time * GetMultiplier(_mat3) * 0.01f);
 		CloudsColorRect.Material = _mat3;
 	}
 

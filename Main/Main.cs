@@ -3,8 +3,6 @@ using GodotArray = Godot.Collections.Array;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
-using System.Security;
 
 public partial class Main : Node2D
 {
@@ -22,7 +20,7 @@ public partial class Main : Node2D
 
 	private AStar2D StarMap;
 
-	private Node2D Ship;
+	private Ship Spaceship;
 	private Label CurrentLocationLabel;
 
 	private string[] NPCFirstNames = {"Jeremy", "Ashley", "Buck", "Zeta", "Froleen", "John", "Kasma", "Amber", "Rapier", "Sultan", "Sorrow", "Hattempati", "Jeelaz"};
@@ -31,8 +29,10 @@ public partial class Main : Node2D
 	private Sprite2D NPCBodySprite;
 	private Sprite2D NPCFaceSprite;
 	private Label NPCNameLabel;
+	private Node2D NPCContainer;
 
 	private Label DestinationLabel;
+	private Control DestinationPlanet;
 	private RichTextLabel DeliveryContentsLabel;
 	// A list of items to deliver with additional info about them. Key is a string: Name, value is GodotArray: Item texture, durability.
 	private ItemData[] DeliveryItems;
@@ -252,14 +252,16 @@ public partial class Main : Node2D
 
 		string HBoxPath = "BottomMenu/PanelContainer/MarginContainer/HBox/";
 
-		Ship = GetNode<Node2D>("Ship");
+		Spaceship = GetNode<Ship>("Ship");
 		CurrentLocationLabel = GetNode<Label>("LeftMenu/PanelContainer/VBox/CurrentLocationLabel");
 
-		NPCBodySprite = GetNode<Sprite2D>("NPC/BodySprite");
-		NPCFaceSprite = GetNode<Sprite2D>("NPC/FaceSprite");
-		NPCNameLabel = GetNode<Label>("LeftMenu/PanelContainer/VBox/NPCNameLabel");
+		NPCBodySprite = GetNode<Sprite2D>("UI/NPCControl/SpriteContainer/BodySprite");
+		NPCFaceSprite = GetNode<Sprite2D>("UI/NPCControl/SpriteContainer/FaceSprite");
+		NPCNameLabel = GetNode<Label>("UI/NPCControl/NameLabel");
+		NPCContainer = GetNode<Node2D>("UI/NPCControl/SpriteContainer");
 
-		DestinationLabel = GetNode<Label>(HBoxPath + "DeliveryVBox/HBox/DestinationLabel");
+		DestinationLabel = GetNode<Label>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/DestinationLabel");
+		DestinationPlanet = GetNode<Control>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/PlanetSpace");
 		DeliveryContentsLabel = GetNode<RichTextLabel>(HBoxPath + "DeliveryVBox/DeliveryContentsLabel");
 		AcceptButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/AcceptButton");
 		DeclineButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/DeclineButton");
@@ -300,11 +302,11 @@ public partial class Main : Node2D
 		SegmentedFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Segmented.tres");
 
 		TagFrames = new()
-        {
-            ["Timed"] = TimedFrames,
-            ["Fragile"] = FragileFrames,
-            ["Segmented"] = SegmentedFrames
-        };
+		{
+			["Timed"] = TimedFrames,
+			["Fragile"] = FragileFrames,
+			["Segmented"] = SegmentedFrames
+		};
 
 		MarketCrashIcon = GD.Load<Texture2D>("res://Location/Hazards/FuelCrash.png");
 		DisenteryIcon = GD.Load<Texture2D>("res://Location/Hazards/HeatLeeches.png");
@@ -376,6 +378,23 @@ public partial class Main : Node2D
 		// l14.SetTexture(QuatroMini);
 		// l15.SetTexture(TitanMini);
 		// l16.SetTexture(DreadMini);
+
+		l1.LocationPressed += OnLocationPressed;
+		l2.LocationPressed += OnLocationPressed;
+		l3.LocationPressed += OnLocationPressed;
+		l4.LocationPressed += OnLocationPressed;
+		l5.LocationPressed += OnLocationPressed;
+		l6.LocationPressed += OnLocationPressed;
+		l7.LocationPressed += OnLocationPressed;
+		l8.LocationPressed += OnLocationPressed;
+		l9.LocationPressed += OnLocationPressed;
+		l10.LocationPressed += OnLocationPressed;
+		l11.LocationPressed += OnLocationPressed;
+		l12.LocationPressed += OnLocationPressed;
+		l13.LocationPressed += OnLocationPressed;
+		l14.LocationPressed += OnLocationPressed;
+		l15.LocationPressed += OnLocationPressed;
+		l16.LocationPressed += OnLocationPressed;
 
 		PlanetScenes = new() {
 			{"Asteroids", GD.Load<PackedScene>("res://PixelPlanets/Asteroids/Asteroid.tscn")},
@@ -460,34 +479,51 @@ public partial class Main : Node2D
 			{"Zeppelin", 2069105553}
 		};
 
-		CreateNewPlanet(l1, "GasPlanetLayers", "Aurora");
-		CreateNewPlanet(l2, "Rivers", "Alpha");
-		CreateNewPlanet(l3, "DryTerran", "Beta");
-		CreateNewPlanet(l4, "LandMasses", "Gamma");
-		CreateNewPlanet(l5, "NoAtmosphere", "Epsilon");
-		CreateNewPlanet(l6, "GasPlanet", "Borealis");
-		CreateNewPlanet(l7, "IceWorld", "Omega");
-		CreateNewPlanet(l8, "BlackHole", "Zeppelin");
-		CreateNewPlanet(l9, "Star", "Trifecta");
-		CreateNewPlanet(l10, "GasPlanetLayers", "Cupid");
-		CreateNewPlanet(l11, "Star", "Theta");
-		CreateNewPlanet(l12, "Rivers", "Fate");
-		CreateNewPlanet(l13, "Rivers", "Sigma");
-		CreateNewPlanet(l14, "LavaWorld", "Quatro");
-		CreateNewPlanet(l15, "LavaWorld", "Titan");
-		CreateNewPlanet(l16, "NoAtmosphere", "Dread");
-
 		Rnd = new();
+
+		CreateNewPlanetAtLocation(l1, "GasPlanetLayers", "Aurora");
+		CreateNewPlanetAtLocation(l2, "Rivers", "Alpha");
+		CreateNewPlanetAtLocation(l3, "DryTerran", "Beta");
+		CreateNewPlanetAtLocation(l4, "LandMasses", "Gamma");
+		CreateNewPlanetAtLocation(l5, "NoAtmosphere", "Epsilon");
+		CreateNewPlanetAtLocation(l6, "GasPlanet", "Borealis");
+		CreateNewPlanetAtLocation(l7, "IceWorld", "Omega");
+		CreateNewPlanetAtLocation(l8, "BlackHole", "Zeppelin");
+		CreateNewPlanetAtLocation(l9, "Star", "Trifecta");
+		CreateNewPlanetAtLocation(l10, "GasPlanetLayers", "Cupid");
+		CreateNewPlanetAtLocation(l11, "Star", "Theta");
+		CreateNewPlanetAtLocation(l12, "Rivers", "Fate");
+		CreateNewPlanetAtLocation(l13, "Rivers", "Sigma");
+		CreateNewPlanetAtLocation(l14, "LavaWorld", "Quatro");
+		CreateNewPlanetAtLocation(l15, "LavaWorld", "Titan");
+		CreateNewPlanetAtLocation(l16, "NoAtmosphere", "Dread");
+
+		l1.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l2.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l3.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l4.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l5.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l6.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l7.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l8.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l9.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l10.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l11.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l12.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l13.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l14.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l15.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l16.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
 
 		#endregion OtherDeclaration
 
 		CurrentLocationLabel.Text = l2.LocationName;
 		CurrentLocation = l2;
-		Ship.Transform = CurrentLocation.Transform;
+		Spaceship.Transform = CurrentLocation.Transform;
 		UpdateFuelLevelLabel();
 
 		Balance = 0;
-		FuelLevel = 10;
+		FuelLevel = 1000;
 
 		CreateNewNPC();
 		DisplayQuest(CreateNewQuest(0, 1));
@@ -528,11 +564,13 @@ public partial class Main : Node2D
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_2);
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_3);
 			// GameOver();
-			Quest newQuest = CreateNewQuest(0, 5);
-			foreach (ItemData item in newQuest.Items)
-			GD.PrintS(item.ItemName, item.Fragility);
-			GD.PrintS("\t" + newQuest.Destination.LocationName, StarMap.GetIdPath(CurrentLocation.ID, newQuest.Destination.ID).Length);
-			GD.Print("\n");
+
+			// Quest newQuest = CreateNewQuest(0, 5);
+			// foreach (ItemData item in newQuest.Items)
+			// GD.PrintS(item.ItemName, item.Fragility);
+			// GD.PrintS("\t" + newQuest.Destination.LocationName, StarMap.GetIdPath(CurrentLocation.ID, newQuest.Destination.ID).Length);
+			// GD.Print("\n");
+			
 		}
 		if (@event.IsActionPressed("esc"))
 		{
@@ -540,42 +578,100 @@ public partial class Main : Node2D
 		}
 	}
 
-	private void CreateNewPlanet(Node Parent, string PlanetType, string PlanetPreset)
+	private void CreateNewPlanetAtLocation(Location Parent, string PlanetType, string PlanetPreset)
 	{
-		switch (PlanetType)
-		{
-			case "Asteroids":
-				break;
-			case "BlackHole":
-				break;
-			case "DryTerran":
-				break;
-			case "Galaxy":
-				break;
-			case "GasPlanet":
-				break;
-			case "GasPlanetLayers":
-				break;
-			case "IceWorld":
-				break;
-			case "LandMasses":
-				break;
-			case "LavaWorld":
-				break;
-			case "NoAtmosphere":
-				break;
-			case "Rivers":
-				break;
-			case "Star":
-				break;
-		}
+		// switch (PlanetType)
+		// {
+		// 	case "Asteroids":
+		// 		break;
+		// 	case "BlackHole":
+		// 		break;
+		// 	case "DryTerran":
+		// 		break;
+		// 	case "Galaxy":
+		// 		break;
+		// 	case "GasPlanet":
+		// 		break;
+		// 	case "GasPlanetLayers":
+		// 		break;
+		// 	case "IceWorld":
+		// 		break;
+		// 	case "LandMasses":
+		// 		break;
+		// 	case "LavaWorld":
+		// 		break;
+		// 	case "NoAtmosphere":
+		// 		break;
+		// 	case "Rivers":
+		// 		break;
+		// 	case "Star":
+		// 		break;
+		// }
+		// GD.PrintErr("Tried to create planet with type: ", PlanetType, " and preset: ", PlanetPreset, " at location: ", Parent.LocationName);
 		Planet NewPlanet = PlanetScenes[PlanetType].Instantiate<Planet>();
-		Parent.AddChild(NewPlanet);
+		Parent.Visuals.AddChild(NewPlanet);
+		Parent.Visuals.MoveChild(NewPlanet, 1);
 		NewPlanet.Position = new Vector2(-50, -50);
 		NewPlanet.SetPixels(100);
 		NewPlanet.SetSeed(PlanetSeeds[PlanetPreset]);
-		NewPlanet.SetRotation(-0.75f);
+		float RandomRotation = Rnd.Next(-50, 50) / 100.0f;
+		NewPlanet.SetRotation(-0.75f + RandomRotation);
 		NewPlanet.SetColors(PlanetColorPresets[PlanetPreset]);
+		switch (PlanetType)
+		{
+			case "BlackHole":
+				NewPlanet.RelativeScale = 2f;
+				NewPlanet.GUIZoom = 2f;
+				break;
+			case "Galaxy":
+				NewPlanet.GUIZoom = 2.5f;
+				break;
+			case "GasPlanetLayers":
+				NewPlanet.RelativeScale = 3f;
+				NewPlanet.GUIZoom = 2.5f;
+				NewPlanet.SetRotation(-1.2f);
+				break;
+			case "Star":
+				NewPlanet.RelativeScale = 2f;
+				NewPlanet.GUIZoom = 2f;
+				NewPlanet.SetRotation(2.0f + RandomRotation);
+				break;
+		}
+		if (Parent.PlanetType == "") Parent.PlanetType = PlanetType;
+		if (Parent.PlanetPreset == "") Parent.PlanetPreset = PlanetPreset;
+	}
+
+	private void CreateNewPlanet(Node Parent, string PlanetType, string PlanetPreset, int pixels)
+	{
+		// GD.PrintErr("Tried to create planet with type: ", PlanetType, " and preset: ", PlanetPreset);
+		Planet NewPlanet = PlanetScenes[PlanetType].Instantiate<Planet>();
+		Parent.AddChild(NewPlanet);
+		NewPlanet.Position = new Vector2(30, 22) + new Vector2(-pixels/2, -pixels/2);
+		NewPlanet.SetPixels(pixels);
+		NewPlanet.SetSeed(PlanetSeeds[PlanetPreset]);
+		float RandomRotation = Rnd.Next(-pixels/2, pixels/2) / 100.0f;
+		NewPlanet.SetRotation(-0.75f + RandomRotation);
+		NewPlanet.SetColors(PlanetColorPresets[PlanetPreset]);
+		switch (PlanetType)
+		{
+			case "BlackHole":
+				NewPlanet.RelativeScale = 2f;
+				NewPlanet.GUIZoom = 2f;
+				break;
+			case "Galaxy":
+				NewPlanet.GUIZoom = 2.5f;
+				break;
+			case "GasPlanetLayers":
+				NewPlanet.RelativeScale = 3f;
+				NewPlanet.GUIZoom = 2.5f;
+				NewPlanet.SetRotation(-1.2f);
+				break;
+			case "Star":
+				NewPlanet.RelativeScale = 2f;
+				NewPlanet.GUIZoom = 2f;
+				NewPlanet.SetRotation(2.0f + RandomRotation);
+				break;
+		}
 	}
 
 	private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)
@@ -640,13 +736,13 @@ public partial class Main : Node2D
 		// }
 		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
 		{
-			Node2D From = AllLocations[Con.Key[0]];
-			Node2D To = AllLocations[Con.Key[1]];
+			Control From = AllLocations[Con.Key[0]].Visuals;
+			Control To = AllLocations[Con.Key[1]].Visuals;
 			DrawConnection(From, To, int.Parse(Con.Value["distance"]));
 		}
 	}
 
-	private void DrawConnection(Node2D From, Node2D To, int Distance = 1)
+	private void DrawConnection(Control From, Control To, int Distance = 1)
 	{
 		Vector2 Diff = (From.GlobalPosition - To.GlobalPosition).Normalized() * 70;
 		DrawLine(From.GlobalPosition - Diff, To.GlobalPosition + Diff, Colors.White, 1.0f);
@@ -657,7 +753,7 @@ public partial class Main : Node2D
 		}
 	}
 
-	private void DrawTriangle(Node2D From, Node2D To, int Offset = 0)
+	private void DrawTriangle(Control From, Control To, int Offset = 0)
 	{
 		Vector2 Direction = (From.GlobalPosition - To.GlobalPosition).Normalized();
 		Vector2 Base = Direction * 70;
@@ -751,9 +847,6 @@ public partial class Main : Node2D
 		}
 		Location ChosenLocation = PossibleLocations[Rnd.Next(PossibleLocations.Length)];
 
-		// GD.PrintS(ChosenLocation.LocationName, StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length - 1, GD.VarToStr(DistanceTiers[QuestTier]));
-		// GD.PrintS(ChosenLocation.LocationName != CurrentLocation.LocationName, DistanceTiers[QuestTier].Contains(StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length), !ChosenLocation.Hazards.Contains("Shutdown"));
-
 		// Adding a modifier
 		switch (Rnd.Next(3))
 		{
@@ -798,12 +891,11 @@ public partial class Main : Node2D
 		{
 			int JumpDistance = GetJumpDistance(CurrentLocation, PressedLocation);
 			if (CurrentLocation.Hazards.Contains("Disentery")) JumpDistance *= int.Parse(CurrentLocation.GetHazardData("Disentery")["jumpCost"]);
-			if (JumpDistance <= FuelLevel)
+			if (JumpDistance <= FuelLevel && Spaceship.IsAvailable())
 			{
 				if (CurrentLocation.Hazards.Contains("Disentery")) CurrentLocation.RemoveHazard("Disentery");
 				StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
 				ClearQuestHighlight();
-				// ClearHighlightNeighbours();
 				FuelLevel -= JumpDistance;
 				CreateNewNPC();
 				if (PressedLocation.Hazards.Contains("Faulty"))
@@ -813,11 +905,9 @@ public partial class Main : Node2D
 				}
 				else UpdateDeliveries(JumpDistance);
 				CurrentLocation = PressedLocation;
-				// HighlightNeighbours();
 				DisplayQuest(CreateNewQuest(Rnd.Next(11)));
 				CurrentLocationLabel.Text = CurrentLocation.LocationName;
-				Tween NewTween = GetTree().CreateTween();
-				NewTween.TweenProperty(Ship, "position", PressedLocation.Position, .5f).SetTrans(Tween.TransitionType.Circ);
+				Spaceship.SetMoveTarget(PressedLocation.Position, .5f);
 				int[] CompletedQuestIDs = CurrentLocation.GetQuests();
 				ACH_CompletedQuests = 0;
 				ACH_TotalFails = 0;
@@ -898,7 +988,6 @@ public partial class Main : Node2D
 				else LeapDay = true;
 				UpdateFuelLevelLabel();
 				foreach (Location location in AllLocations.Values) location.Jump();
-
 				foreach (long i in StarMap.GetPointConnections(CurrentLocation.ID))
 				{
 					JumpDistance = GetJumpDistance(CurrentLocation, AllLocations[(int)i]);
@@ -922,9 +1011,10 @@ public partial class Main : Node2D
 
 	private void CreateNewNPC()
 	{
+		NPCContainer.Modulate = new Color(Mathf.Clamp(Rnd.NextSingle(), 0.3f, 0.9f), Mathf.Clamp(Rnd.NextSingle(), 0.3f, 0.9f), Mathf.Clamp(Rnd.NextSingle(), 0.3f, 0.9f));
 		NPCNameLabel.Text = string.Format("{0} {1}", NPCFirstNames[Rnd.Next(NPCFirstNames.Length)], NPCLastNames[Rnd.Next(NPCLastNames.Length)]);
-		NPCBodySprite.RegionRect = new Rect2(new Godot.Vector2(Rnd.Next(10)*48, 0), new Godot.Vector2(48, 48));
-		NPCFaceSprite.RegionRect = new Rect2(new Godot.Vector2(Rnd.Next(10)*32, 0), new Godot.Vector2(32, 32));
+		NPCBodySprite.RegionRect = new Rect2(new Vector2(Rnd.Next(10)*48, 0), new Vector2(48, 48));
+		NPCFaceSprite.RegionRect = new Rect2(new Vector2(Rnd.Next(10)*32, 0), new Vector2(32, 32));
 	}
 
 	private void CreateNewHazard()
@@ -991,7 +1081,8 @@ public partial class Main : Node2D
 
 	private void DisplayQuest(Quest NewQuest)
 	{
-		if (DisplayedQuest is not null)	DisplayedQuest.QueueFree();
+		foreach (Node child in DestinationPlanet.GetChildren()) child.QueueFree();
+		DisplayedQuest?.QueueFree();
 		DeliveryContentsLabel.Clear();
 		foreach (Node child in ModifiersHBox.GetChildren()) child.QueueFree();
 		EnableQuestButtons();
@@ -1009,6 +1100,7 @@ public partial class Main : Node2D
 			Dictionary<string, string> tagData = NewQuest.TagsData[i];
 			ModifiersHBox.AddChild(GetNewModifierIcon(tag, tagData));
 		}
+		CreateNewPlanet(DestinationPlanet, DeliveryLocation.PlanetType, DeliveryLocation.PlanetPreset, 20);
 		HighlightPath(CurrentLocation.ID, DeliveryLocation.ID, "00b025");
 	}
 
@@ -1303,8 +1395,12 @@ public partial class Main : Node2D
 
 	private int GetJumpDistance(Location From, Location To)
 	{
-		Godot.Vector2[] Path = StarMap.GetPointPath(From.ID, To.ID);
-		Godot.Vector2 Distance = Path[1] - Path[0];
+		Vector2[] Path = StarMap.GetPointPath(From.ID, To.ID);
+		if (Path.Length != 2)
+		{
+			GD.PrintErr("Path from ", From.LocationName, " to ", To.LocationName, " is ", Path.Length);
+		}
+		Vector2 Distance = Path[1] - Path[0];
 		if (Distance.X == 0f) return (int)Mathf.Abs(Distance.Y);
 		else return (int)Mathf.Abs(Distance.X);
 	}

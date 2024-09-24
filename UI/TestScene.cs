@@ -7,11 +7,23 @@ public partial class TestScene : Node2D
 	Node2D Loc2;
 	Node2D Loc3;
 
+	Label label;
+	Label label2;
+	Label label3;
+	Label label4;
+
+	Ship SpaceShip;
+
 	public override void _Ready()
 	{
 		Loc1 = GetNode<Node2D>("NewLocations/Location6");
 		Loc2 = GetNode<Node2D>("NewLocations/Location7");
 		Loc3 = GetNode<Node2D>("NewLocations/Location10");
+		label = GetNode<Label>("HBoxContainer/VBoxContainer2/Label");
+		label2 = GetNode<Label>("HBoxContainer/VBoxContainer2/Label2");
+		label3 = GetNode<Label>("HBoxContainer/VBoxContainer2/Label3");
+		label4 = GetNode<Label>("HBoxContainer/VBoxContainer2/Label4");
+		SpaceShip = GetNode<Ship>("Ship");
 	}
 
 	public override void _Draw()
@@ -44,6 +56,10 @@ public partial class TestScene : Node2D
 	public override void _PhysicsProcess(double delta)
 	{
 		QueueRedraw();
+		label.Text = GetGlobalMousePosition().ToString();
+		label2.Text = Loc3.GlobalPosition.ToString();
+		label3.Text = (Mathf.RadToDeg((Loc3.GlobalPosition - GetGlobalMousePosition()).Angle()) + 180.0f).ToString();
+		label4.Text = (Mathf.RadToDeg((SpaceShip.GetShipPosition() - GetGlobalMousePosition()).Angle()) + 180.0f).ToString();
 	}
 
 	public override void _Input(InputEvent @event)
@@ -51,6 +67,10 @@ public partial class TestScene : Node2D
 		if (@event.IsActionPressed("esc"))
 		{
 			GetTree().Quit();
+		}
+		if (@event.IsActionPressed("test"))
+		{
+			SpaceShip.SetMoveTarget(GetGlobalMousePosition(), 0.5f);
 		}
 	}
 }

@@ -22,6 +22,9 @@ public partial class LavaWorld : Planet
 		LandColorRect = GetNode<ColorRect>("Land");
         CratersColorRect = GetNode<ColorRect>("Craters");
         LavaRiversColorRect = GetNode<ColorRect>("LavaRivers");
+		LandColorRect.Material = (Material)LandColorRect.Material.Duplicate(true);
+		CratersColorRect.Material = (Material)CratersColorRect.Material.Duplicate(true);
+		LavaRiversColorRect.Material = (Material)LavaRiversColorRect.Material.Duplicate(true);
 		base._Ready();
 	}
 
@@ -93,15 +96,15 @@ public partial class LavaWorld : Planet
 	public override void UpdateTime(float _time)
 	{
         ShaderMaterial _mat = (ShaderMaterial)LandColorRect.Material;
-		_mat.SetShaderParameter("time", _time * 0.02f);
+		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat) * 0.02f);
 		LandColorRect.Material = _mat;
 
         ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
-		_mat2.SetShaderParameter("time", _time * 0.02f);
+		_mat2.SetShaderParameter("time", _time * GetMultiplier(_mat2) * 0.02f);
 		CratersColorRect.Material = _mat2;
 
         ShaderMaterial _mat3 = (ShaderMaterial)LavaRiversColorRect.Material;
-		_mat3.SetShaderParameter("time", _time * 0.02f);
+		_mat3.SetShaderParameter("time", _time * GetMultiplier(_mat3) * 0.02f);
 		LavaRiversColorRect.Material = _mat3;
 	}
 

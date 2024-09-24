@@ -20,6 +20,8 @@ public partial class BlackHole : Planet
 	{
 		BlackHoleColorRect = GetNode<ColorRect>("BlackHole");
         DiskColorRect = GetNode<ColorRect>("Disk");
+		BlackHoleColorRect.Material = (Material)BlackHoleColorRect.Material.Duplicate(true);
+		DiskColorRect.Material = (Material)DiskColorRect.Material.Duplicate(true);
 		base._Ready();
 	}
 

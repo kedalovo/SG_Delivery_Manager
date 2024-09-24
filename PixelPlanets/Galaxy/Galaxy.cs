@@ -17,6 +17,7 @@ public partial class Galaxy : Planet
 	public override void _Ready()
 	{
 		GalaxyColorRect = GetNode<ColorRect>("Galaxy");
+		GalaxyColorRect.Material = (Material)GalaxyColorRect.Material.Duplicate(true);
 		base._Ready();
 	}
 

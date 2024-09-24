@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dfikq27sxwtgs"]
+[gd_scene load_steps=26 format=3 uid="uid://dfikq27sxwtgs"]
 
 [ext_resource type="Script" path="res://UI/TestScene.cs" id="1_jgf73"]
 [ext_resource type="Theme" uid="uid://b2qtdaxrtr5jx" path="res://UI/new_theme.tres" id="1_n16m0"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://d4dje22awji6e" path="res://Location/Star.png" id="11_8nqyc"]
 [ext_resource type="SpriteFrames" uid="uid://b6qmgeinx3stt" path="res://UI/Locations/Omega/frames.tres" id="12_bs3f2"]
 [ext_resource type="SpriteFrames" uid="uid://celt24ytxykrb" path="res://UI/Locations/Cupid/frames.tres" id="13_68chu"]
+[ext_resource type="PackedScene" uid="uid://ck7a82me5xux0" path="res://Ship/Ship.tscn" id="15_hha0o"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cyby5"]
 shader = ExtResource("5_qcw80")
@@ -547,3 +548,54 @@ libraries = {
 "": SubResource("AnimationLibrary_oq0qv")
 }
 autoplay = "idle"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_left = 49.0
+offset_top = 631.0
+offset_right = 89.0
+offset_bottom = 799.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Mouse:"
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Planet:"
+
+[node name="Label3" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Planet_mouse:"
+
+[node name="Label4" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "ship_mouse:"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="Label3" type="Label" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="Label4" type="Label" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="Ship" parent="." instance=ExtResource("15_hha0o")]
+position = Vector2(891, 627)

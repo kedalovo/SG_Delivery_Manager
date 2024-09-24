@@ -20,6 +20,8 @@ public partial class Rivers : Planet
 	{
 		LandColorRect = GetNode<ColorRect>("Land");
         CloudColorRect = GetNode<ColorRect>("Cloud");
+		LandColorRect.Material = (Material)LandColorRect.Material.Duplicate(true);
+		CloudColorRect.Material = (Material)CloudColorRect.Material.Duplicate(true);
 		base._Ready();
 	}
 
@@ -75,11 +77,11 @@ public partial class Rivers : Planet
 	public override void UpdateTime(float _time)
 	{
         ShaderMaterial _mat = (ShaderMaterial)LandColorRect.Material;
-		_mat.SetShaderParameter("time", _time * 0.02f);
+		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat) * 0.02f);
 		LandColorRect.Material = _mat;
 
         ShaderMaterial _mat2 = (ShaderMaterial)CloudColorRect.Material;
-		_mat2.SetShaderParameter("time", _time * 0.01f);
+		_mat2.SetShaderParameter("time", _time * GetMultiplier(_mat2) * 0.01f);
 		CloudColorRect.Material = _mat2;
 	}
 
