@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcnkdqpoi65r3"]
+
+[ext_resource type="Script" path="res://Delivery/DeliveryItem/DeliveryItem.cs" id="1_62ktp"]
+
+[node name="DeliveryItem" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_62ktp")
+
+[node name="DataHBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Texture" type="TextureRect" parent="DataHBox"]
+layout_mode = 2
+stretch_mode = 3
+
+[node name="DataLabel" type="Label" parent="DataHBox"]
+layout_mode = 2
+
+[node name="PlanetSpace" type="Control" parent="DataHBox"]
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+modulate = Color(0.125, 1, 0, 1)
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+step = 1.0
+value = 75.0
+show_percentage = false

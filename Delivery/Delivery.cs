@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class Delivery : HBoxContainer
+public partial class Delivery : PanelContainer
 {
 	[Signal]
 	public delegate void OnDeliveryFailedEventHandler(int DeliveryID);
@@ -25,10 +25,12 @@ public partial class Delivery : HBoxContainer
     }
 
 	private PackedScene ItemScene;
-	private HFlowContainer ItemsHFlow;
+	// private HFlowContainer ItemsHFlow;
+
+	private PackedScene DeliveryItemScene;
 
 	private Item[] Items = Array.Empty<Item>();
-	private string[] Tags = Array.Empty<string>();
+	private Dictionary<string, DeliveryItem> Tags = new();
 	private Dictionary<string, string>[] TagsData = Array.Empty<Dictionary<string, string>>();
 	private Label[] TagLabels = Array.Empty<Label>();
 
@@ -43,7 +45,8 @@ public partial class Delivery : HBoxContainer
 	public override void _Ready()
 	{
 		ItemScene = GD.Load<PackedScene>("res://Item/Item.tscn");
-		ItemsHFlow = GetNode<HFlowContainer>("ItemsHFlow");
+		// ItemsHFlow = GetNode<HFlowContainer>("ItemsHFlow");
+		DeliveryItemScene = GD.Load<PackedScene>("res://Delivery/DeliveryItem/DeliveryItem.tscn");
 		DeliveryTimer = GetNode<Timer>("Timer");
 		MouseEntered += () => EmitSignal(SignalName.OnDeliveryMouseEntered, id);
 		MouseExited += () => EmitSignal(SignalName.OnDeliveryMouseExited, id);
@@ -52,11 +55,11 @@ public partial class Delivery : HBoxContainer
     public void SetItems(int newID, ItemData[] newItems, int newDistance)
 	{
 		id = newID;
-		GetNode<Label>("VBox/IDLabel").Text = "[" + id + "]";
+		// GetNode<Label>("VBox/IDLabel").Text = "[" + id + "]";
 		foreach (ItemData newItemData in newItems)
 		{
 			Item NewItem = ItemScene.Instantiate<Item>();
-			ItemsHFlow.AddChild(NewItem);
+			// ItemsHFlow.AddChild(NewItem);
             Items = Items.Append(NewItem).ToArray();
 			NewItem.SetItem(newItemData);
 		}
@@ -131,12 +134,14 @@ public partial class Delivery : HBoxContainer
 	// 	return Payout;
 	// }
 
-	public bool HasTag(string tag) { return Tags.Contains(tag); }
+	public bool HasTag(string tag) { return Tags.ContainsKey(tag); }
 
-    public void AddTag(string newTag, Dictionary<string, string> newTagData, ModifierIcon newTagIcon) 
+    public void AddTag(string newTag, Dictionary<string, string> newTagData) 
 	{
 		if (HasTag(newTag)) return;
-		Tags = Tags.Append(newTag).ToArray();
+		DeliveryItem newDeliveryItem = new();
+		newDeliveryItem.SetData(newTagData);
+		Tags[newTag] = newDeliveryItem;
 		TagsData = TagsData.Append(newTagData).ToArray();
 		switch (newTag)
 		{
@@ -150,21 +155,21 @@ public partial class Delivery : HBoxContainer
 				DistanceJumped = 0;
 				break;
 		}
-		GetNode("VBox").AddChild(newTagIcon);
-		TagLabels = TagLabels.Append(newTagIcon.GetDataLabel()).ToArray();
+		// GetNode("VBox").AddChild(newTagIcon);
+		// TagLabels = TagLabels.Append(newTagIcon.GetDataLabel()).ToArray();
 	}
 
 	public void Jump(int jumped_to_id)
 	{
 		DistanceJumped++;
-		for (int i = 0; i < Tags.Length; i++)
+		for (int i = 0; i < Tags.Keys.Count; i++)
 		{
-			if (Tags[i] == "Fragile") 
+			if (Tags.Keys.ToArray()[i] == "Fragile") 
 			{
 				TagLabels[i].Text = (int.Parse(TagsData[i]["jumps"]) - DistanceJumped).ToString();
 				if (int.Parse(TagLabels[i].Text) == 0) FailQuest();
 			}
-			if (Tags[i] == "Segmented" && jumped_to_id == int.Parse(TagsData[i]["middle-man-id"]))
+			if (Tags.Keys.ToArray()[i] == "Segmented" && jumped_to_id == int.Parse(TagsData[i]["middle-man-id"]))
 			{
 				TagsData[i]["middle-man-met"] = "true";
 				TagLabels[i].Text = "Done";
@@ -174,8 +179,8 @@ public partial class Delivery : HBoxContainer
 
 	public Dictionary<string, string> GetTagData(string tag)
 	{
-		for (int i = 0; i < Tags.Length; i++)
-		if (Tags[i] == tag) return TagsData[i];
+		for (int i = 0; i < Tags.Keys.Count; i++)
+		if (Tags.Keys.ToArray()[i] == tag) return TagsData[i];
 		GD.Print("Couldn't find tag ", tag);
 		return new();
 	}

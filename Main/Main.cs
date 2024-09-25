@@ -964,7 +964,8 @@ public partial class Main : Node2D
 					foreach (Delivery delivery in Deliveries)
 					{
 						Dictionary<string, string> newTagData = new() { { "tier", CurrentLocation.GetHazardData("Hectic")["tier"] } };
-						delivery.AddTag("Timed", newTagData, GetNewModifierIcon("Timed", newTagData));
+						// delivery.AddTag("Timed", newTagData, GetNewModifierIcon("Timed", newTagData));
+						delivery.AddTag("Timed", newTagData);
 					}
 					CurrentLocation.RemoveHazard("Hectic");
 				}
@@ -976,7 +977,8 @@ public partial class Main : Node2D
 						Location destination = AcceptedQuests[delivery.ID].Destination;
 						int distance = (StarMap.GetIdPath(CurrentLocation.ID, destination.ID).Length + Rnd.Next(2)) * int.Parse(CurrentLocation.GetHazardData("Bacteria")["multiplier"]);
 						newTagData["jumps"] = distance.ToString();
-						delivery.AddTag("Fragile", newTagData, GetNewModifierIcon("Fragile", newTagData));
+						// delivery.AddTag("Fragile", newTagData, GetNewModifierIcon("Fragile", newTagData));
+						delivery.AddTag("Fragile", newTagData);
 					}
 					CurrentLocation.RemoveHazard("Bacteria");
 				}
@@ -1153,8 +1155,10 @@ public partial class Main : Node2D
 		{
 			string tag = DisplayedQuest.Tags[idx];
 			Dictionary<string, string> tagData = DisplayedQuest.TagsData[idx];
-			NewDelivery.AddTag(tag, tagData, GetNewModifierIcon(tag, tagData));
+			// NewDelivery.AddTag(tag, tagData, GetNewModifierIcon(tag, tagData));
+			NewDelivery.AddTag(tag, tagData);
 		}
+		// The third parameter is "newDistance", but I don't know what that distance represents, help. It's literally not used in the Delivery class, just assigned
 		NewDelivery.SetItems(DisplayedQuest.ID, DisplayedQuest.Items, StarMap.GetIdPath(CurrentLocation.ID, DisplayedQuest.Destination.ID).Length);
 		NewDelivery.OnDeliveryFailed += DeliveryFailed;
 		NewDelivery.OnDeliveryMouseEntered += OnDeliveryHoverStart;
