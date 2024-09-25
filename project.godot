@@ -32,7 +32,7 @@ import/blender/enabled=false
 
 [gui]
 
-theme/custom="res://MainTheme.tres"
+theme/custom="res://UI/new_theme.tres"
 
 [input]
 

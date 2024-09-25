@@ -463,7 +463,7 @@ theme_type_variation = &"LowMarginContainer"
 [node name="VBox" type="VBoxContainer" parent="UI/NewQuestContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox"]
+[node name="DeliveryContentsLabel" type="RichTextLabel" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 text = "Hello! I want you to deliver these to station Zeppelin:
@@ -479,12 +479,13 @@ Good luck!"
 layout_mode = 2
 
 [node name="PlanetSpace" type="Control" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox"]
-custom_minimum_size = Vector2(60, 0)
+clip_contents = true
+custom_minimum_size = Vector2(60, 44)
 layout_mode = 2
 
 [node name="DestinationLabel" type="Label" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox"]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 2
 text = "Destination"
 
 [node name="AcceptButton" type="Button" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox"]
@@ -492,6 +493,41 @@ layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
 text = "Accept"
+
+[node name="BalanceHBox" type="HBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -122.0
+offset_bottom = 20.0
+grow_horizontal = 0
+
+[node name="Label" type="Label" parent="UI/BalanceHBox"]
+layout_mode = 2
+text = "Balance: "
+vertical_alignment = 1
+
+[node name="BalanceLabel" type="Label" parent="UI/BalanceHBox"]
+layout_mode = 2
+vertical_alignment = 1
+
+[node name="FuelHBox" type="HBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -122.0
+offset_top = 21.0
+offset_bottom = 41.0
+grow_horizontal = 0
+
+[node name="Label" type="Label" parent="UI/FuelHBox"]
+layout_mode = 2
+text = "Fuel: "
+
+[node name="FuelLabel" type="Label" parent="UI/FuelHBox"]
+layout_mode = 2
 
 [node name="Locations" type="Node2D" parent="."]
 
@@ -1278,8 +1314,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 500.0
-offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 16
@@ -1434,8 +1468,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 550.0
-offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1488,8 +1520,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 600.0
-offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1589,6 +1619,7 @@ polygon = PackedVector2Array(-0.348511, 0.937256, 4.77161, -9.96155, 9.13269, 1.
 [node name="Polygon2D2" type="Polygon2D" parent="TestingConnections/Con2/ColorRect"]
 polygon = PackedVector2Array(8.61389, 25.6086, 5.12817, 34.9814, 0.0698242, 25.6319)
 
+[connection signal="pressed" from="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
 [connection signal="pressed" from="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
 [connection signal="pressed" from="LeftMenu/AchievementsButton" to="." method="OnAchievementsButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]

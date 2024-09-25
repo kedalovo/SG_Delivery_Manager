@@ -55,7 +55,7 @@ public partial class Main : Node2D
 	private int Balance { get => balance; set { MoneyLabel.Text = "$" + value; balance = value; } }
 
 	private int fuel;
-	private int FuelLevel { get => fuel; set { FuelLabel.Text = "Fuel:" + value; fuel = value; } } 
+	private int FuelLevel { get => fuel; set { FuelLabel.Text = value.ToString(); fuel = value; } } 
 	private Label FuelLabel;
 	private Label FuelLevelLabel;
 
@@ -262,8 +262,8 @@ public partial class Main : Node2D
 
 		DestinationLabel = GetNode<Label>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/DestinationLabel");
 		DestinationPlanet = GetNode<Control>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/PlanetSpace");
-		DeliveryContentsLabel = GetNode<RichTextLabel>(HBoxPath + "DeliveryVBox/DeliveryContentsLabel");
-		AcceptButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/AcceptButton");
+		DeliveryContentsLabel = GetNode<RichTextLabel>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/DeliveryContentsLabel");
+		AcceptButton = GetNode<Button>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton");
 		DeclineButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/DeclineButton");
 		FuelButton = GetNode<Button>("LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton");
 
@@ -289,9 +289,9 @@ public partial class Main : Node2D
 		CargoVBox = GetNode<VBoxContainer>(HBoxPath + "CargoVBox/Scroll/CargoVBox");
 		DeliveryScene = GD.Load<PackedScene>("res://Delivery/Delivery.tscn");
 
-		MoneyLabel = GetNode<Label>("Control/InfoVBox/MoneyLabel");
+		MoneyLabel = GetNode<Label>("UI/BalanceHBox/BalanceLabel");
 
-		FuelLabel = GetNode<Label>("Control/InfoVBox/FuelLabel");
+		FuelLabel = GetNode<Label>("UI/FuelHBox/FuelLabel");
 		FuelLevelLabel = GetNode<Label>("LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelLevelLabel");
 
 		ModifiersHBox = GetNode<HBoxContainer>(HBoxPath + "DeliveryVBox/ModifiersHBox");
@@ -1090,17 +1090,20 @@ public partial class Main : Node2D
 		Location DeliveryLocation = NewQuest.Destination;
 		DeliveryLocation.Highlight();
 		DestinationLabel.Text = DeliveryLocation.LocationName;
-		foreach (ItemData item in NewQuest.Items)
+		DeliveryContentsLabel.AddText("Hello! I want you to deliver these to station " + DeliveryLocation.LocationName + ":\n\n");
+		for (int i = 0; i < NewQuest.Items.Length; i++)
 		{
-			DeliveryContentsLabel.AddText(string.Format("{0} ({1})\n", item.ItemName, item.Fragility));
+			ItemData item = NewQuest.Items[i];
+			DeliveryContentsLabel.AddText(string.Format("\t{0}: {1} ({2})\n", i + 1, item.ItemName, item.Fragility));
 		}
+		DeliveryContentsLabel.AddText("\nGood Luck!");
 		for (int i = 0; i < NewQuest.Tags.Length; i++)
 		{
 			string tag = NewQuest.Tags[i];
 			Dictionary<string, string> tagData = NewQuest.TagsData[i];
 			ModifiersHBox.AddChild(GetNewModifierIcon(tag, tagData));
 		}
-		CreateNewPlanet(DestinationPlanet, DeliveryLocation.PlanetType, DeliveryLocation.PlanetPreset, 20);
+		CreateNewPlanet(DestinationPlanet, DeliveryLocation.PlanetType, DeliveryLocation.PlanetPreset, 40);
 		HighlightPath(CurrentLocation.ID, DeliveryLocation.ID, "00b025");
 	}
 
@@ -1227,7 +1230,7 @@ public partial class Main : Node2D
 		if (Difference > 0) { PopupLabel.Text = "$" + Difference.ToString(); PopupLabel.Modulate = Colors.Green; }
 		else { PopupLabel.Text = Difference.ToString().Insert(1, "$"); PopupLabel.Modulate = Colors.Red; }
 		AddChild(PopupLabel);
-		PopupLabel.Position = new Godot.Vector2(512 + Rnd.Next(-64, 64), 16);
+		PopupLabel.Position = new Godot.Vector2(1800 + Rnd.Next(-100, 100), 16);
 		Tween LabelTween = GetTree().CreateTween();
 		LabelTween.TweenProperty(PopupLabel, "position:y", (float)Rnd.NextDouble() * 20.0f + 40.0f, 1.0d);
 		LabelTween.TweenProperty(PopupLabel, "modulate", Colors.Transparent, 0.3d).SetDelay(0.7d);
