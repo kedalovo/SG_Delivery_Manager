@@ -189,9 +189,9 @@ public partial class Location : Node2D
 		if (removing) RemoveHazard("MarketCrash");
 	}
 
-	public void Highlight() { QuestPolygon.Show(); }
+	// public void Highlight() { QuestPolygon.Show(); }
 
-	public void ClearHighlight() { QuestPolygon.Hide(); }
+	// public void ClearHighlight() { QuestPolygon.Hide(); }
 
 	private void OnButtonMouseEntered()
 	{
@@ -203,9 +203,9 @@ public partial class Location : Node2D
 		Animator.PlayBackwards("select");
 	}
 
-	public void Choosable() { Animator.Play("Choosable"); }
+	// public void Choosable() { Animator.Play("Choosable"); }
 
-	public void ClearChoosable() { Animator.Play("RESET"); }
+	// public void ClearChoosable() { Animator.Play("RESET"); }
 
 	public void Jump()
 	{

@@ -5,10 +5,14 @@
 [node name="DeliveryItem" type="VBoxContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
 script = ExtResource("1_62ktp")
 
 [node name="DataHBox" type="HBoxContainer" parent="."]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Texture" type="TextureRect" parent="DataHBox"]
 layout_mode = 2
@@ -16,6 +20,9 @@ stretch_mode = 3
 
 [node name="DataLabel" type="Label" parent="DataHBox"]
 layout_mode = 2
+size_flags_horizontal = 10
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="PlanetSpace" type="Control" parent="DataHBox"]
 layout_mode = 2
@@ -24,6 +31,10 @@ layout_mode = 2
 modulate = Color(0.125, 1, 0, 1)
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
-step = 1.0
 value = 75.0
 show_percentage = false
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="OnDeliveryTimerTimeout"]

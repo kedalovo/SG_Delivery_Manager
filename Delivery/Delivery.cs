@@ -6,7 +6,7 @@ using System.Linq;
 public partial class Delivery : PanelContainer
 {
 	[Signal]
-	public delegate void OnDeliveryFailedEventHandler(int DeliveryID);
+	public delegate void OnDeliveryFailedEventHandler(int DeliveryID, string FailReason);
 	[Signal]
 	public delegate void OnDeliveryMouseEnteredEventHandler(int DeliveryID);
 	[Signal]
@@ -26,15 +26,18 @@ public partial class Delivery : PanelContainer
 
 	private PackedScene ItemScene;
 	// private HFlowContainer ItemsHFlow;
+	private VBoxContainer DeliveryItemsVBox;
+	private ProgressBar ItemDurabilityProgressBar;
 
 	private PackedScene DeliveryItemScene;
+	private Control ItemsControl;
 
 	private Item[] Items = Array.Empty<Item>();
 	private Dictionary<string, DeliveryItem> Tags = new();
-	private Dictionary<string, string>[] TagsData = Array.Empty<Dictionary<string, string>>();
-	private Label[] TagLabels = Array.Empty<Label>();
+	// private Dictionary<string, string>[] TagsData = Array.Empty<Dictionary<string, string>>();
+	// private Label[] TagLabels = Array.Empty<Label>();
 
-	private Timer DeliveryTimer;
+	// private Timer DeliveryTimer;
 
 	public int TotalDistance;
 
@@ -46,8 +49,11 @@ public partial class Delivery : PanelContainer
 	{
 		ItemScene = GD.Load<PackedScene>("res://Item/Item.tscn");
 		// ItemsHFlow = GetNode<HFlowContainer>("ItemsHFlow");
+		DeliveryItemsVBox = GetNode<VBoxContainer>("ContentsHBox/DeliveryItemsVBox");
 		DeliveryItemScene = GD.Load<PackedScene>("res://Delivery/DeliveryItem/DeliveryItem.tscn");
-		DeliveryTimer = GetNode<Timer>("Timer");
+		ItemDurabilityProgressBar = GetNode<ProgressBar>("ContentsHBox/ItemDurabilityProgressBar");
+		ItemsControl = GetNode<Control>("Items");
+		// DeliveryTimer = GetNode<Timer>("Timer");
 		MouseEntered += () => EmitSignal(SignalName.OnDeliveryMouseEntered, id);
 		MouseExited += () => EmitSignal(SignalName.OnDeliveryMouseExited, id);
 	}
@@ -55,26 +61,37 @@ public partial class Delivery : PanelContainer
     public void SetItems(int newID, ItemData[] newItems, int newDistance)
 	{
 		id = newID;
+		GD.Print("Setting items for new delivery...");
+		GD.Print("\tAmount of items: ", newItems.Length);
 		// GetNode<Label>("VBox/IDLabel").Text = "[" + id + "]";
 		foreach (ItemData newItemData in newItems)
 		{
 			Item NewItem = ItemScene.Instantiate<Item>();
-			// ItemsHFlow.AddChild(NewItem);
+			ItemsControl.AddChild(NewItem);
             Items = Items.Append(NewItem).ToArray();
 			NewItem.SetItem(newItemData);
 		}
 		TotalDistance = newDistance;
 	}
 
+	public void SetPlanet(Planet newPlanet)
+	{
+		Tags["Segmented"].SetPlanet(newPlanet);
+	}
+
 	public void Damage(int Distance)
 	{
 		bool AllDone = true;
+		int TotalHP = 0;
 		foreach (Item _Item in Items)
 		{
 			_Item.Damage(Distance);
+			// GD.Print("\t\tItem ", _Item.ItemName, " was damaged. HP: ", _Item.HP);
 			if (_Item.HP > 0) { AllDone = false; }
+			TotalHP += _Item.HP;
 		}
-		if (AllDone) FailQuest();
+		ItemDurabilityProgressBar.Value = TotalHP / (Items.Length * 100.0f) * 100.0f;
+		if (AllDone) FailQuest("All items are destroyed");
 	}
 
 	public int[] GetItemsDurability()
@@ -136,71 +153,94 @@ public partial class Delivery : PanelContainer
 
 	public bool HasTag(string tag) { return Tags.ContainsKey(tag); }
 
+	public void SetEmpty() 
+	{
+		DeliveryItem newDeliveryItem = DeliveryItemScene.Instantiate<DeliveryItem>();
+		DeliveryItemsVBox.AddChild(newDeliveryItem);
+		newDeliveryItem.SetEmpty();
+		Tags["empty"] = newDeliveryItem;
+		GD.Print("\tEmpty tag added");
+	}
+
     public void AddTag(string newTag, Dictionary<string, string> newTagData) 
 	{
 		if (HasTag(newTag)) return;
-		DeliveryItem newDeliveryItem = new();
-		newDeliveryItem.SetData(newTagData);
-		Tags[newTag] = newDeliveryItem;
-		TagsData = TagsData.Append(newTagData).ToArray();
-		switch (newTag)
+		if (Tags.Keys.Count == 0)
 		{
-			case "Timed":
-				TimedTagIdx = TagsData.Length - 1;
-				TagsData[TimedTagIdx]["time"] = (20 - int.Parse(newTagData["tier"])*5).ToString();
-				DeliveryTimer.Start();
-				break;
-			case "Fragile":
-				FragileTagIdx = TagsData.Length - 1;
-				DistanceJumped = 0;
-				break;
+			foreach (Node c in DeliveryItemsVBox.GetChildren()) c.QueueFree();
+			Tags.Remove("empty");
 		}
+		DeliveryItem newDeliveryItem = DeliveryItemScene.Instantiate<DeliveryItem>();
+		DeliveryItemsVBox.AddChild(newDeliveryItem);
+		newDeliveryItem.SetData(newTag, newTagData);
+		newDeliveryItem.OnFail += FailQuest;
+		Tags[newTag] = newDeliveryItem;
+		if (newTag == "Fragile") DistanceJumped = 0;
+		GD.Print("\tAdded tag: ", newTag);
+		// TagsData = TagsData.Append(newTagData).ToArray();
+		// switch (newTag)
+		// {
+			// case "Timed":
+				// TimedTagIdx = TagsData.Length - 1;
+				// TagsData[TimedTagIdx]["time"] = (20 - int.Parse(newTagData["tier"])*5).ToString();
+				// DeliveryTimer.Start();
+				// break;
+			// case "Fragile":
+				// FragileTagIdx = TagsData.Length - 1;
+		// 		DistanceJumped = 0;
+		// 		break;
+		// }
 		// GetNode("VBox").AddChild(newTagIcon);
 		// TagLabels = TagLabels.Append(newTagIcon.GetDataLabel()).ToArray();
 	}
 
-	public void Jump(int jumped_to_id)
+	public void Jump(int jumpedToId)
 	{
 		DistanceJumped++;
-		for (int i = 0; i < Tags.Keys.Count; i++)
+		foreach (DeliveryItem Tag in Tags.Values)
 		{
-			if (Tags.Keys.ToArray()[i] == "Fragile") 
-			{
-				TagLabels[i].Text = (int.Parse(TagsData[i]["jumps"]) - DistanceJumped).ToString();
-				if (int.Parse(TagLabels[i].Text) == 0) FailQuest();
-			}
-			if (Tags.Keys.ToArray()[i] == "Segmented" && jumped_to_id == int.Parse(TagsData[i]["middle-man-id"]))
-			{
-				TagsData[i]["middle-man-met"] = "true";
-				TagLabels[i].Text = "Done";
-			}
+			Tag.Jump(jumpedToId);
 		}
+		// for (int i = 0; i < Tags.Keys.Count; i++)
+		// {
+			// if (Tags.Keys.ToArray()[i] == "Fragile")
+			// {
+				// TagLabels[i].Text = (int.Parse(TagsData[i]["jumps"]) - DistanceJumped).ToString();
+				// if (int.Parse(TagLabels[i].Text) == 0) FailQuest();
+			// }
+			// if (Tags.Keys.ToArray()[i] == "Segmented" && jumped_to_id == int.Parse(TagsData[i]["middle-man-id"]))
+			// {
+				// TagsData[i]["middle-man-met"] = "true";
+			// 	TagLabels[i].Text = "Done";
+			// }
+		// }
 	}
 
 	public Dictionary<string, string> GetTagData(string tag)
 	{
-		for (int i = 0; i < Tags.Keys.Count; i++)
-		if (Tags.Keys.ToArray()[i] == tag) return TagsData[i];
-		GD.Print("Couldn't find tag ", tag);
-		return new();
+		// for (int i = 0; i < Tags.Keys.Count; i++)
+		// if (Tags.Keys.ToArray()[i] == tag) return TagsData[i];
+		// GD.Print("Couldn't find tag ", tag);
+		// return new();
+		return Tags[tag].GetTagData();
 	}
 
-	private void FailQuest()
+	private void FailQuest(string Reason)
 	{
-		EmitSignal(SignalName.OnDeliveryFailed, id);
+		EmitSignal(SignalName.OnDeliveryFailed, id, Reason);
 	}
 
-	public void OnDeliveryTimerTimeout()
-	{
-		if (TagsData[TimedTagIdx]["time"] != "0")
-		{
-			TagsData[TimedTagIdx]["time"] = (int.Parse(TagsData[TimedTagIdx]["time"]) - 1).ToString();
-			TagLabels[TimedTagIdx].Text = TagsData[TimedTagIdx]["time"];
-		}
-		else
-		{
-			GD.Print(id + ": Timeout!");
-			FailQuest();
-		}
-	}
+	// public void OnDeliveryTimerTimeout()
+	// {
+		// if (TagsData[TimedTagIdx]["time"] != "0")
+		// {
+		// 	TagsData[TimedTagIdx]["time"] = (int.Parse(TagsData[TimedTagIdx]["time"]) - 1).ToString();
+		// 	TagLabels[TimedTagIdx].Text = TagsData[TimedTagIdx]["time"];
+		// }
+		// else
+		// {
+		// 	GD.Print(id + ": Timeout!");
+		// 	FailQuest();
+		// }
+	// }
 }

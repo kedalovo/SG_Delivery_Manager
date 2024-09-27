@@ -50,6 +50,8 @@ public partial class Main : Node2D
 
 	private Delivery[] Deliveries;
 
+	private VBoxContainer DeliveriesContainer;
+
 	private Label MoneyLabel;
 	private int balance;
 	private int Balance { get => balance; set { MoneyLabel.Text = "$" + value; balance = value; } }
@@ -66,7 +68,7 @@ public partial class Main : Node2D
 	private SpriteFrames FragileFrames;
 	private SpriteFrames SegmentedFrames;
 
-	private Dictionary<string, SpriteFrames> TagFrames;
+	// private Dictionary<string, SpriteFrames> TagFrames;
 
 	private int HazardCounter;
 	private Texture2D MarketCrashIcon;
@@ -287,26 +289,28 @@ public partial class Main : Node2D
 		Deliveries = Array.Empty<Delivery>();
 		
 		CargoVBox = GetNode<VBoxContainer>(HBoxPath + "CargoVBox/Scroll/CargoVBox");
-		DeliveryScene = GD.Load<PackedScene>("res://Delivery/Delivery.tscn");
+		DeliveryScene = GD.Load<PackedScene>("res://Delivery/NewDelivery.tscn");
+
+		DeliveriesContainer = GetNode<VBoxContainer>("UI/DeliveriesContainer/ScrollContainer/VBoxContainer");
 
 		MoneyLabel = GetNode<Label>("UI/BalanceHBox/BalanceLabel");
 
 		FuelLabel = GetNode<Label>("UI/FuelHBox/FuelLabel");
 		FuelLevelLabel = GetNode<Label>("LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelLevelLabel");
 
-		ModifiersHBox = GetNode<HBoxContainer>(HBoxPath + "DeliveryVBox/ModifiersHBox");
+		ModifiersHBox = GetNode<HBoxContainer>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/ModifiersHBox");
 		ModifierIconScene = GD.Load<PackedScene>("res://Modifiers/ModifierIcon.tscn");
 
 		TimedFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Timed.tres");
 		FragileFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Fragile.tres");
 		SegmentedFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Segmented.tres");
 
-		TagFrames = new()
-		{
-			["Timed"] = TimedFrames,
-			["Fragile"] = FragileFrames,
-			["Segmented"] = SegmentedFrames
-		};
+		// TagFrames = new()
+		// {
+		// 	["Timed"] = TimedFrames,
+		// 	["Fragile"] = FragileFrames,
+		// 	["Segmented"] = SegmentedFrames
+		// };
 
 		MarketCrashIcon = GD.Load<Texture2D>("res://Location/Hazards/FuelCrash.png");
 		DisenteryIcon = GD.Load<Texture2D>("res://Location/Hazards/HeatLeeches.png");
@@ -545,6 +549,7 @@ public partial class Main : Node2D
 		if (@event.IsActionPressed("test"))
 		{
 			GD.Print("TESTING");
+			GetTree().Paused = true;
 			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
 			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
 			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_3);
@@ -641,12 +646,12 @@ public partial class Main : Node2D
 		if (Parent.PlanetPreset == "") Parent.PlanetPreset = PlanetPreset;
 	}
 
-	private void CreateNewPlanet(Node Parent, string PlanetType, string PlanetPreset, int pixels)
+	private Planet CreateNewPlanet(Node Parent, string PlanetType, string PlanetPreset, int pixels, Vector2 offset)
 	{
 		// GD.PrintErr("Tried to create planet with type: ", PlanetType, " and preset: ", PlanetPreset);
 		Planet NewPlanet = PlanetScenes[PlanetType].Instantiate<Planet>();
 		Parent.AddChild(NewPlanet);
-		NewPlanet.Position = new Vector2(30, 22) + new Vector2(-pixels/2, -pixels/2);
+		NewPlanet.Position = new Vector2(30, 22) + new Vector2(-pixels/2, -pixels/2) + offset;
 		NewPlanet.SetPixels(pixels);
 		NewPlanet.SetSeed(PlanetSeeds[PlanetPreset]);
 		float RandomRotation = Rnd.Next(-pixels/2, pixels/2) / 100.0f;
@@ -672,6 +677,7 @@ public partial class Main : Node2D
 				NewPlanet.SetRotation(2.0f + RandomRotation);
 				break;
 		}
+		return NewPlanet;
 	}
 
 	private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)
@@ -848,7 +854,7 @@ public partial class Main : Node2D
 		Location ChosenLocation = PossibleLocations[Rnd.Next(PossibleLocations.Length)];
 
 		// Adding a modifier
-		switch (Rnd.Next(3))
+		switch (Rnd.Next(5))
 		{
 			case 0:
 				string newTag = "";
@@ -858,27 +864,39 @@ public partial class Main : Node2D
 					case 0:
 						newTag = "Timed";
 						newTagData["tier"] = (Rnd.Next(3) + 1).ToString();
+						newTagData["texture_path"] = "res://UI/Icons/Modifiers/Timed.svg";
 						break;
 					case 1:
 						newTag = "Fragile";
 						newTagData["jumps"] = (StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length + Rnd.Next(2)).ToString();
+						newTagData["texture_path"] = "res://UI/Icons/Modifiers/Fragile.svg";
 						break;
 					case 2:
 						newTag = "Segmented";
 						newTagData["middle-man-id"] = StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID)[Rnd.Next(1, StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length-1)].ToString();
 						newTagData["middle-man-name"] = AllLocations[int.Parse(newTagData["middle-man-id"])].LocationName;
 						newTagData["middle-man-met"] = "false";
+						newTagData["texture_path"] = "res://UI/Icons/Modifiers/Segmented.svg";
 						break;
 				}
 				NewQuest.AddTag(newTag, newTagData);
 				break;
 			case 1:
-				NewQuest.AddTag("Timed", new Dictionary<string, string>() { {"tier", (Rnd.Next(3) + 1).ToString()} });
-				NewQuest.AddTag("Fragile", new Dictionary<string, string>() { {"jumps", (StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length + Rnd.Next(2)).ToString()} });
-				GD.Print("COMBO");
+				NewQuest.AddTag("Timed", new Dictionary<string, string>() { {"tier", (Rnd.Next(3) + 1).ToString()}, {"texture_path", "res://UI/Icons/Modifiers/Timed.svg"} });
+				NewQuest.AddTag("Fragile", new Dictionary<string, string>() { {"jumps", (StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length + Rnd.Next(2)).ToString()},
+					{"texture_path", "res://UI/Icons/Modifiers/Fragile.svg"} });
+				// GD.Print("COMBO");
+				break;
+			case 2:
+				NewQuest.AddTag("Timed", new Dictionary<string, string>() { {"tier", (Rnd.Next(3) + 1).ToString()}, {"texture_path", "res://UI/Icons/Modifiers/Timed.svg"} });
+				string temp1 = StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID)[Rnd.Next(1, StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length-1)].ToString();
+				NewQuest.AddTag("Segmented", new Dictionary<string, string>() {
+					{"middle-man-id", temp1},
+					{"middle-man-name", AllLocations[int.Parse(temp1)].LocationName},
+					{"middle-man-met", "false"},
+					{"texture_path", "res://UI/Icons/Modifiers/Segmented.svg"} });
 				break;
 		}
-
 		NewQuest.Destination = ChosenLocation;
 		NewQuest.ID = QuestCounter;
 		return NewQuest;
@@ -895,7 +913,7 @@ public partial class Main : Node2D
 			{
 				if (CurrentLocation.Hazards.Contains("Disentery")) CurrentLocation.RemoveHazard("Disentery");
 				StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
-				ClearQuestHighlight();
+				// ClearQuestHighlight();
 				FuelLevel -= JumpDistance;
 				CreateNewNPC();
 				if (PressedLocation.Hazards.Contains("Faulty"))
@@ -1090,22 +1108,30 @@ public partial class Main : Node2D
 		EnableQuestButtons();
 		DisplayedQuest = NewQuest;
 		Location DeliveryLocation = NewQuest.Destination;
-		DeliveryLocation.Highlight();
+		// DeliveryLocation.Highlight();
 		DestinationLabel.Text = DeliveryLocation.LocationName;
 		DeliveryContentsLabel.AddText("Hello! I want you to deliver these to station " + DeliveryLocation.LocationName + ":\n\n");
 		for (int i = 0; i < NewQuest.Items.Length; i++)
 		{
 			ItemData item = NewQuest.Items[i];
-			DeliveryContentsLabel.AddText(string.Format("\t{0}: {1} ({2})\n", i + 1, item.ItemName, item.Fragility));
+			DeliveryContentsLabel.AddText(string.Format("\t{0}: {1}\n", i + 1, item.ItemName));
 		}
 		DeliveryContentsLabel.AddText("\nGood Luck!");
 		for (int i = 0; i < NewQuest.Tags.Length; i++)
 		{
 			string tag = NewQuest.Tags[i];
 			Dictionary<string, string> tagData = NewQuest.TagsData[i];
-			ModifiersHBox.AddChild(GetNewModifierIcon(tag, tagData));
+			ModifierIcon newMod = GetNewModifierIcon(tag, tagData);
+			ModifiersHBox.AddChild(newMod);
+			if (tag == "Segmented")
+			{
+				Location middleManLocation = AllLocations[int.Parse(tagData["middle-man-id"])];
+				Planet newPlanet = CreateNewPlanet(newMod, middleManLocation.PlanetType, middleManLocation.PlanetPreset, 20, new Vector2(16, -12));
+				newMod.SetPlanet(newPlanet);
+				newMod.HideData();
+			}
 		}
-		CreateNewPlanet(DestinationPlanet, DeliveryLocation.PlanetType, DeliveryLocation.PlanetPreset, 40);
+		CreateNewPlanet(DestinationPlanet, DeliveryLocation.PlanetType, DeliveryLocation.PlanetPreset, 40, Vector2.Zero);
 		HighlightPath(CurrentLocation.ID, DeliveryLocation.ID, "00b025");
 	}
 
@@ -1128,7 +1154,7 @@ public partial class Main : Node2D
 	private void OnAcceptQuestButtonPressed()
 	{
 		StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
-		ClearQuestHighlight();
+		// ClearQuestHighlight();
 		DisableQuestButtons();
 		AcceptDisplayedQuest();
 		QuestCounter++;
@@ -1138,7 +1164,7 @@ public partial class Main : Node2D
 	{
 		StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
 		DisableQuestButtons();
-		ClearQuestHighlight();
+		// ClearQuestHighlight();
 	}
 
 	private void AcceptDisplayedQuest()
@@ -1148,17 +1174,27 @@ public partial class Main : Node2D
 		// Adding a new destination to display on the map
 		DisplayedQuest.Destination.AddQuest(DisplayedQuest.ID);
 		Delivery NewDelivery = DeliveryScene.Instantiate<Delivery>();
-		CargoVBox.AddChild(NewDelivery);
-		GodotArray[] Result = Array.Empty<GodotArray>();
 		// Adding a delivery in the cargo hold
+		DeliveriesContainer.AddChild(NewDelivery);
+		// CargoVBox.AddChild(NewDelivery);
+		GodotArray[] Result = Array.Empty<GodotArray>();
+		GD.Print("Creating new Delivery with ", DisplayedQuest.Tags.Length, " tags...");
 		foreach (int idx in Enumerable.Range(0, DisplayedQuest.Tags.Length))
 		{
 			string tag = DisplayedQuest.Tags[idx];
 			Dictionary<string, string> tagData = DisplayedQuest.TagsData[idx];
 			// NewDelivery.AddTag(tag, tagData, GetNewModifierIcon(tag, tagData));
 			NewDelivery.AddTag(tag, tagData);
+			if (tag == "Segmented")
+			{
+				NewDelivery.SetPlanet(CreateNewPlanet(NewDelivery, DisplayedQuest.Destination.PlanetType, DisplayedQuest.Destination.PlanetPreset, 40, Vector2.Zero));
+			}
 		}
-		// The third parameter is "newDistance", but I don't know what that distance represents, help. It's literally not used in the Delivery class, just assigned
+		if (DisplayedQuest.Tags.Length == 0)
+		{
+			NewDelivery.SetEmpty();
+		}
+		// The third parameter is "newDistance", which gets used in payout calculation
 		NewDelivery.SetItems(DisplayedQuest.ID, DisplayedQuest.Items, StarMap.GetIdPath(CurrentLocation.ID, DisplayedQuest.Destination.ID).Length);
 		NewDelivery.OnDeliveryFailed += DeliveryFailed;
 		NewDelivery.OnDeliveryMouseEntered += OnDeliveryHoverStart;
@@ -1169,7 +1205,7 @@ public partial class Main : Node2D
 
 	private void UpdateDeliveries(int Distance) { foreach (Delivery delivery in Deliveries) delivery.Damage(Distance); }
 
-	private void DeliveryFailed(int FailedDeliveryID)
+	private void DeliveryFailed(int FailedDeliveryID, string FailReason)
 	{
 		Delivery FailedDelivery = new();
 		foreach (Delivery delivery in Deliveries) if (FailedDeliveryID == delivery.ID) { FailedDelivery = delivery; break; }
@@ -1186,7 +1222,7 @@ public partial class Main : Node2D
 		PopupBalance(-Payout);
 		Balance -= Payout;
 		FailedDelivery.QueueFree();
-		GD.Print(string.Format("Delivery [{0}] failed!", FailedDeliveryID));
+		GD.Print(string.Format("Delivery [{0}] failed!\n\tReason: {1}", FailedDeliveryID, FailReason));
 		ACH_TotalFails++;
 	}
 
@@ -1206,14 +1242,14 @@ public partial class Main : Node2D
 		}
 	}
 
-	private void ClearQuestHighlight() { DisplayedQuest.Destination.ClearHighlight(); }
+	// private void ClearQuestHighlight() { DisplayedQuest.Destination.ClearHighlight(); }
 
 	private void HighlightNeighbours()
 	{
 		long[] Connections = StarMap.GetPointConnections(CurrentLocation.ID);
 		foreach (long id in Connections)
 		{
-			AllLocations[(int)id].Choosable();
+			// AllLocations[(int)id].Choosable();
 			HighlightSingleConnection(CurrentLocation.ID, (int)id);
 		}
 	}
@@ -1223,7 +1259,7 @@ public partial class Main : Node2D
 		long[] Connections = StarMap.GetPointConnections(CurrentLocation.ID);
 		foreach (long id in Connections)
 		{
-			AllLocations[(int)id].ClearChoosable();
+			// AllLocations[(int)id].ClearChoosable();
 			StopHighlightSingleConnection(CurrentLocation.ID, (int)id);
 		}
 	}
@@ -1469,16 +1505,19 @@ public partial class Main : Node2D
 	{
 		ModifierIcon NewModifier = ModifierIconScene.Instantiate<ModifierIcon>();
 		NewModifier.Tag = newTag;
-		NewModifier.SetSprite(TagFrames[newTag]);
+		// NewModifier.SetSprite(TagFrames[newTag]);
 		switch (newTag)
 		{
 			case "Timed":
+				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Timed.svg"));
 				NewModifier.SetData((20 - int.Parse(newTagData["tier"]) * 5).ToString());
 				break;
 			case "Fragile":
+				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Fragile.svg"));
 				NewModifier.SetData(newTagData["jumps"]);
 				break;
 			case "Segmented":
+				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Segmented.svg"));
 				NewModifier.SetData(newTagData["middle-man-name"]);
 				break;
 		}

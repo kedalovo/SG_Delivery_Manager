@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://huvowrxh5x0l"]
+[gd_scene load_steps=35 format=3 uid="uid://huvowrxh5x0l"]
 
 [ext_resource type="Script" path="res://Main/Main.cs" id="1_ei6yb"]
 [ext_resource type="PackedScene" uid="uid://bvwjgxmq2ro5h" path="res://Location/Location.tscn" id="3_dt0bp"]
@@ -6,12 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://dfd4qgmg3todd" path="res://NPC/Faces/Faces.png" id="5_mmjq5"]
 [ext_resource type="Texture2D" uid="uid://g0o15jg5f87f" path="res://NPC/Bodies/Bodies.png" id="5_xd0hc"]
 [ext_resource type="Texture2D" uid="uid://d4dje22awji6e" path="res://Location/Star.png" id="7_arlnc"]
-[ext_resource type="Texture2D" uid="uid://c2gm46bn2r65u" path="res://UI/Icons/Modifiers/Timed.svg" id="7_lng2d"]
 [ext_resource type="PackedScene" uid="uid://krk0tryxukwu" path="res://Achievements/Achievement.tscn" id="8_656hj"]
 [ext_resource type="Texture2D" uid="uid://2iiemvy07xw0" path="res://Achievements/Sprites/All_Deliveries_Amount_1.png" id="8_oqerx"]
-[ext_resource type="Texture2D" uid="uid://cjbfkrjslhbqc" path="res://UI/Icons/Modifiers/Segmented.svg" id="8_v5aut"]
 [ext_resource type="Texture2D" uid="uid://df25arj7toepl" path="res://Achievements/Sprites/All_Deliveries_Amount_2.png" id="9_ntv02"]
-[ext_resource type="Texture2D" uid="uid://bj4r5jfhf5vfy" path="res://UI/Icons/Modifiers/Fragile.svg" id="9_ut86d"]
 [ext_resource type="Texture2D" uid="uid://d0ev8dq0ufptc" path="res://Achievements/Sprites/All_Deliveries_Amount_3.png" id="10_1km8m"]
 [ext_resource type="Texture2D" uid="uid://col650e5fubpd" path="res://Achievements/Sprites/All_Items_Combined_Amount_1.png" id="11_h8pji"]
 [ext_resource type="Texture2D" uid="uid://nukpiqu784lp" path="res://Achievements/Sprites/All_Items_Combined_Amount_2.png" id="12_idm6s"]
@@ -258,199 +255,16 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
-
-[node name="PanelContainer" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-
-[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox/HBox"]
-custom_minimum_size = Vector2(48, 16)
-layout_mode = 2
-texture = ExtResource("7_lng2d")
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox/HBox"]
-layout_mode = 2
-text = "15"
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox"]
-modulate = Color(0.125, 1, 0, 1)
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-step = 1.0
-value = 75.0
-show_percentage = false
-
-[node name="VBox2" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2/HBox"]
-custom_minimum_size = Vector2(48, 16)
-layout_mode = 2
-texture = ExtResource("8_v5aut")
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2/HBox"]
-layout_mode = 2
-text = "al"
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox2"]
-visible = false
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-step = 1.0
-show_percentage = false
-
-[node name="VBox3" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3/HBox"]
-custom_minimum_size = Vector2(48, 16)
-layout_mode = 2
-texture = ExtResource("9_ut86d")
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3/HBox"]
-layout_mode = 2
-text = "4"
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox/VBox/VBox3"]
-modulate = Color(1, 0, 0, 1)
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-step = 1.0
-value = 23.0
-show_percentage = false
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/HBox"]
-custom_minimum_size = Vector2(4, 64)
-layout_mode = 2
-size_flags_vertical = 1
-step = 1.0
-value = 85.0
-fill_mode = 3
-show_percentage = false
-
-[node name="PanelContainer2" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2"]
-layout_mode = 2
-
-[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox/VBox"]
-layout_mode = 2
-text = "No data"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer2/HBox"]
-custom_minimum_size = Vector2(4, 64)
-layout_mode = 2
-size_flags_vertical = 1
-value = 85.0
-fill_mode = 3
-show_percentage = false
-
-[node name="PanelContainer3" type="PanelContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3"]
-layout_mode = 2
-
-[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="VBox" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox/HBox"]
-custom_minimum_size = Vector2(48, 16)
-layout_mode = 2
-texture = ExtResource("7_lng2d")
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox/HBox"]
-layout_mode = 2
-text = "5"
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox"]
-modulate = Color(1, 0, 0, 1)
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-step = 1.0
-value = 15.0
-show_percentage = false
-
-[node name="VBox3" type="VBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox"]
-layout_mode = 2
-
-[node name="HBox" type="HBoxContainer" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3/HBox"]
-custom_minimum_size = Vector2(48, 16)
-layout_mode = 2
-texture = ExtResource("9_ut86d")
-stretch_mode = 3
-
-[node name="Label" type="Label" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3/HBox"]
-layout_mode = 2
-text = "6"
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox/VBox/VBox3"]
-modulate = Color(0.992188, 1, 0, 1)
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-step = 1.0
-value = 68.0
-show_percentage = false
-
-[node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer3/HBox"]
-custom_minimum_size = Vector2(4, 64)
-layout_mode = 2
-size_flags_vertical = 1
-value = 85.0
-fill_mode = 3
-show_percentage = false
 
 [node name="NewQuestContainer" type="MarginContainer" parent="UI"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -302.0
+offset_top = -370.0
 offset_right = 460.0
 grow_vertical = 0
 
@@ -475,6 +289,9 @@ text = "Hello! I want you to deliver these to station Zeppelin:
 5.
 6.
 Good luck!"
+
+[node name="ModifiersHBox" type="HBoxContainer" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
 
 [node name="HBox" type="HBoxContainer" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox"]
 layout_mode = 2

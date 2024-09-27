@@ -11,25 +11,32 @@ public partial class ModifierIcon : CenterContainer
     }
 
     private Label DataLabel;
+    private Control PlanetControl;
 
     private string Data;
 
     public override void _Ready()
     {
         DataLabel = GetNode<Label>("HBox/DataLabel");
+        PlanetControl = GetNode<Control>("HBox/PlanetControl");
         DataLabel.Text = Data;
     }
 
-    public void SetSprite(SpriteFrames newSprite)
+    public void SetSprite(Texture2D newSprite)
     {
-        AnimatedSprite2D Icon = GetNode<AnimatedSprite2D>("Icon");
-        Icon.SpriteFrames = newSprite;
+        Sprite2D Icon = GetNode<Sprite2D>("Icon");
+        Icon.Texture = newSprite;
     }
 
     public void SetData(string newData)
     {
         if (DataLabel is not null) DataLabel.Text = newData;
         else Data = newData;
+    }
+
+    public void SetPlanet(Planet newPlanet)
+    {
+        newPlanet.Reparent(PlanetControl);
     }
 
     public Label GetDataLabel()

@@ -12,7 +12,7 @@ public partial class Item : HBoxContainer
 
 	public override void _Ready()
 	{
-		
+		ItemHP = 100;
 	}
 
 	public void SetItem(ItemData newItemData)

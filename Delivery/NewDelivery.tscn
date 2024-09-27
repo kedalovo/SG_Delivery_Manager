@@ -5,6 +5,7 @@
 [node name="NewDelivery" type="PanelContainer"]
 offset_right = 16.0
 offset_bottom = 16.0
+size_flags_horizontal = 3
 script = ExtResource("1_cfek3")
 
 [node name="ContentsHBox" type="HBoxContainer" parent="."]
@@ -12,14 +13,16 @@ layout_mode = 2
 
 [node name="DeliveryItemsVBox" type="VBoxContainer" parent="ContentsHBox"]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="ProgressBar" type="ProgressBar" parent="ContentsHBox"]
+[node name="ItemDurabilityProgressBar" type="ProgressBar" parent="ContentsHBox"]
 custom_minimum_size = Vector2(4, 64)
 layout_mode = 2
 size_flags_vertical = 1
-step = 1.0
-value = 85.0
+value = 100.0
 fill_mode = 3
 show_percentage = false
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Items" type="Control" parent="."]
+visible = false
+layout_mode = 2
