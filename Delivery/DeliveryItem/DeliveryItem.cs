@@ -31,6 +31,7 @@ public partial class DeliveryItem : VBoxContainer
 			DataLabel.Text = Mathf.RoundToInt(DeliveryTimer.TimeLeft).ToString();
 			// GD.PrintS(FailStateProgressBar.Value, DeliveryTimer.TimeLeft);
 			FailStateProgressBar.Value = DeliveryTimer.TimeLeft;
+			FailStateProgressBar.Modulate = Colors.Green.Lerp(Colors.Red, 1.0f - (float)(DeliveryTimer.TimeLeft / DeliveryTimer.WaitTime));
 		}
 	}
 
@@ -62,6 +63,7 @@ public partial class DeliveryItem : VBoxContainer
 				FailStateProgressBar.MaxValue = int.Parse(TagData["jumps"]);
 				break;
 			case "Segmented":
+				FailStateProgressBar.Hide();
 				break;
 		}
 	}
@@ -96,6 +98,7 @@ public partial class DeliveryItem : VBoxContainer
 					EmitSignal(SignalName.OnFail, "No more jumps left");
 				}
 				FailStateProgressBar.Value = int.Parse(TagData["jumps_left"]);
+				FailStateProgressBar.Modulate = Colors.Green.Lerp(Colors.Red, 1.0f - int.Parse(TagData["jumps_left"]) / (float)int.Parse(TagData["jumps"]));
 				break;
 			case "Segmented":
 				if (jumpedToId.ToString() == TagData["middle-man-id"])

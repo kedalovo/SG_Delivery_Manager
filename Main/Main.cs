@@ -771,7 +771,6 @@ public partial class Main : Node2D
 		{
 			DrawingPaths.Remove(target);
 			ReadableConnections.Remove(target);
-			GD.Print("Removed ", target);
 		}
 	}
 
@@ -968,7 +967,6 @@ public partial class Main : Node2D
 			if (JumpDistance <= FuelLevel && Spaceship.IsAvailable())
 			{
 				if (CurrentLocation.Hazards.Contains("Disentery")) CurrentLocation.RemoveHazard("Disentery");
-				StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
 				FuelLevel -= JumpDistance;
 				CreateNewNPC();
 				if (PressedLocation.Hazards.Contains("Faulty"))
@@ -1156,7 +1154,11 @@ public partial class Main : Node2D
 
 	private void DisplayQuest(Quest NewQuest)
 	{
-		if (DisplayedQuest is not null) ClearQuestHighlight();
+		if (DisplayedQuest is not null)
+		{
+			ClearQuestHighlight();
+			StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
+		}
 		foreach (Node child in DestinationPlanet.GetChildren()) child.QueueFree();
 		DisplayedQuest?.QueueFree();
 		DeliveryContentsLabel.Clear();

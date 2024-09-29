@@ -103,6 +103,7 @@ public partial class Delivery : PanelContainer
 			TotalHP += _Item.HP;
 		}
 		ItemDurabilityProgressBar.Value = TotalHP / (Items.Length * 100.0f) * 100.0f;
+		ItemDurabilityProgressBar.Modulate = Colors.White.Lerp(Colors.Red, 1.0f - (float)(ItemDurabilityProgressBar.Value / 100.0d));
 		if (AllDone) FailQuest("All items are destroyed");
 	}
 
