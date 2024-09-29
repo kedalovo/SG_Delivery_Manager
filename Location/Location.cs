@@ -15,7 +15,8 @@ public partial class Location : Node2D
 	public int ID;
 	private Label NameLabel;
 	private Sprite2D StarSprite;
-	private Polygon2D QuestPolygon;
+	// private Polygon2D QuestPolygon;
+	private AnimationPlayer HighlightAnimator;
 	private AnimationPlayer Animator;
 
 	private int[] Quests;
@@ -51,8 +52,9 @@ public partial class Location : Node2D
 		QuestCompleted = 0;
 
 		NameLabel = GetNode<Label>("Visuals/VBox/Label");
-		StarSprite = GetNode<Sprite2D>("StarSprite");
-		QuestPolygon = GetNode<Polygon2D>("QuestPolygon");
+		// StarSprite = GetNode<Sprite2D>("StarSprite");
+		// QuestPolygon = GetNode<Polygon2D>("QuestPolygon");
+		HighlightAnimator = GetNode<AnimationPlayer>("HighlightAnimator");
 		Animator = GetNode<AnimationPlayer>("Animator");
 		HazardsHBox = GetNode<HBoxContainer>("Visuals/VBox/HBox");
 		Visuals = GetNode<Control>("Visuals");
@@ -86,10 +88,10 @@ public partial class Location : Node2D
 
 	public void RemoveQuest(int questID) { Quests = Quests.Where(val => val != questID).ToArray(); UpdateQuests(); }
 
-	public void SetTexture(Texture2D newTexture)
-	{
-		StarSprite.Texture = newTexture;
-	}
+	// public void SetTexture(Texture2D newTexture)
+	// {
+	// 	StarSprite.Texture = newTexture;
+	// }
 
 	public void SetCompleteQuest()
 	{
@@ -189,9 +191,9 @@ public partial class Location : Node2D
 		if (removing) RemoveHazard("MarketCrash");
 	}
 
-	// public void Highlight() { QuestPolygon.Show(); }
+	public void Highlight() { HighlightAnimator.Play("highlight"); }
 
-	// public void ClearHighlight() { QuestPolygon.Hide(); }
+	public void ClearHighlight() { HighlightAnimator.PlayBackwards("highlight"); }
 
 	private void OnButtonMouseEntered()
 	{

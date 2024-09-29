@@ -615,7 +615,7 @@ public partial class Main : Node2D
 		// GD.PrintErr("Tried to create planet with type: ", PlanetType, " and preset: ", PlanetPreset, " at location: ", Parent.LocationName);
 		Planet NewPlanet = PlanetScenes[PlanetType].Instantiate<Planet>();
 		Parent.Visuals.AddChild(NewPlanet);
-		Parent.Visuals.MoveChild(NewPlanet, 1);
+		Parent.Visuals.MoveChild(NewPlanet, 2);
 		NewPlanet.Position = new Vector2(-50, -50);
 		NewPlanet.SetPixels(100);
 		NewPlanet.SetSeed(PlanetSeeds[PlanetPreset]);
@@ -913,7 +913,7 @@ public partial class Main : Node2D
 			{
 				if (CurrentLocation.Hazards.Contains("Disentery")) CurrentLocation.RemoveHazard("Disentery");
 				StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
-				// ClearQuestHighlight();
+				ClearQuestHighlight();
 				FuelLevel -= JumpDistance;
 				CreateNewNPC();
 				if (PressedLocation.Hazards.Contains("Faulty"))
@@ -1108,7 +1108,7 @@ public partial class Main : Node2D
 		EnableQuestButtons();
 		DisplayedQuest = NewQuest;
 		Location DeliveryLocation = NewQuest.Destination;
-		// DeliveryLocation.Highlight();
+		DeliveryLocation.Highlight();
 		DestinationLabel.Text = DeliveryLocation.LocationName;
 		DeliveryContentsLabel.AddText("Hello! I want you to deliver these to station " + DeliveryLocation.LocationName + ":\n\n");
 		for (int i = 0; i < NewQuest.Items.Length; i++)
@@ -1126,7 +1126,7 @@ public partial class Main : Node2D
 			if (tag == "Segmented")
 			{
 				Location middleManLocation = AllLocations[int.Parse(tagData["middle-man-id"])];
-				Planet newPlanet = CreateNewPlanet(newMod, middleManLocation.PlanetType, middleManLocation.PlanetPreset, 20, new Vector2(16, -12));
+				Planet newPlanet = CreateNewPlanet(newMod, middleManLocation.PlanetType, middleManLocation.PlanetPreset, 20, new Vector2(12, -15));
 				newMod.SetPlanet(newPlanet);
 				newMod.HideData();
 			}
@@ -1154,7 +1154,7 @@ public partial class Main : Node2D
 	private void OnAcceptQuestButtonPressed()
 	{
 		StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
-		// ClearQuestHighlight();
+		ClearQuestHighlight();
 		DisableQuestButtons();
 		AcceptDisplayedQuest();
 		QuestCounter++;
@@ -1164,7 +1164,7 @@ public partial class Main : Node2D
 	{
 		StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
 		DisableQuestButtons();
-		// ClearQuestHighlight();
+		ClearQuestHighlight();
 	}
 
 	private void AcceptDisplayedQuest()
@@ -1242,7 +1242,7 @@ public partial class Main : Node2D
 		}
 	}
 
-	// private void ClearQuestHighlight() { DisplayedQuest.Destination.ClearHighlight(); }
+	private void ClearQuestHighlight() { DisplayedQuest.Destination.ClearHighlight(); }
 
 	private void HighlightNeighbours()
 	{

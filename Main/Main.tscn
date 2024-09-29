@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://huvowrxh5x0l"]
+[gd_scene load_steps=36 format=3 uid="uid://huvowrxh5x0l"]
 
 [ext_resource type="Script" path="res://Main/Main.cs" id="1_ei6yb"]
 [ext_resource type="PackedScene" uid="uid://bvwjgxmq2ro5h" path="res://Location/Location.tscn" id="3_dt0bp"]
@@ -28,6 +28,11 @@
 [ext_resource type="Texture2D" uid="uid://cnd44eaxmi8br" path="res://UI/BCG_3.jpg" id="27_n8v4t"]
 [ext_resource type="Theme" uid="uid://b2qtdaxrtr5jx" path="res://UI/new_theme.tres" id="28_5dl8r"]
 [ext_resource type="Shader" path="res://UI/NPC_shader.gdshader" id="29_6bxq1"]
+
+[sub_resource type="Gradient" id="Gradient_uhli4"]
+offsets = PackedFloat32Array(0, 0.05, 0.95, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+metadata/_snap_count = 20
 
 [sub_resource type="Animation" id="Animation_lam5p"]
 resource_name = "Idle"
@@ -144,6 +149,100 @@ ConSegmentMargin = 4
 ConLineWidth = 3
 ConLineColor = Color(0.168543, 0.650288, 0.605149, 1)
 
+[node name="Background" type="TextureRect" parent="."]
+z_index = -1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("27_n8v4t")
+expand_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="Locations" type="Node2D" parent="."]
+
+[node name="Location" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(227, 131)
+LocationName = "Aurora"
+
+[node name="Location2" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(686.564, 126.771)
+LocationName = "Alpha"
+ID = 1
+
+[node name="Location3" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(931, 199)
+LocationName = "Beta"
+ID = 2
+
+[node name="Location4" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(1271, 75)
+LocationName = "Gamma"
+ID = 3
+
+[node name="Location5" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(1515, 123)
+LocationName = "Epsilon"
+ID = 4
+
+[node name="Location6" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(1351, 387)
+LocationName = "Borealis"
+ID = 5
+
+[node name="Location7" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(1439, 587)
+LocationName = "Omega"
+ID = 6
+
+[node name="Location8" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(1735, 951)
+LocationName = "Zeppelin"
+ID = 7
+
+[node name="Location9" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(995, 815)
+LocationName = "Trifecta"
+ID = 8
+
+[node name="Location10" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(891, 627)
+LocationName = "Cupid"
+ID = 9
+
+[node name="Location11" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(707, 667)
+LocationName = "Theta"
+ID = 10
+
+[node name="Location12" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(499, 567)
+LocationName = "Fate"
+ID = 11
+
+[node name="Location13" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(511, 771)
+LocationName = "Sigma"
+ID = 12
+
+[node name="Location14" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(151, 623)
+LocationName = "Quatro"
+ID = 13
+
+[node name="Location15" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(543, 307)
+LocationName = "Titan"
+ID = 14
+
+[node name="Location16" parent="Locations" instance=ExtResource("3_dt0bp")]
+position = Vector2(739, 363)
+LocationName = "Dread"
+ID = 15
+
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -153,20 +252,30 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("28_5dl8r")
 metadata/_edit_lock_ = true
 
-[node name="Background" type="TextureRect" parent="UI"]
-z_index = -2
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("27_n8v4t")
-expand_mode = 2
-metadata/_edit_lock_ = true
+[node name="BackgroundParticles" type="CPUParticles2D" parent="UI"]
+position = Vector2(960, 540)
+amount = 1000
+lifetime = 5.0
+preprocess = 20.0
+emission_shape = 3
+emission_rect_extents = Vector2(960, 540)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 6.0
+angular_velocity_max = 50.0
+tangential_accel_max = 10.0
+damping_max = 10.0
+angle_min = -10.0
+angle_max = 10.0
+scale_amount_max = 3.0
+color = Color(0.721569, 1, 1, 1)
+color_ramp = SubResource("Gradient_uhli4")
+hue_variation_max = 1.0
 
 [node name="NPCControl" type="Control" parent="UI"]
 anchors_preset = 0
@@ -346,87 +455,6 @@ text = "Fuel: "
 
 [node name="FuelLabel" type="Label" parent="UI/FuelHBox"]
 layout_mode = 2
-
-[node name="Locations" type="Node2D" parent="."]
-
-[node name="Location" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(227, 131)
-LocationName = "Aurora"
-
-[node name="Location2" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(686.564, 126.771)
-LocationName = "Alpha"
-ID = 1
-
-[node name="Location3" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(931, 199)
-LocationName = "Beta"
-ID = 2
-
-[node name="Location4" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(1271, 75)
-LocationName = "Gamma"
-ID = 3
-
-[node name="Location5" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(1515, 123)
-LocationName = "Epsilon"
-ID = 4
-
-[node name="Location6" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(1351, 387)
-LocationName = "Borealis"
-ID = 5
-
-[node name="Location7" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(1439, 587)
-LocationName = "Omega"
-ID = 6
-
-[node name="Location8" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(1735, 951)
-LocationName = "Zeppelin"
-ID = 7
-
-[node name="Location9" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(995, 815)
-LocationName = "Trifecta"
-ID = 8
-
-[node name="Location10" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(891, 627)
-LocationName = "Cupid"
-ID = 9
-
-[node name="Location11" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(707, 667)
-LocationName = "Theta"
-ID = 10
-
-[node name="Location12" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(499, 567)
-LocationName = "Fate"
-ID = 11
-
-[node name="Location13" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(511, 771)
-LocationName = "Sigma"
-ID = 12
-
-[node name="Location14" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(151, 623)
-LocationName = "Quatro"
-ID = 13
-
-[node name="Location15" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(543, 307)
-LocationName = "Titan"
-ID = 14
-
-[node name="Location16" parent="Locations" instance=ExtResource("3_dt0bp")]
-position = Vector2(739, 363)
-LocationName = "Dread"
-ID = 15
 
 [node name="Ship" parent="." instance=ExtResource("4_tp5ri")]
 position = Vector2(687, 127)

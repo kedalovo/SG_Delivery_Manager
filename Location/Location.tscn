@@ -1,42 +1,24 @@
-[gd_scene load_steps=15 format=3 uid="uid://bvwjgxmq2ro5h"]
+[gd_scene load_steps=17 format=3 uid="uid://bvwjgxmq2ro5h"]
 
-[ext_resource type="Texture2D" uid="uid://d4dje22awji6e" path="res://Location/Star.png" id="1_lnqws"]
 [ext_resource type="Script" path="res://Location/Location.cs" id="1_v8j7d"]
-
-[sub_resource type="Animation" id="Animation_vdoim"]
-resource_name = "Choosable"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("StarSprite:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.174533, -0.174533, 0.174533]
-}
 
 [sub_resource type="Animation" id="Animation_tdbk1"]
 length = 0.001
-tracks/0/type = "value"
+tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("StarSprite:rotation")
+tracks/0/path = NodePath("Visuals/TextureRect:modulate:a")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
 }
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals/TextureRect:modulate:a")
+tracks/1/path = NodePath("Visuals/Highlighter:modulate:a")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -63,18 +45,50 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bqx77"]
 _data = {
-"Choosable": SubResource("Animation_vdoim"),
 "RESET": SubResource("Animation_tdbk1"),
 "select": SubResource("Animation_oeioj")
 }
 
-[sub_resource type="Gradient" id="Gradient_mwq58"]
+[sub_resource type="Animation" id="Animation_skdti"]
+resource_name = "highlight"
+length = 0.3
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals/Highlighter:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gwlw0"]
+_data = {
+"highlight": SubResource("Animation_skdti")
+}
+
+[sub_resource type="Gradient" id="Gradient_bwqj3"]
 offsets = PackedFloat32Array(0.3, 0.7)
-colors = PackedColorArray(0.729025, 0.867513, 0.899724, 1, 1, 1, 1, 0)
+colors = PackedColorArray(0.721569, 1, 1, 1, 1, 1, 1, 0)
 metadata/_snap_enabled = true
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_rp188"]
-gradient = SubResource("Gradient_mwq58")
+gradient = SubResource("Gradient_bwqj3")
+width = 160
+height = 160
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_1261p"]
+offsets = PackedFloat32Array(0.3, 0.7)
+colors = PackedColorArray(0.93075, 0.852541, 0, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cu07o"]
+gradient = SubResource("Gradient_1261p")
 width = 160
 height = 160
 fill = 1
@@ -122,21 +136,10 @@ length = 0.001
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position:x")
+tracks/0/path = NodePath(".:position:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:position:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "handle_modes": PackedInt32Array(0),
 "points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
@@ -168,11 +171,6 @@ _data = {
 texture_filter = 1
 script = ExtResource("1_v8j7d")
 
-[node name="StarSprite" type="Sprite2D" parent="."]
-visible = false
-texture_filter = 1
-texture = ExtResource("1_lnqws")
-
 [node name="QuestPolygon" type="Polygon2D" parent="."]
 visible = false
 color = Color(0.110626, 0.566406, 0, 1)
@@ -181,6 +179,11 @@ polygon = PackedVector2Array(-2, -32, -2, -18, -8, -18, 0, -10, 8, -18, 2, -18, 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_bqx77")
+}
+
+[node name="HighlightAnimator" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_gwlw0")
 }
 
 [node name="DebugColorRect" type="ColorRect" parent="."]
@@ -203,6 +206,15 @@ offset_top = -80.0
 offset_right = 80.0
 offset_bottom = 80.0
 texture = SubResource("GradientTexture2D_rp188")
+
+[node name="Highlighter" type="TextureRect" parent="Visuals"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = -80.0
+offset_top = -80.0
+offset_right = 80.0
+offset_bottom = 80.0
+texture = SubResource("GradientTexture2D_cu07o")
 
 [node name="AnimatorX" type="AnimationPlayer" parent="Visuals"]
 libraries = {

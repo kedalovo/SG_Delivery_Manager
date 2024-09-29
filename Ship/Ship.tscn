@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ck7a82me5xux0"]
+[gd_scene load_steps=10 format=3 uid="uid://ck7a82me5xux0"]
 
 [ext_resource type="Script" path="res://Ship/Ship.cs" id="1_6mnlf"]
 [ext_resource type="Texture2D" uid="uid://c8ct1jduhj2b" path="res://Ship/Spaceships/06/Spaceship_06_RED.png" id="1_b67oc"]
@@ -18,6 +18,10 @@ animations = [{
 "name": &"default",
 "speed": 10.0
 }]
+
+[sub_resource type="Gradient" id="Gradient_6pwwa"]
+offsets = PackedFloat32Array(0, 0.834906, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.234375, 0.234375, 1, 1, 1, 1, 0)
 
 [sub_resource type="Animation" id="Animation_64sox"]
 length = 0.001
@@ -74,10 +78,36 @@ position = Vector2(-130, 165)
 sprite_frames = SubResource("SpriteFrames_rnjkw")
 autoplay = "default"
 
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Pivot/ShipSprite/FlameSprite1"]
+show_behind_parent = true
+amount = 50
+direction = Vector2(0, 1)
+spread = 70.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 3.0
+color = Color(0.94902, 0.682353, 0.188235, 1)
+color_ramp = SubResource("Gradient_6pwwa")
+
 [node name="FlameSprite2" type="AnimatedSprite2D" parent="Pivot/ShipSprite"]
 position = Vector2(130, 165)
 sprite_frames = SubResource("SpriteFrames_rnjkw")
 autoplay = "default"
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Pivot/ShipSprite/FlameSprite2"]
+show_behind_parent = true
+amount = 50
+direction = Vector2(0, 1)
+spread = 70.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+scale_amount_min = 2.0
+scale_amount_max = 3.0
+color = Color(0.94902, 0.682353, 0.188235, 1)
+color_ramp = SubResource("Gradient_6pwwa")
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {
