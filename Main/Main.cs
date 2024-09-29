@@ -11,6 +11,9 @@ public partial class Main : Node2D
 	private Location CurrentLocation;
 	private Dictionary<int, Location> AllLocations;
 	private Dictionary<int[], Dictionary<string, string>> DrawingConnections;
+	private Dictionary<long, Dictionary<int[], Dictionary<string, string>>> DrawingPaths;
+	private Dictionary<long, int[]> ReadableConnections;
+	private long PathCounter;
 	[Export(PropertyHint.Range, "1, 16,")]
 	private int ConSegmentMargin = 1;
 	[Export(PropertyHint.Range, "1, 16,")]
@@ -226,27 +229,29 @@ public partial class Main : Node2D
 		StarMap.ConnectPoints(15, 1);
 
 		DrawingConnections = new();
+        DrawingPaths = new();
+		ReadableConnections = new();
 
-		DrawingConnections[new [] {0, 1}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {1, 2}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {2, 3}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {3, 4}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {4, 5}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {5, 6}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {6, 7}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {6, 8}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {8, 9}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {9, 5}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {9, 2}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {9, 10}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {10, 11}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {11, 12}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {8, 12}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {12, 13}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {13, 0}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {11, 14}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {14, 15}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
-		DrawingConnections[new [] {15, 1}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "2ba69a"}, {"segment_margin", "4"}, {"line_width", "3"}};
+		DrawingConnections[new [] {0, 1}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {1, 2}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {2, 3}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {3, 4}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {4, 5}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {5, 6}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {6, 7}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {6, 8}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {8, 9}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {9, 5}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {9, 2}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {9, 10}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {10, 11}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {11, 12}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {8, 12}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {12, 13}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {13, 0}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {11, 14}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {14, 15}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
+		DrawingConnections[new [] {15, 1}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
 
 		#endregion ConnectionsDeclaration
 
@@ -680,54 +685,93 @@ public partial class Main : Node2D
 		return NewPlanet;
 	}
 
-	private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)
-	{
-		Dictionary<string, string> newData = new() {{"color", color}, {"distance", distance.ToString()}, {"segment_margin", segment_margin.ToString()}, {"line_width", line_width.ToString()}};
-		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
-		{
-			if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo)) DrawingConnections[Con.Key] = newData;
-		}
-	}
+	// private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)
+	// {
+	// 	Dictionary<string, string> newData = new() {{"color", color}, {"distance", distance.ToString()}, {"segment_margin", segment_margin.ToString()}, {"line_width", line_width.ToString()}};
+	// 	foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
+	// 	{
+	// 		if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo)) DrawingConnections[Con.Key] = newData;
+	// 	}
+	// }
 
-	private void HighlightSingleConnection(int idFrom, int idTo)
-	{
-		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
-		{
-			if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo))
-			{
-				DrawingConnections[Con.Key]["color"] = "2c9eca";
-			}
-		}
-	}
+	// private void HighlightSingleConnection(int idFrom, int idTo)
+	// {
+	// 	foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
+	// 	{
+	// 		if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo))
+	// 		{
+	// 			DrawingConnections[Con.Key]["color"] = "2c9eca";
+	// 		}
+	// 	}
+	// }
 
-	private void StopHighlightSingleConnection(int idFrom, int idTo)
-	{
-		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
-		{
-			if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo))
-			{
-				DrawingConnections[Con.Key]["color"] = "2ba69a";
-			}
-		}
-	}
+	// private void StopHighlightSingleConnection(int idFrom, int idTo)
+	// {
+	// 	foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
+	// 	{
+	// 		if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo))
+	// 		{
+	// 			DrawingConnections[Con.Key]["color"] = "2ba69a";
+	// 		}
+	// 	}
+	// }
 
-	private void HighlightPath(int idFrom, int idTo, string color = "2ba69a")
+	private void HighlightPath(int idFrom, int idTo, Color color)
 	{
+		Dictionary<int[], Dictionary<string, string>> newPath = new();
+		// long[] pathID = StarMap.GetIdPath(idFrom, idTo);
+		// Godot.Vector2[] pathPoint = StarMap.GetPointPath(idFrom, idTo);
+		// for (int i = 0; i < pathID.Length - 1; i++)
+		// {
+		// 	ChangeConnection((int)pathID[i], (int)pathID[i+1], Mathf.FloorToInt(Math.Abs(pathPoint[i].DistanceTo(pathPoint[i+1]))), color, 3, 4);
+		// }
 		long[] pathID = StarMap.GetIdPath(idFrom, idTo);
-		Godot.Vector2[] pathPoint = StarMap.GetPointPath(idFrom, idTo);
 		for (int i = 0; i < pathID.Length - 1; i++)
 		{
-			ChangeConnection((int)pathID[i], (int)pathID[i+1], Mathf.FloorToInt(Math.Abs(pathPoint[i].DistanceTo(pathPoint[i+1]))), color, 3, 4);
+			int a = (int)pathID[i];
+			int b = (int)pathID[i+1];
+			foreach (KeyValuePair<int[], Dictionary<string, string>> con in DrawingConnections)
+			{
+				if (con.Key.Contains(a) && con.Key.Contains(b))
+				{
+					newPath[con.Key] = con.Value.ToDictionary(entry => entry.Key, entry => entry.Value);
+					newPath[con.Key]["color"] = color.ToHtml();
+					newPath[con.Key]["line_width"] = "4";
+					break;
+				}
+			}
 		}
+		PathCounter = 0;
+		while (ReadableConnections.ContainsKey(PathCounter))
+		{
+			PathCounter++;
+		}
+		DrawingPaths[PathCounter] = newPath;
+		ReadableConnections[PathCounter] = new int[] {idFrom, idTo};
 	}
 
 	private void StopHighlightPath(int idFrom, int idTo)
 	{
-		long[] pathID = StarMap.GetIdPath(idFrom, idTo);
-		Godot.Vector2[] pathPoint = StarMap.GetPointPath(idFrom, idTo);
-		for (int i = 0; i < pathID.Length - 1; i++)
+		// long[] pathID = StarMap.GetIdPath(idFrom, idTo);
+		// Godot.Vector2[] pathPoint = StarMap.GetPointPath(idFrom, idTo);
+		// for (int i = 0; i < pathID.Length - 1; i++)
+		// {
+		// 	ChangeConnection((int)pathID[i], (int)pathID[i+1], Mathf.FloorToInt(Math.Abs(pathPoint[i].DistanceTo(pathPoint[i+1]))));
+		// }
+		long target = -1;
+		foreach (KeyValuePair<long, int[]> Con in ReadableConnections)
 		{
-			ChangeConnection((int)pathID[i], (int)pathID[i+1], Mathf.FloorToInt(Math.Abs(pathPoint[i].DistanceTo(pathPoint[i+1]))));
+			if (Con.Value.Contains(idFrom) && Con.Value.Contains(idTo))
+			{
+				target = Con.Key;
+				break;
+			}
+		}
+		if (target > -1)
+		{
+			DrawingPaths.Remove(target);
+			ReadableConnections.Remove(target);
+			GD.Print("Removed ", target);
 		}
 	}
 
@@ -744,34 +788,46 @@ public partial class Main : Node2D
 		{
 			Control From = AllLocations[Con.Key[0]].Visuals;
 			Control To = AllLocations[Con.Key[1]].Visuals;
-			DrawConnection(From, To, int.Parse(Con.Value["distance"]));
+			DrawConnection(From, To, Con.Value);
 		}
-	}
-
-	private void DrawConnection(Control From, Control To, int Distance = 1)
-	{
-		Vector2 Diff = (From.GlobalPosition - To.GlobalPosition).Normalized() * 70;
-		DrawLine(From.GlobalPosition - Diff, To.GlobalPosition + Diff, Colors.White, 1.0f);
-		for (int i = 0; i < Distance; i++)
+		foreach (KeyValuePair<long, Dictionary<int[], Dictionary<string, string>>> path in DrawingPaths)
 		{
-			DrawTriangle(From, To, i);
-			DrawTriangle(To, From, i);
+			foreach (KeyValuePair<int[], Dictionary<string, string>> Con in path.Value)
+			{
+				Control From = AllLocations[Con.Key[0]].Visuals;
+				Control To = AllLocations[Con.Key[1]].Visuals;
+				DrawConnection(From, To, Con.Value);
+			}
 		}
 	}
 
-	private void DrawTriangle(Control From, Control To, int Offset = 0)
+	private void DrawConnection(Control From, Control To, Dictionary<string, string> Data)
+	{
+		int distance = int.Parse(Data["distance"]);
+		Color color = new(Data["color"]);
+		int width = int.Parse(Data["line_width"]);
+		Vector2 Diff = (From.GlobalPosition - To.GlobalPosition).Normalized() * 70;
+		DrawLine(From.GlobalPosition - Diff, To.GlobalPosition + Diff, color, width);
+		for (int i = 0; i < distance; i++)
+		{
+			DrawTriangle(From, To, color, width, i);
+			DrawTriangle(To, From, color, width, i);
+		}
+	}
+
+	private void DrawTriangle(Control From, Control To, Color color, int width, int Offset = 0)
 	{
 		Vector2 Direction = (From.GlobalPosition - To.GlobalPosition).Normalized();
 		Vector2 Base = Direction * 70;
 		Vector2 p1 = From.GlobalPosition - Base * 1.25f - Offset * Direction * 17.5f;
-		Vector2 p2 = From.GlobalPosition - Base - Offset * Direction * 17.5f + new Vector2(Base.Y, -Base.X) * 0.075f;
-		Vector2 p3 = From.GlobalPosition - Base - Offset * Direction * 17.5f + new Vector2(-Base.Y, Base.X) * 0.075f;
-		DrawPolygon(new Vector2[] {p1, p2, p3}, new Color[] {Colors.White, Colors.White, Colors.White});
+		Vector2 p2 = From.GlobalPosition - Base - Offset * Direction * 17.5f + new Vector2(Base.Y, -Base.X) * 0.075f * Mathf.Clamp(width, 1, 2);
+		Vector2 p3 = From.GlobalPosition - Base - Offset * Direction * 17.5f + new Vector2(-Base.Y, Base.X) * 0.075f * Mathf.Clamp(width, 1, 2);
+		DrawPolygon(new Vector2[] {p1, p2, p3}, new Color[] {color, color, color});
 	}
 
 	private void OnDeliveryHoverStart(int deliveryId)
 	{
-		HighlightPath(CurrentLocation.ID, AcceptedQuests[deliveryId].Destination.ID, "35ee45");
+		HighlightPath(CurrentLocation.ID, AcceptedQuests[deliveryId].Destination.ID, AcceptedQuests[deliveryId].Destination.LocationColor);
 	}
 
 	private void OnDeliveryHoverFinish(int deliveryId)
@@ -1132,7 +1188,7 @@ public partial class Main : Node2D
 			}
 		}
 		CreateNewPlanet(DestinationPlanet, DeliveryLocation.PlanetType, DeliveryLocation.PlanetPreset, 40);
-		HighlightPath(CurrentLocation.ID, DeliveryLocation.ID, "00b025");
+		HighlightPath(CurrentLocation.ID, DeliveryLocation.ID, DeliveryLocation.LocationColor);
 	}
 
 	private void EnableQuestButtons()
