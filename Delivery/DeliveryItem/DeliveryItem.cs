@@ -69,6 +69,7 @@ public partial class DeliveryItem : VBoxContainer
 	public void SetPlanet(Planet newPlanet)
 	{
 		newPlanet.Reparent(PlanetControl);
+		newPlanet.Position = new Vector2(-34, 17);
 	}
 
 	public void SetEmpty()

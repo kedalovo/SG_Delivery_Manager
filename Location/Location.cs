@@ -17,7 +17,10 @@ public partial class Location : Node2D
 	private Sprite2D StarSprite;
 	// private Polygon2D QuestPolygon;
 	private AnimationPlayer HighlightAnimator;
+	private AnimationPlayer DeliveryHighlightAnimator;
 	private AnimationPlayer Animator;
+
+	private TextureRect DeliveryHighlighter;
 
 	private int[] Quests;
 
@@ -39,6 +42,8 @@ public partial class Location : Node2D
 	public string PlanetType = "";
 	public string PlanetPreset = "";
 
+	public Color LocationColor;
+
 	public override void _Ready()
 	{
 		Quests = Array.Empty<int>();
@@ -55,10 +60,13 @@ public partial class Location : Node2D
 		// StarSprite = GetNode<Sprite2D>("StarSprite");
 		// QuestPolygon = GetNode<Polygon2D>("QuestPolygon");
 		HighlightAnimator = GetNode<AnimationPlayer>("HighlightAnimator");
+		DeliveryHighlightAnimator = GetNode<AnimationPlayer>("DeliveryHighlightAnimator");
 		Animator = GetNode<AnimationPlayer>("Animator");
 		HazardsHBox = GetNode<HBoxContainer>("Visuals/VBox/HBox");
 		Visuals = GetNode<Control>("Visuals");
-		ClearDestinations();
+		DeliveryHighlighter = GetNode<TextureRect>("Visuals/DeliveryHighlighter");
+
+		NameLabel.Text = LocationName;
 	}
 
     private void OnButtonPressed()
@@ -66,12 +74,14 @@ public partial class Location : Node2D
 		EmitSignal(SignalName.LocationPressed, ID);
 	}
 
-	public void SetMovement(float scaleX, float scaleY)
+	public void SetMovement(float scaleX, float scaleY, Color newLocationColor)
 	{
 		AnimationPlayer AnimatorX = GetNode<AnimationPlayer>("Visuals/AnimatorX");
 		AnimationPlayer AnimatorY = GetNode<AnimationPlayer>("Visuals/AnimatorY");
 		AnimatorX.SpeedScale = scaleX;
 		AnimatorY.SpeedScale = scaleY;
+		LocationColor = newLocationColor;
+		DeliveryHighlighter.SelfModulate = LocationColor;
 		if (scaleY > 0.5)
 		{
 			AnimatorX.PlayBackwards("idle");
@@ -88,11 +98,6 @@ public partial class Location : Node2D
 
 	public void RemoveQuest(int questID) { Quests = Quests.Where(val => val != questID).ToArray(); UpdateQuests(); }
 
-	// public void SetTexture(Texture2D newTexture)
-	// {
-	// 	StarSprite.Texture = newTexture;
-	// }
-
 	public void SetCompleteQuest()
 	{
 		QuestCompleted = 4;
@@ -102,14 +107,14 @@ public partial class Location : Node2D
 
 	private void UpdateQuests()
 	{
-		string AddedDeliveries = "";
-		foreach (int quest in Quests) AddedDeliveries += "[" + quest.ToString() + "]";
-		NameLabel.Text = LocationName + " " + AddedDeliveries;
-	}
-
-	public void ClearDestinations()
-	{
-		NameLabel.Text = LocationName;
+		if (Quests.Length > 0)
+		{
+			DeliveryHighlightAnimator.Play("highlight");
+		}
+		else
+		{
+			DeliveryHighlightAnimator.PlayBackwards("highlight");
+		}
 	}
 
 	public void AddHazard(string newHazard, Dictionary<string, string> newHazardData, Texture2D newIcon)
@@ -204,10 +209,6 @@ public partial class Location : Node2D
 	{
 		Animator.PlayBackwards("select");
 	}
-
-	// public void Choosable() { Animator.Play("Choosable"); }
-
-	// public void ClearChoosable() { Animator.Play("RESET"); }
 
 	public void Jump()
 	{

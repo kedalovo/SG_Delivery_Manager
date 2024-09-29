@@ -29,6 +29,8 @@ public partial class Delivery : PanelContainer
 	private VBoxContainer DeliveryItemsVBox;
 	private ProgressBar ItemDurabilityProgressBar;
 
+	private Control PlanetControl;
+
 	private PackedScene DeliveryItemScene;
 	private Control ItemsControl;
 
@@ -49,9 +51,10 @@ public partial class Delivery : PanelContainer
 	{
 		ItemScene = GD.Load<PackedScene>("res://Item/Item.tscn");
 		// ItemsHFlow = GetNode<HFlowContainer>("ItemsHFlow");
-		DeliveryItemsVBox = GetNode<VBoxContainer>("ContentsHBox/DeliveryItemsVBox");
+		DeliveryItemsVBox = GetNode<VBoxContainer>("VBoxContainer/ContentsHBox/DeliveryItemsVBox");
+		PlanetControl = GetNode<Control>("VBoxContainer/PlanetControl");
 		DeliveryItemScene = GD.Load<PackedScene>("res://Delivery/DeliveryItem/DeliveryItem.tscn");
-		ItemDurabilityProgressBar = GetNode<ProgressBar>("ContentsHBox/ItemDurabilityProgressBar");
+		ItemDurabilityProgressBar = GetNode<ProgressBar>("VBoxContainer/ContentsHBox/ItemDurabilityProgressBar");
 		ItemsControl = GetNode<Control>("Items");
 		// DeliveryTimer = GetNode<Timer>("Timer");
 		MouseEntered += () => EmitSignal(SignalName.OnDeliveryMouseEntered, id);
@@ -74,7 +77,16 @@ public partial class Delivery : PanelContainer
 		TotalDistance = newDistance;
 	}
 
-	public void SetPlanet(Planet newPlanet)
+	public void SetPlanet(Planet newPlanet, Color newDeliveryColor)
+	{
+		newPlanet.Reparent(PlanetControl);
+		newPlanet.Position = new Vector2(27, 0);
+		PlanetControl.CustomMinimumSize = new Vector2(0, 25);
+		SelfModulate = newDeliveryColor;
+		GD.Print("New color is: ", SelfModulate);
+	}
+
+	public void SetSegmentPlanet(Planet newPlanet)
 	{
 		Tags["Segmented"].SetPlanet(newPlanet);
 	}

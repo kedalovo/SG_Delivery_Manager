@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bvwjgxmq2ro5h"]
+[gd_scene load_steps=22 format=3 uid="uid://bvwjgxmq2ro5h"]
 
 [ext_resource type="Script" path="res://Location/Location.cs" id="1_v8j7d"]
 
@@ -69,6 +69,41 @@ _data = {
 "highlight": SubResource("Animation_skdti")
 }
 
+[sub_resource type="Animation" id="Animation_827d7"]
+resource_name = "highlight"
+length = 0.3
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals/DeliveryHighlighter:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+
+[sub_resource type="Animation" id="Animation_0tjwi"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals/DeliveryHighlighter:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nwr1j"]
+_data = {
+"RESET": SubResource("Animation_0tjwi"),
+"highlight": SubResource("Animation_827d7")
+}
+
 [sub_resource type="Gradient" id="Gradient_bwqj3"]
 offsets = PackedFloat32Array(0.3, 0.7)
 colors = PackedColorArray(0.721569, 1, 1, 1, 1, 1, 1, 0)
@@ -91,6 +126,19 @@ metadata/_snap_enabled = true
 gradient = SubResource("Gradient_1261p")
 width = 160
 height = 160
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_fiiro"]
+offsets = PackedFloat32Array(0.4, 0.5, 0.7)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.392157, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f8yba"]
+gradient = SubResource("Gradient_fiiro")
+width = 200
+height = 200
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 1)
@@ -186,6 +234,11 @@ libraries = {
 "": SubResource("AnimationLibrary_gwlw0")
 }
 
+[node name="DeliveryHighlightAnimator" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nwr1j")
+}
+
 [node name="DebugColorRect" type="ColorRect" parent="."]
 visible = false
 offset_left = -50.0
@@ -216,6 +269,15 @@ offset_right = 80.0
 offset_bottom = 80.0
 texture = SubResource("GradientTexture2D_cu07o")
 
+[node name="DeliveryHighlighter" type="TextureRect" parent="Visuals"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = SubResource("GradientTexture2D_f8yba")
+
 [node name="AnimatorX" type="AnimationPlayer" parent="Visuals"]
 libraries = {
 "": SubResource("AnimationLibrary_527rs")
@@ -240,6 +302,7 @@ grow_horizontal = 2
 [node name="Label" type="Label" parent="Visuals/VBox"]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
 text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1

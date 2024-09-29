@@ -37,6 +37,7 @@ public partial class ModifierIcon : CenterContainer
     public void SetPlanet(Planet newPlanet)
     {
         newPlanet.Reparent(PlanetControl);
+        newPlanet.Position = new Vector2(32, -2);
     }
 
     public Label GetDataLabel()

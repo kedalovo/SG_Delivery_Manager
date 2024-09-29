@@ -502,22 +502,22 @@ public partial class Main : Node2D
 		CreateNewPlanetAtLocation(l15, "LavaWorld", "Titan");
 		CreateNewPlanetAtLocation(l16, "NoAtmosphere", "Dread");
 
-		l1.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l2.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l3.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l4.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l5.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l6.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l7.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l8.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l9.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l10.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l11.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l12.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l13.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l14.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l15.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
-		l16.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle());
+		l1.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l2.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l3.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l4.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l5.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l6.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l7.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l8.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l9.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l10.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l11.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l12.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l13.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l14.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l15.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
+		l16.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
 
 		#endregion OtherDeclaration
 
@@ -549,7 +549,7 @@ public partial class Main : Node2D
 		if (@event.IsActionPressed("test"))
 		{
 			GD.Print("TESTING");
-			GetTree().Paused = true;
+			// GetTree().Paused = true;
 			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
 			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
 			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_3);
@@ -575,7 +575,7 @@ public partial class Main : Node2D
 			// GD.PrintS(item.ItemName, item.Fragility);
 			// GD.PrintS("\t" + newQuest.Destination.LocationName, StarMap.GetIdPath(CurrentLocation.ID, newQuest.Destination.ID).Length);
 			// GD.Print("\n");
-			
+			DisplayQuest(CreateNewQuest());
 		}
 		if (@event.IsActionPressed("esc"))
 		{
@@ -646,12 +646,12 @@ public partial class Main : Node2D
 		if (Parent.PlanetPreset == "") Parent.PlanetPreset = PlanetPreset;
 	}
 
-	private Planet CreateNewPlanet(Node Parent, string PlanetType, string PlanetPreset, int pixels, Vector2 offset)
+	private Planet CreateNewPlanet(Node Parent, string PlanetType, string PlanetPreset, int pixels)
 	{
 		// GD.PrintErr("Tried to create planet with type: ", PlanetType, " and preset: ", PlanetPreset);
 		Planet NewPlanet = PlanetScenes[PlanetType].Instantiate<Planet>();
 		Parent.AddChild(NewPlanet);
-		NewPlanet.Position = new Vector2(30, 22) + new Vector2(-pixels/2, -pixels/2) + offset;
+		NewPlanet.Position = new Vector2(30, 22) + new Vector2(-pixels/2, -pixels/2);
 		NewPlanet.SetPixels(pixels);
 		NewPlanet.SetSeed(PlanetSeeds[PlanetPreset]);
 		float RandomRotation = Rnd.Next(-pixels/2, pixels/2) / 100.0f;
@@ -913,7 +913,6 @@ public partial class Main : Node2D
 			{
 				if (CurrentLocation.Hazards.Contains("Disentery")) CurrentLocation.RemoveHazard("Disentery");
 				StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
-				ClearQuestHighlight();
 				FuelLevel -= JumpDistance;
 				CreateNewNPC();
 				if (PressedLocation.Hazards.Contains("Faulty"))
@@ -1101,6 +1100,7 @@ public partial class Main : Node2D
 
 	private void DisplayQuest(Quest NewQuest)
 	{
+		if (DisplayedQuest is not null) ClearQuestHighlight();
 		foreach (Node child in DestinationPlanet.GetChildren()) child.QueueFree();
 		DisplayedQuest?.QueueFree();
 		DeliveryContentsLabel.Clear();
@@ -1126,12 +1126,12 @@ public partial class Main : Node2D
 			if (tag == "Segmented")
 			{
 				Location middleManLocation = AllLocations[int.Parse(tagData["middle-man-id"])];
-				Planet newPlanet = CreateNewPlanet(newMod, middleManLocation.PlanetType, middleManLocation.PlanetPreset, 20, new Vector2(12, -15));
+				Planet newPlanet = CreateNewPlanet(newMod, middleManLocation.PlanetType, middleManLocation.PlanetPreset, 20);
 				newMod.SetPlanet(newPlanet);
 				newMod.HideData();
 			}
 		}
-		CreateNewPlanet(DestinationPlanet, DeliveryLocation.PlanetType, DeliveryLocation.PlanetPreset, 40, Vector2.Zero);
+		CreateNewPlanet(DestinationPlanet, DeliveryLocation.PlanetType, DeliveryLocation.PlanetPreset, 40);
 		HighlightPath(CurrentLocation.ID, DeliveryLocation.ID, "00b025");
 	}
 
@@ -1178,6 +1178,7 @@ public partial class Main : Node2D
 		DeliveriesContainer.AddChild(NewDelivery);
 		// CargoVBox.AddChild(NewDelivery);
 		GodotArray[] Result = Array.Empty<GodotArray>();
+		NewDelivery.SetPlanet(CreateNewPlanet(NewDelivery, DisplayedQuest.Destination.PlanetType, DisplayedQuest.Destination.PlanetPreset, 25), DisplayedQuest.Destination.LocationColor);
 		GD.Print("Creating new Delivery with ", DisplayedQuest.Tags.Length, " tags...");
 		foreach (int idx in Enumerable.Range(0, DisplayedQuest.Tags.Length))
 		{
@@ -1187,7 +1188,8 @@ public partial class Main : Node2D
 			NewDelivery.AddTag(tag, tagData);
 			if (tag == "Segmented")
 			{
-				NewDelivery.SetPlanet(CreateNewPlanet(NewDelivery, DisplayedQuest.Destination.PlanetType, DisplayedQuest.Destination.PlanetPreset, 40, Vector2.Zero));
+				Location segmentDestination = AllLocations[int.Parse(tagData["middle-man-id"])];
+				NewDelivery.SetSegmentPlanet(CreateNewPlanet(NewDelivery, segmentDestination.PlanetType, segmentDestination.PlanetPreset, 20));
 			}
 		}
 		if (DisplayedQuest.Tags.Length == 0)
@@ -1244,25 +1246,25 @@ public partial class Main : Node2D
 
 	private void ClearQuestHighlight() { DisplayedQuest.Destination.ClearHighlight(); }
 
-	private void HighlightNeighbours()
-	{
-		long[] Connections = StarMap.GetPointConnections(CurrentLocation.ID);
-		foreach (long id in Connections)
-		{
-			// AllLocations[(int)id].Choosable();
-			HighlightSingleConnection(CurrentLocation.ID, (int)id);
-		}
-	}
+	// private void HighlightNeighbours()
+	// {
+	// 	long[] Connections = StarMap.GetPointConnections(CurrentLocation.ID);
+	// 	foreach (long id in Connections)
+	// 	{
+	// 		// AllLocations[(int)id].Choosable();
+	// 		HighlightSingleConnection(CurrentLocation.ID, (int)id);
+	// 	}
+	// }
 
-	private void ClearHighlightNeighbours()
-	{
-		long[] Connections = StarMap.GetPointConnections(CurrentLocation.ID);
-		foreach (long id in Connections)
-		{
-			// AllLocations[(int)id].ClearChoosable();
-			StopHighlightSingleConnection(CurrentLocation.ID, (int)id);
-		}
-	}
+	// private void ClearHighlightNeighbours()
+	// {
+	// 	long[] Connections = StarMap.GetPointConnections(CurrentLocation.ID);
+	// 	foreach (long id in Connections)
+	// 	{
+	// 		// AllLocations[(int)id].ClearChoosable();
+	// 		StopHighlightSingleConnection(CurrentLocation.ID, (int)id);
+	// 	}
+	// }
 
 	private void PopupBalance(int Difference)
 	{
