@@ -262,17 +262,17 @@ public partial class Main : Node2D
 		Spaceship = GetNode<Ship>("Ship");
 		CurrentLocationLabel = GetNode<Label>("LeftMenu/PanelContainer/VBox/CurrentLocationLabel");
 
-		NPCBodySprite = GetNode<Sprite2D>("UI/NPCControl/SpriteContainer/BodySprite");
-		NPCFaceSprite = GetNode<Sprite2D>("UI/NPCControl/SpriteContainer/FaceSprite");
-		NPCNameLabel = GetNode<Label>("UI/NPCControl/NameLabel");
-		NPCContainer = GetNode<Node2D>("UI/NPCControl/SpriteContainer");
+		NPCBodySprite = GetNode<Sprite2D>("UI/UIHBox/NPCControl/Panel/SpriteContainer/BodySprite");
+		NPCFaceSprite = GetNode<Sprite2D>("UI/UIHBox/NPCControl/Panel/SpriteContainer/FaceSprite");
+		NPCNameLabel = GetNode<Label>("UI/UIHBox/NPCControl/NamePanel/NameLabel");
+		NPCContainer = GetNode<Node2D>("UI/UIHBox/NPCControl/Panel/SpriteContainer");
 
 		DestinationLabel = GetNode<Label>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/DestinationLabel");
 		DestinationPlanet = GetNode<Control>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/PlanetSpace");
 		DeliveryContentsLabel = GetNode<RichTextLabel>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/DeliveryContentsLabel");
 		AcceptButton = GetNode<Button>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton");
 		DeclineButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/DeclineButton");
-		FuelButton = GetNode<Button>("LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton");
+		FuelButton = GetNode<Button>("UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton");
 
 		DeliveryItems = Array.Empty<ItemData>();
 		
@@ -298,10 +298,9 @@ public partial class Main : Node2D
 
 		DeliveriesContainer = GetNode<VBoxContainer>("UI/DeliveriesContainer/ScrollContainer/VBoxContainer");
 
-		MoneyLabel = GetNode<Label>("UI/BalanceHBox/BalanceLabel");
+		MoneyLabel = GetNode<Label>("UI/UIHBox/VBox/BalancePanel/BalanceHBox/BalanceLabel");
 
-		FuelLabel = GetNode<Label>("UI/FuelHBox/FuelLabel");
-		FuelLevelLabel = GetNode<Label>("LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelLevelLabel");
+		FuelLabel = GetNode<Label>("UI/UIHBox/VBox/FuelPanel/FuelVBox/LabelsHBox/FuelLabel");
 
 		ModifiersHBox = GetNode<HBoxContainer>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/ModifiersHBox");
 		ModifierIconScene = GD.Load<PackedScene>("res://Modifiers/ModifierIcon.tscn");
@@ -529,7 +528,6 @@ public partial class Main : Node2D
 		CurrentLocationLabel.Text = l2.LocationName;
 		CurrentLocation = l2;
 		Spaceship.Transform = CurrentLocation.Transform;
-		UpdateFuelLevelLabel();
 
 		Balance = 0;
 		FuelLevel = 1000;
@@ -975,6 +973,7 @@ public partial class Main : Node2D
 					PressedLocation.RemoveHazard("Faulty");
 				}
 				else UpdateDeliveries(JumpDistance);
+				StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
 				CurrentLocation = PressedLocation;
 				DisplayQuest(CreateNewQuest(Rnd.Next(11)));
 				CurrentLocationLabel.Text = CurrentLocation.LocationName;
@@ -1059,7 +1058,6 @@ public partial class Main : Node2D
 					foreach (Location location in AllLocations.Values) location.AddFuel(1);
 				}
 				else LeapDay = true;
-				UpdateFuelLevelLabel();
 				foreach (Location location in AllLocations.Values) location.Jump();
 				foreach (long i in StarMap.GetPointConnections(CurrentLocation.ID))
 				{
@@ -1295,7 +1293,6 @@ public partial class Main : Node2D
 			{
 				Balance -= Cost;
 				FuelLevel += 1;
-				UpdateFuelLevelLabel();
 				PopupBalance(-Cost);
 				foreach (Location location in AllLocations.Values) location.MarketCrashUpdate();
 			}
@@ -1330,16 +1327,11 @@ public partial class Main : Node2D
 		if (Difference > 0) { PopupLabel.Text = "$" + Difference.ToString(); PopupLabel.Modulate = Colors.Green; }
 		else { PopupLabel.Text = Difference.ToString().Insert(1, "$"); PopupLabel.Modulate = Colors.Red; }
 		AddChild(PopupLabel);
-		PopupLabel.Position = new Godot.Vector2(1800 + Rnd.Next(-100, 100), 16);
+		PopupLabel.Position = new Godot.Vector2(MoneyLabel.GlobalPosition.X + Rnd.Next(-100, 100), MoneyLabel.GlobalPosition.Y - 32);
 		Tween LabelTween = GetTree().CreateTween();
-		LabelTween.TweenProperty(PopupLabel, "position:y", (float)Rnd.NextDouble() * 20.0f + 40.0f, 1.0d);
+		LabelTween.TweenProperty(PopupLabel, "position:y", MoneyLabel.GlobalPosition.Y - (float)Rnd.NextDouble() * 5.0f - 40.0f, 1.0d);
 		LabelTween.TweenProperty(PopupLabel, "modulate", Colors.Transparent, 0.3d).SetDelay(0.7d);
 		LabelTween.TweenCallback(Callable.From(PopupLabel.QueueFree)).SetDelay(1.0d);
-	}
-
-	private void UpdateFuelLevelLabel()
-	{
-		FuelLevelLabel.Text = CurrentLocation.GetFuelLevel().ToString() + "\nFuel left";
 	}
 
 	private void OnAchievementsButtonPressed()

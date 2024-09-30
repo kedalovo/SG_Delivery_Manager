@@ -276,75 +276,7 @@ scale_amount_max = 3.0
 color = Color(0.721569, 1, 1, 1)
 color_ramp = SubResource("Gradient_uhli4")
 hue_variation_max = 1.0
-
-[node name="NPCControl" type="Control" parent="UI"]
-anchors_preset = 0
-offset_left = 460.0
-offset_top = 845.0
-offset_right = 604.0
-offset_bottom = 1072.0
-
-[node name="NameLabel" type="Label" parent="UI/NPCControl"]
-layout_mode = 0
-offset_right = 144.0
-offset_bottom = 43.0
-text = "NPC Name"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="SpriteContainer" type="Node2D" parent="UI/NPCControl"]
-position = Vector2(0, 43)
-
-[node name="FaceSprite" type="Sprite2D" parent="UI/NPCControl/SpriteContainer"]
-position = Vector2(73, 39)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("5_mmjq5")
-region_enabled = true
-region_rect = Rect2(0, 0, 32, 32)
-
-[node name="BodySprite" type="Sprite2D" parent="UI/NPCControl/SpriteContainer"]
-position = Vector2(73, 122)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("5_xd0hc")
-region_enabled = true
-region_rect = Rect2(0, 0, 48, 48)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/NPCControl/SpriteContainer"]
-libraries = {
-"": SubResource("AnimationLibrary_rhkjq")
-}
-autoplay = "Idle"
-speed_scale = 2.0
-
-[node name="CRTRect" type="ColorRect" parent="UI/NPCControl"]
-material = SubResource("ShaderMaterial_nk3h4")
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -66.0
-offset_top = -178.0
-offset_right = 66.0
-offset_bottom = -6.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="Panel" type="Panel" parent="UI/NPCControl"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -72.0
-offset_top = -184.0
-offset_right = 72.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_type_variation = &"FlatPanel"
+metadata/_edit_lock_ = true
 
 [node name="DeliveriesContainer" type="MarginContainer" parent="UI"]
 layout_mode = 1
@@ -358,6 +290,7 @@ offset_top = -390.0
 offset_bottom = 390.0
 grow_horizontal = 0
 grow_vertical = 2
+metadata/_edit_lock_ = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="UI/DeliveriesContainer"]
 layout_mode = 2
@@ -376,6 +309,7 @@ anchor_bottom = 1.0
 offset_top = -370.0
 offset_right = 460.0
 grow_vertical = 0
+metadata/_edit_lock_ = true
 
 [node name="PanelContainer" type="PanelContainer" parent="UI/NewQuestContainer"]
 layout_mode = 2
@@ -421,40 +355,145 @@ size_flags_horizontal = 8
 focus_mode = 0
 text = "Accept"
 
-[node name="BalanceHBox" type="HBoxContainer" parent="UI"]
+[node name="UIHBox" type="HBoxContainer" parent="UI"]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -122.0
-offset_bottom = 20.0
-grow_horizontal = 0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 460.0
+offset_top = -48.0
+offset_right = 500.0
+offset_bottom = -8.0
+grow_vertical = 0
+metadata/_edit_lock_ = true
 
-[node name="Label" type="Label" parent="UI/BalanceHBox"]
+[node name="VBox" type="VBoxContainer" parent="UI/UIHBox"]
 layout_mode = 2
-text = "Balance: "
-vertical_alignment = 1
 
-[node name="BalanceLabel" type="Label" parent="UI/BalanceHBox"]
+[node name="SpacerControl" type="Control" parent="UI/UIHBox/VBox"]
 layout_mode = 2
-vertical_alignment = 1
+size_flags_vertical = 3
 
-[node name="FuelHBox" type="HBoxContainer" parent="UI"]
+[node name="BalancePanel" type="PanelContainer" parent="UI/UIHBox/VBox"]
+layout_mode = 2
+
+[node name="BalanceHBox" type="HBoxContainer" parent="UI/UIHBox/VBox/BalancePanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/UIHBox/VBox/BalancePanel/BalanceHBox"]
+layout_mode = 2
+text = "Balance:"
+
+[node name="BalanceLabel" type="Label" parent="UI/UIHBox/VBox/BalancePanel/BalanceHBox"]
+layout_mode = 2
+text = "$1000"
+
+[node name="FuelPanel" type="PanelContainer" parent="UI/UIHBox/VBox"]
+layout_mode = 2
+
+[node name="FuelVBox" type="VBoxContainer" parent="UI/UIHBox/VBox/FuelPanel"]
+layout_mode = 2
+
+[node name="LabelsHBox" type="HBoxContainer" parent="UI/UIHBox/VBox/FuelPanel/FuelVBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/UIHBox/VBox/FuelPanel/FuelVBox/LabelsHBox"]
+layout_mode = 2
+text = "Fuel Level:"
+
+[node name="FuelLabel" type="Label" parent="UI/UIHBox/VBox/FuelPanel/FuelVBox/LabelsHBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="UI/UIHBox/VBox/FuelPanel/FuelVBox"]
+layout_mode = 2
+
+[node name="FuelButton" type="Button" parent="UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Buy Fuel"
+
+[node name="FuelPriceLabel" type="Label" parent="UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox"]
+layout_mode = 2
+text = "$50"
+
+[node name="NPCControl" type="Control" parent="UI/UIHBox"]
+custom_minimum_size = Vector2(144, 229)
+layout_mode = 2
+
+[node name="NamePanel" type="PanelContainer" parent="UI/UIHBox/NPCControl"]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -122.0
-offset_top = 21.0
-offset_bottom = 41.0
-grow_horizontal = 0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -72.0
+offset_top = -229.0
+offset_right = 72.0
+offset_bottom = -192.0
+grow_horizontal = 2
+grow_vertical = 0
 
-[node name="Label" type="Label" parent="UI/FuelHBox"]
+[node name="NameLabel" type="Label" parent="UI/UIHBox/NPCControl/NamePanel"]
+custom_minimum_size = Vector2(128, 21)
 layout_mode = 2
-text = "Fuel: "
+text = "NPC Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="FuelLabel" type="Label" parent="UI/FuelHBox"]
-layout_mode = 2
+[node name="Panel" type="Panel" parent="UI/UIHBox/NPCControl"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -72.0
+offset_top = -184.0
+offset_right = 72.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"FlatPanel"
+
+[node name="SpriteContainer" type="Node2D" parent="UI/UIHBox/NPCControl/Panel"]
+
+[node name="FaceSprite" type="Sprite2D" parent="UI/UIHBox/NPCControl/Panel/SpriteContainer"]
+position = Vector2(73, 39)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("5_mmjq5")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="BodySprite" type="Sprite2D" parent="UI/UIHBox/NPCControl/Panel/SpriteContainer"]
+position = Vector2(73, 122)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("5_xd0hc")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 48)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/UIHBox/NPCControl/Panel/SpriteContainer"]
+libraries = {
+"": SubResource("AnimationLibrary_rhkjq")
+}
+autoplay = "Idle"
+speed_scale = 2.0
+
+[node name="CRTRect" type="ColorRect" parent="UI/UIHBox/NPCControl"]
+material = SubResource("ShaderMaterial_nk3h4")
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -66.0
+offset_top = -178.0
+offset_right = 66.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
 
 [node name="Ship" parent="." instance=ExtResource("4_tp5ri")]
 position = Vector2(687, 127)
@@ -1160,8 +1199,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 500.0
-offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 16
@@ -1316,8 +1353,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 550.0
-offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1370,8 +1405,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 600.0
-offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1472,6 +1505,7 @@ polygon = PackedVector2Array(-0.348511, 0.937256, 4.77161, -9.96155, 9.13269, 1.
 polygon = PackedVector2Array(8.61389, 25.6086, 5.12817, 34.9814, 0.0698242, 25.6319)
 
 [connection signal="pressed" from="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
+[connection signal="pressed" from="UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
 [connection signal="pressed" from="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
 [connection signal="pressed" from="LeftMenu/AchievementsButton" to="." method="OnAchievementsButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]

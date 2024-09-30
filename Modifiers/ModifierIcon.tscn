@@ -4,6 +4,7 @@
 
 [node name="ModifierIcon" type="CenterContainer"]
 custom_minimum_size = Vector2(16, 16)
+size_flags_vertical = 6
 script = ExtResource("1_de863")
 
 [node name="Icon" type="Sprite2D" parent="."]
