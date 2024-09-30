@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://c2gm46bn2r65u" path="res://UI/Icons/Modifiers/Timed.svg" id="7_jsqpv"]
 [ext_resource type="Texture2D" uid="uid://cjbfkrjslhbqc" path="res://UI/Icons/Modifiers/Segmented.svg" id="8_pin12"]
 [ext_resource type="Texture2D" uid="uid://bj4r5jfhf5vfy" path="res://UI/Icons/Modifiers/Fragile.svg" id="9_vyo8b"]
-[ext_resource type="Texture2D" uid="uid://bm8r5ivg3mxd0" path="res://UI/Icons/Alpha_micro.png" id="9_ycame"]
 [ext_resource type="SpriteFrames" uid="uid://wwclh43buy2q" path="res://UI/Locations/Borealis/frames.tres" id="10_10hid"]
 [ext_resource type="Texture2D" uid="uid://d4dje22awji6e" path="res://Location/Star.png" id="11_8nqyc"]
 [ext_resource type="SpriteFrames" uid="uid://b6qmgeinx3stt" path="res://UI/Locations/Omega/frames.tres" id="12_bs3f2"]
@@ -32,6 +31,9 @@ shader_parameter/roll_line_amount = 0.3
 shader_parameter/roll_speed = 1.0
 shader_parameter/scan_line_strength = -8.0
 shader_parameter/pixel_strength = -2.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_68hcj"]
+load_path = "res://.godot/imported/Alpha_micro.png-de72de79334117231439907a144991a5.ctex"
 
 [sub_resource type="Animation" id="Animation_ed3u5"]
 length = 0.001
@@ -308,7 +310,6 @@ alignment = 1
 [node name="TextureRect" type="TextureRect" parent="UI/NewQuestContainer/VBox/HBox/VBox"]
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("9_ycame")
 stretch_mode = 2
 
 [node name="Label" type="Label" parent="UI/NewQuestContainer/VBox/HBox/VBox"]
@@ -400,7 +401,7 @@ stretch_mode = 3
 [node name="TextureRect2" type="TextureRect" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/HBox/VBox/VBox2/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
-texture = ExtResource("9_ycame")
+texture = SubResource("CompressedTexture2D_68hcj")
 
 [node name="ProgressBar" type="ProgressBar" parent="UI/DeliveriesContainer/ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/HBox/VBox/VBox2"]
 visible = false

@@ -316,13 +316,13 @@ public partial class Main : Node2D
 		// 	["Segmented"] = SegmentedFrames
 		// };
 
-		MarketCrashIcon = GD.Load<Texture2D>("res://Location/Hazards/FuelCrash.png");
-		DisenteryIcon = GD.Load<Texture2D>("res://Location/Hazards/HeatLeeches.png");
-		RumIcon = GD.Load<Texture2D>("res://Location/Hazards/Pirates.png");
-		HecticIcon = GD.Load<Texture2D>("res://Location/Hazards/Timed.png");
-		BacteriaIcon = GD.Load<Texture2D>("res://Location/Hazards/Fragile.png");
-		ShutdownIcon = GD.Load<Texture2D>("res://Location/Hazards/Shutdown.png");
-		FaultyIcon = GD.Load<Texture2D>("res://Location/Hazards/Faulty.png");
+		MarketCrashIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/FuelCrash.svg");
+		DisenteryIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/HeatLeeches.svg");
+		RumIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/Pirates.svg");
+		HecticIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/Timed.svg");
+		BacteriaIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/Fragile.svg");
+		ShutdownIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/Shutdown.svg");
+		FaultyIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/Faulty.svg");
 
 		AchievementQueue = Array.Empty<Achievement>();
 
@@ -578,6 +578,7 @@ public partial class Main : Node2D
 			// GD.PrintS(item.ItemName, item.Fragility);
 			// GD.PrintS("\t" + newQuest.Destination.LocationName, StarMap.GetIdPath(CurrentLocation.ID, newQuest.Destination.ID).Length);
 			// GD.Print("\n");
+			// CreateNewHazard();
 			DisplayQuest(CreateNewQuest());
 		}
 		if (@event.IsActionPressed("esc"))
@@ -1563,14 +1564,17 @@ public partial class Main : Node2D
 			case "Timed":
 				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Timed.svg"));
 				NewModifier.SetData((20 - int.Parse(newTagData["tier"]) * 5).ToString());
+				NewModifier.TooltipText = "You better be fast!\nThis delivery has a timer on it.";
 				break;
 			case "Fragile":
 				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Fragile.svg"));
 				NewModifier.SetData(newTagData["jumps"]);
+				NewModifier.TooltipText = "These boxes seem more fragile than usual...\nEach jump is important, deliver the items in provided number of jumps.";
 				break;
 			case "Segmented":
 				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Segmented.svg"));
 				NewModifier.SetData(newTagData["middle-man-name"]);
+				NewModifier.TooltipText = "I like how certain planets influence my goods, here's the path...\nMake sure you go to the specified planet before completing the order.";
 				break;
 		}
 		return NewModifier;

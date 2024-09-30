@@ -81,7 +81,7 @@ public partial class Delivery : PanelContainer
 	{
 		newPlanet.Reparent(PlanetControl);
 		newPlanet.Position = new Vector2(27, 0);
-		PlanetControl.CustomMinimumSize = new Vector2(0, 25);
+		PlanetControl.CustomMinimumSize = new Vector2(25, 25);
 		SelfModulate = newDeliveryColor;
 		GD.Print("New color is: ", SelfModulate);
 	}

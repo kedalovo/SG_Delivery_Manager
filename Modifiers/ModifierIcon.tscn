@@ -12,11 +12,12 @@ centered = false
 
 [node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="PlanetControl" type="Control" parent="HBox"]
 custom_minimum_size = Vector2(24, 16)
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="DataLabel" type="Label" parent="HBox"]
 layout_mode = 2

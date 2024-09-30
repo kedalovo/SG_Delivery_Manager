@@ -26,7 +26,7 @@ public partial class Location : Node2D
 
 	public string[] Hazards;
 	public Dictionary<string, string>[] HazardsData;
-	private TextureRect[] HazardsIcons;
+	private Node[] HazardsIcons;
 
 	private int FuelCost;
 
@@ -49,7 +49,7 @@ public partial class Location : Node2D
 		Quests = Array.Empty<int>();
 		Hazards = Array.Empty<string>();
 		HazardsData = Array.Empty<Dictionary<string, string>>();
-		HazardsIcons = Array.Empty<TextureRect>();
+		HazardsIcons = Array.Empty<Node>();
 
 		FuelCost = 50;
 		FuelLevel = 5;
@@ -124,8 +124,10 @@ public partial class Location : Node2D
 			Hazards = Hazards.Append(newHazard).ToArray();
 			HazardsData = HazardsData.Append(newHazardData).ToArray();
 			TextureRect newRect = new() { Texture = newIcon };
-			HazardsHBox.AddChild(newRect);
-			HazardsIcons = HazardsIcons.Append(newRect).ToArray();
+			PanelContainer newPanel = new();
+			HazardsHBox.AddChild(newPanel);
+			newPanel.AddChild(newRect);
+			HazardsIcons = HazardsIcons.Append(newPanel).ToArray();
 			switch (newHazard)
 			{
 				case "MarketCrash":
@@ -165,7 +167,7 @@ public partial class Location : Node2D
 	{
 		string[] newHazards = Array.Empty<string>();
 		Dictionary<string, string>[] newHazardsData = Array.Empty<Dictionary<string, string>>();
-		TextureRect[] newHazardsIcons = Array.Empty<TextureRect>();
+		Node[] newHazardsIcons = Array.Empty<Node>();
 		for (int i = 0; i < Hazards.Length; i++)
 		{
 			if (Hazards[i] != hazardName)

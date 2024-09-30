@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpwen6hlleok0"
-path="res://.godot/imported/HeatLeeches.svg-86ad323f9ab122f710c1334d2e2b3146.ctex"
+uid="uid://o2pvbqal2ekw"
+path="res://.godot/imported/Pirates.svg-9f3a19c041d4812fe55220a6506f650f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI/Icons/HeatLeeches.svg"
-dest_files=["res://.godot/imported/HeatLeeches.svg-86ad323f9ab122f710c1334d2e2b3146.ctex"]
+source_file="res://Location/Hazards/New Icons/Pirates.svg"
+dest_files=["res://.godot/imported/Pirates.svg-9f3a19c041d4812fe55220a6506f650f.ctex"]
 
 [params]
 
@@ -32,6 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
+svg/scale=0.3
 editor/scale_with_editor_scale=false
 editor/convert_colors_with_editor_theme=false

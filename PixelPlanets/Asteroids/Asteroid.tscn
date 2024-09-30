@@ -17,10 +17,9 @@ shader_parameter/seed = 1.567
 shader_parameter/should_dither = true
 
 [node name="Asteroid" instance=ExtResource("2")]
-custom_minimum_size = Vector2(100, 100)
+custom_minimum_size = Vector2(0, 0)
 offset_right = -412.0
 offset_bottom = -200.0
-mouse_filter = 1
 script = ExtResource("2_px650")
 
 [node name="Asteroid" type="ColorRect" parent="." index="0"]
@@ -28,4 +27,4 @@ material = SubResource("1")
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
-mouse_filter = 1
+mouse_filter = 2

@@ -10,21 +10,26 @@ script = ExtResource("1_cfek3")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="PlanetControl" type="Control" parent="VBoxContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ContentsHBox" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="DeliveryItemsVBox" type="VBoxContainer" parent="VBoxContainer/ContentsHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="ItemDurabilityProgressBar" type="ProgressBar" parent="VBoxContainer/ContentsHBox"]
 custom_minimum_size = Vector2(4, 64)
 layout_mode = 2
 size_flags_vertical = 1
+mouse_filter = 2
 value = 100.0
 fill_mode = 3
 show_percentage = false
@@ -32,3 +37,4 @@ show_percentage = false
 [node name="Items" type="Control" parent="."]
 visible = false
 layout_mode = 2
+mouse_filter = 2
