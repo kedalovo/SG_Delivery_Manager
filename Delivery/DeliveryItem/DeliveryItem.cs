@@ -5,6 +5,8 @@ public partial class DeliveryItem : VBoxContainer
 {
 	[Signal]
 	public delegate void OnFailEventHandler(string Reason);
+	[Signal]
+	public delegate void OnMiddleManMetEventHandler(int middleManId);
 
 	private string Tag = "";
 	private Dictionary<string, string> TagData;
@@ -104,6 +106,7 @@ public partial class DeliveryItem : VBoxContainer
 				if (jumpedToId.ToString() == TagData["middle-man-id"])
 				{
 					TagData["middle-man-met"] = "true";
+					EmitSignal(SignalName.OnMiddleManMet, jumpedToId);
 					Hide();
 				}
 				break;

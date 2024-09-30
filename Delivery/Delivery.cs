@@ -11,6 +11,8 @@ public partial class Delivery : PanelContainer
 	public delegate void OnDeliveryMouseEnteredEventHandler(int DeliveryID);
 	[Signal]
 	public delegate void OnDeliveryMouseExitedEventHandler(int DeliveryID);
+	[Signal]
+	public delegate void OnSegmentCompletedEventHandler(int DeliveryID, int middleManId);
 
 	private int id;
 
@@ -187,6 +189,7 @@ public partial class Delivery : PanelContainer
 		DeliveryItemsVBox.AddChild(newDeliveryItem);
 		newDeliveryItem.SetData(newTag, newTagData);
 		newDeliveryItem.OnFail += FailQuest;
+		newDeliveryItem.OnMiddleManMet += MiddleManMet;
 		Tags[newTag] = newDeliveryItem;
 		if (newTag == "Fragile") DistanceJumped = 0;
 		GD.Print("\tAdded tag: ", newTag);
@@ -241,6 +244,11 @@ public partial class Delivery : PanelContainer
 	private void FailQuest(string Reason)
 	{
 		EmitSignal(SignalName.OnDeliveryFailed, id, Reason);
+	}
+
+	private void MiddleManMet(int middleManId)
+	{
+		EmitSignal(SignalName.OnSegmentCompleted, id, middleManId);
 	}
 
 	// public void OnDeliveryTimerTimeout()

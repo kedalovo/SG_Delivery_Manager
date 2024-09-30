@@ -385,7 +385,10 @@ text = "Balance:"
 
 [node name="BalanceLabel" type="Label" parent="UI/UIHBox/VBox/BalancePanel/BalanceHBox"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "$1000"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="FuelPanel" type="PanelContainer" parent="UI/UIHBox/VBox"]
 layout_mode = 2
@@ -401,7 +404,10 @@ layout_mode = 2
 text = "Fuel Level:"
 
 [node name="FuelLabel" type="Label" parent="UI/UIHBox/VBox/FuelPanel/FuelVBox/LabelsHBox"]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="HBox" type="HBoxContainer" parent="UI/UIHBox/VBox/FuelPanel/FuelVBox"]
 layout_mode = 2
@@ -1198,8 +1204,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 500.0
-offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 16
@@ -1354,8 +1358,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 550.0
-offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1408,8 +1410,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 600.0
-offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true

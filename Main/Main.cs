@@ -619,7 +619,7 @@ public partial class Main : Node2D
 		// GD.PrintErr("Tried to create planet with type: ", PlanetType, " and preset: ", PlanetPreset, " at location: ", Parent.LocationName);
 		Planet NewPlanet = PlanetScenes[PlanetType].Instantiate<Planet>();
 		Parent.Visuals.AddChild(NewPlanet);
-		Parent.Visuals.MoveChild(NewPlanet, 2);
+		Parent.Visuals.MoveChild(NewPlanet, Parent.Visuals.GetChildCount() - 3);
 		NewPlanet.Position = new Vector2(-50, -50);
 		NewPlanet.SetPixels(100);
 		NewPlanet.SetSeed(PlanetSeeds[PlanetPreset]);
@@ -833,6 +833,11 @@ public partial class Main : Node2D
 		StopHighlightPath(CurrentLocation.ID, AcceptedQuests[deliveryId].Destination.ID);
 	}
 
+	private void OnSegmentDone(int deliveryId, int middleManId)
+	{
+		AllLocations[middleManId].ClearHighlightSegment();
+	}
+
 	private void DrawSegmentedLine(Vector2 From, Vector2 To, Color LineColor, int Segments = 1, int SegmentMargin = 1, int LineWidth = 1)
 	{
 		Godot.Vector2[] LineDrawQueue = Array.Empty<Godot.Vector2>();
@@ -990,6 +995,9 @@ public partial class Main : Node2D
 					{
 						Deliveries = Deliveries.Where(val => val != delivery).ToArray();
 						delivery.OnDeliveryFailed -= DeliveryFailed;
+						delivery.OnDeliveryMouseEntered -= OnDeliveryHoverStart;
+						delivery.OnDeliveryMouseExited -= OnDeliveryHoverFinish;
+						delivery.OnSegmentCompleted -= OnSegmentDone;
 						AcceptedQuests.Remove(id);
 						CurrentLocation.RemoveQuest(id);
 						int Payout = 0;
@@ -1247,6 +1255,7 @@ public partial class Main : Node2D
 			{
 				Location segmentDestination = AllLocations[int.Parse(tagData["middle-man-id"])];
 				NewDelivery.SetSegmentPlanet(CreateNewPlanet(NewDelivery, segmentDestination.PlanetType, segmentDestination.PlanetPreset, 20));
+				segmentDestination.HighlightSegment(DisplayedQuest.Destination.LocationColor);
 			}
 		}
 		if (DisplayedQuest.Tags.Length == 0)
@@ -1258,6 +1267,7 @@ public partial class Main : Node2D
 		NewDelivery.OnDeliveryFailed += DeliveryFailed;
 		NewDelivery.OnDeliveryMouseEntered += OnDeliveryHoverStart;
 		NewDelivery.OnDeliveryMouseExited += OnDeliveryHoverFinish;
+		NewDelivery.OnSegmentCompleted += OnSegmentDone;
 		Deliveries = Deliveries.Append(NewDelivery).ToArray();
 		CheckAchievements();
 	}
@@ -1272,6 +1282,11 @@ public partial class Main : Node2D
 		FailedDelivery.OnDeliveryFailed -= DeliveryFailed;
 		FailedDelivery.OnDeliveryMouseEntered -= OnDeliveryHoverStart;
 		FailedDelivery.OnDeliveryMouseExited -= OnDeliveryHoverFinish;
+		FailedDelivery.OnSegmentCompleted -= OnSegmentDone;
+		if (FailedDelivery.HasTag("Segmented"))
+		{
+			AllLocations[int.Parse(FailedDelivery.GetTagData("Segmented")["middle-man-id"])].ClearHighlightSegment();
+		}
 		AcceptedQuests.Remove(FailedDeliveryID);
 		foreach (Location location in AllLocations.Values) if (location.GetQuests().Contains(FailedDeliveryID)) { location.RemoveQuest(FailedDeliveryID); break; }
 		int Payout = 0;
@@ -1328,7 +1343,7 @@ public partial class Main : Node2D
 		if (Difference > 0) { PopupLabel.Text = "$" + Difference.ToString(); PopupLabel.Modulate = Colors.Green; }
 		else { PopupLabel.Text = Difference.ToString().Insert(1, "$"); PopupLabel.Modulate = Colors.Red; }
 		AddChild(PopupLabel);
-		PopupLabel.Position = new Godot.Vector2(MoneyLabel.GlobalPosition.X + Rnd.Next(-100, 100), MoneyLabel.GlobalPosition.Y - 32);
+		PopupLabel.Position = new Godot.Vector2(MoneyLabel.GlobalPosition.X + Rnd.Next(-100, 20), MoneyLabel.GlobalPosition.Y - 32);
 		Tween LabelTween = GetTree().CreateTween();
 		LabelTween.TweenProperty(PopupLabel, "position:y", MoneyLabel.GlobalPosition.Y - (float)Rnd.NextDouble() * 5.0f - 40.0f, 1.0d);
 		LabelTween.TweenProperty(PopupLabel, "modulate", Colors.Transparent, 0.3d).SetDelay(0.7d);

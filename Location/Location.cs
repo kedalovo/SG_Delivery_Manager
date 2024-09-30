@@ -19,6 +19,7 @@ public partial class Location : Node2D
 	private AnimationPlayer HighlightAnimator;
 	private AnimationPlayer DeliveryHighlightAnimator;
 	private AnimationPlayer Animator;
+	private Line2D SegmentHighlighter;
 
 	private TextureRect DeliveryHighlighter;
 
@@ -65,6 +66,7 @@ public partial class Location : Node2D
 		HazardsHBox = GetNode<HBoxContainer>("Visuals/VBox/HBox");
 		Visuals = GetNode<Control>("Visuals");
 		DeliveryHighlighter = GetNode<TextureRect>("Visuals/DeliveryHighlighter");
+		SegmentHighlighter = GetNode<Line2D>("Visuals/SegmentHighlighter");
 
 		NameLabel.Text = LocationName;
 	}
@@ -201,6 +203,17 @@ public partial class Location : Node2D
 	public void Highlight() { HighlightAnimator.Play("highlight"); }
 
 	public void ClearHighlight() { HighlightAnimator.PlayBackwards("highlight"); }
+
+	public void HighlightSegment(Color newColor)
+	{
+		SegmentHighlighter.DefaultColor = newColor;
+		SegmentHighlighter.Show();
+	}
+
+	public void ClearHighlightSegment()
+	{
+		SegmentHighlighter.Hide();
+	}
 
 	private void OnButtonMouseEntered()
 	{
