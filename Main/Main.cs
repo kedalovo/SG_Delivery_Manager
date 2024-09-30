@@ -124,26 +124,28 @@ public partial class Main : Node2D
 
 	private bool LeapDay = false;
 
-	private Texture2D AlphaMini;
-	private Texture2D AuroraMini;
-	private Texture2D BetaMini;
-	private Texture2D BorealisMini;
-	private Texture2D CupidMini;
-	private Texture2D DreadMini;
-	private Texture2D EpsilonMini;
-	private Texture2D FateMini;
-	private Texture2D GammaMini;
-	private Texture2D OmegaMini;
-	private Texture2D QuatroMini;
-	private Texture2D SigmaMini;
-	private Texture2D ThetaMini;
-	private Texture2D TitanMini;
-	private Texture2D TrifectaMini;
-	private Texture2D ZeppelinMini;
+	// private Texture2D AlphaMini;
+	// private Texture2D AuroraMini;
+	// private Texture2D BetaMini;
+	// private Texture2D BorealisMini;
+	// private Texture2D CupidMini;
+	// private Texture2D DreadMini;
+	// private Texture2D EpsilonMini;
+	// private Texture2D FateMini;
+	// private Texture2D GammaMini;
+	// private Texture2D OmegaMini;
+	// private Texture2D QuatroMini;
+	// private Texture2D SigmaMini;
+	// private Texture2D ThetaMini;
+	// private Texture2D TitanMini;
+	// private Texture2D TrifectaMini;
+	// private Texture2D ZeppelinMini;
 
 	private Dictionary<string, PackedScene> PlanetScenes;
 	private Dictionary<string, Color[]> PlanetColorPresets;
 	private Dictionary<string, uint> PlanetSeeds;
+
+	private Node2D AsteroidContainer;
 
 	private Random Rnd;
 
@@ -353,22 +355,22 @@ public partial class Main : Node2D
 		VictoryScreen = GetNode<PopupPanel>("VictoryScreen");
 		FailScreen = GetNode<PopupPanel>("FailScreen");
 
-		AlphaMini = GD.Load<Texture2D>("res://UI/Locations/Alpha/Alpha_mini.png");
-		AuroraMini = GD.Load<Texture2D>("res://UI/Locations/Aurora/Aurora_mini.png");
-		BetaMini = GD.Load<Texture2D>("res://UI/Locations/Beta/Beta_mini.png");
-		BorealisMini = GD.Load<Texture2D>("res://UI/Locations/Borealis/Borealis_mini.png");
-		CupidMini = GD.Load<Texture2D>("res://UI/Locations/Cupid/Cupid_mini.png");
-		DreadMini = GD.Load<Texture2D>("res://UI/Locations/Dread/Dread_mini.png");
-		EpsilonMini = GD.Load<Texture2D>("res://UI/Locations/Epsilon/Epsilon_mini.png");
-		FateMini = GD.Load<Texture2D>("res://UI/Locations/Fate/Fate_mini.png");
-		GammaMini = GD.Load<Texture2D>("res://UI/Locations/Gamma/Gamma_mini.png");
-		OmegaMini = GD.Load<Texture2D>("res://UI/Locations/Omega/Omega_mini.png");
-		QuatroMini = GD.Load<Texture2D>("res://UI/Locations/Quatro/Quatro_mini.png");
-		SigmaMini = GD.Load<Texture2D>("res://UI/Locations/Sigma/Sigma_mini.png");
-		ThetaMini = GD.Load<Texture2D>("res://UI/Locations/Theta/Theta_mini.png");
-		TitanMini = GD.Load<Texture2D>("res://UI/Locations/Titan/Titan_mini.png");
-		TrifectaMini = GD.Load<Texture2D>("res://UI/Locations/Trifecta/Trifecta_mini.png");
-		ZeppelinMini = GD.Load<Texture2D>("res://UI/Locations/Zeppelin/Zeppelin_mini.png");
+		// AlphaMini = GD.Load<Texture2D>("res://UI/Locations/Alpha/Alpha_mini.png");
+		// AuroraMini = GD.Load<Texture2D>("res://UI/Locations/Aurora/Aurora_mini.png");
+		// BetaMini = GD.Load<Texture2D>("res://UI/Locations/Beta/Beta_mini.png");
+		// BorealisMini = GD.Load<Texture2D>("res://UI/Locations/Borealis/Borealis_mini.png");
+		// CupidMini = GD.Load<Texture2D>("res://UI/Locations/Cupid/Cupid_mini.png");
+		// DreadMini = GD.Load<Texture2D>("res://UI/Locations/Dread/Dread_mini.png");
+		// EpsilonMini = GD.Load<Texture2D>("res://UI/Locations/Epsilon/Epsilon_mini.png");
+		// FateMini = GD.Load<Texture2D>("res://UI/Locations/Fate/Fate_mini.png");
+		// GammaMini = GD.Load<Texture2D>("res://UI/Locations/Gamma/Gamma_mini.png");
+		// OmegaMini = GD.Load<Texture2D>("res://UI/Locations/Omega/Omega_mini.png");
+		// QuatroMini = GD.Load<Texture2D>("res://UI/Locations/Quatro/Quatro_mini.png");
+		// SigmaMini = GD.Load<Texture2D>("res://UI/Locations/Sigma/Sigma_mini.png");
+		// ThetaMini = GD.Load<Texture2D>("res://UI/Locations/Theta/Theta_mini.png");
+		// TitanMini = GD.Load<Texture2D>("res://UI/Locations/Titan/Titan_mini.png");
+		// TrifectaMini = GD.Load<Texture2D>("res://UI/Locations/Trifecta/Trifecta_mini.png");
+		// ZeppelinMini = GD.Load<Texture2D>("res://UI/Locations/Zeppelin/Zeppelin_mini.png");
 
 		// l1.SetTexture(AuroraMini);
 		// l2.SetTexture(AlphaMini);
@@ -523,6 +525,8 @@ public partial class Main : Node2D
 		l15.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
 		l16.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
 
+		AsteroidContainer = GetNode<Node2D>("Asteroids");
+
 		#endregion OtherDeclaration
 
 		CurrentLocationLabel.Text = l2.LocationName;
@@ -539,7 +543,16 @@ public partial class Main : Node2D
 		AchievementTween = GetTree().CreateTween();
 		AchievementTween.Stop();
 
-		// HighlightNeighbours();
+		// Asteroids should be constantly spawning, no matter what. But they must spawn off screen.
+		// Maybe not? What if they are hidden initially and then fade in? Let's try that instead, much more simple.
+
+		// Sure, position spawning problem solved, another problem is time - when do we spawn new ones?
+		// I want them all to last 20 seconds each, no need to randomize.
+		// Spawning a new one as soon as old ones go out would need the initial ones to be on timer.
+		// Maybe I should put a timer in Asteroids node to spawn each asteroid.
+		// That way we don't care when old ones disappear, just when new ones appear.
+		// So timer spawns asteroid each second, each lasts 20 seconds, so there's roughly 20 asteroids on the screen at each moment.
+		// Really, it's less, because they will inevitably go out of bounds, even with spawn restriction.
 	}
 
 	public override void _Process(double delta)
@@ -573,13 +586,7 @@ public partial class Main : Node2D
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_3);
 			// GameOver();
 
-			// Quest newQuest = CreateNewQuest(0, 5);
-			// foreach (ItemData item in newQuest.Items)
-			// GD.PrintS(item.ItemName, item.Fragility);
-			// GD.PrintS("\t" + newQuest.Destination.LocationName, StarMap.GetIdPath(CurrentLocation.ID, newQuest.Destination.ID).Length);
-			// GD.Print("\n");
-			// CreateNewHazard();
-			DisplayQuest(CreateNewQuest());
+			GetTree().Paused = true;
 		}
 		if (@event.IsActionPressed("esc"))
 		{
@@ -682,6 +689,26 @@ public partial class Main : Node2D
 				break;
 		}
 		return NewPlanet;
+	}
+
+	private void OnAsteroidTimerTimeout()
+	{
+		CreateNewAsteroid(
+			Rnd.Next(20, 80),																// pixels
+			Rnd.NextSingle() * 2.0f - 1.0f,													// rotation speed
+			new Vector2(Rnd.Next(300, 1620), Rnd.Next(300, 780)),							// initial position
+			new Vector2(Rnd.NextSingle() * 2.0f - 1.0f, Rnd.NextSingle() * 2.0f - 1.0f));	// velocity
+	}
+
+	private void CreateNewAsteroid(int pixels, float rotationSpeed, Vector2 initialPosition, Vector2 velocity)
+	{
+		Asteroid newAsteroid = PlanetScenes["Asteroids"].Instantiate<Asteroid>();
+		newAsteroid.SetPhysicsProcess(false);
+		AsteroidContainer.AddChild(newAsteroid);
+		newAsteroid.Position = initialPosition;
+		newAsteroid.SetSeed((uint)Rnd.Next());
+		newAsteroid.SetPixels(pixels);
+		newAsteroid.SetMovementData(rotationSpeed, velocity);
 	}
 
 	// private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)

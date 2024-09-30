@@ -11,6 +11,8 @@ uniform int octaves : hint_range(0, 20, 1);
 uniform float seed: hint_range(1, 10);
 uniform bool should_dither = true;
 
+uniform float alpha : hint_range(0.0, 1.0, 0.1) = 1.0;
+
 float rand(vec2 coord) {
 	return fract(sin(dot(coord.xy ,vec2(12.9898,78.233))) * 15.5453 * seed);
 }
@@ -119,5 +121,5 @@ void fragment() {
 		col = colors[2];
 	}
 	
-	COLOR = vec4(col.rgb, n_step * col.a);
+	COLOR = vec4(col.rgb, n_step * col.a * alpha);
 }

@@ -243,6 +243,12 @@ position = Vector2(739, 363)
 LocationName = "Dread"
 ID = 15
 
+[node name="Asteroids" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Timer" type="Timer" parent="Asteroids"]
+autostart = true
+
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -1204,6 +1210,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 500.0
+offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 16
@@ -1358,6 +1366,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 550.0
+offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1410,6 +1420,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 600.0
+offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1509,6 +1521,7 @@ polygon = PackedVector2Array(-0.348511, 0.937256, 4.77161, -9.96155, 9.13269, 1.
 [node name="Polygon2D2" type="Polygon2D" parent="TestingConnections/Con2/ColorRect"]
 polygon = PackedVector2Array(8.61389, 25.6086, 5.12817, 34.9814, 0.0698242, 25.6319)
 
+[connection signal="timeout" from="Asteroids/Timer" to="." method="OnAsteroidTimerTimeout"]
 [connection signal="pressed" from="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
 [connection signal="pressed" from="UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
 [connection signal="pressed" from="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]

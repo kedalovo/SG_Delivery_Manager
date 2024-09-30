@@ -33,7 +33,6 @@ shader_parameter/scan_line_strength = -8.0
 shader_parameter/pixel_strength = -2.0
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_68hcj"]
-load_path = "res://.godot/imported/Alpha_micro.png-de72de79334117231439907a144991a5.ctex"
 
 [sub_resource type="Animation" id="Animation_ed3u5"]
 length = 0.001

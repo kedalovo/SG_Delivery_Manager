@@ -7,6 +7,10 @@ public partial class Asteroid : Planet
 	public override bool OverrideTime {get; set;}
 	public override Color[] OriginalColors {get; set;}
 
+	private float RotationSpeed;
+	private Vector2 Velocity;
+	private Timer StartTimer;
+
 	[Export]
 	public override float RelativeScale {get; set;}
 	[Export]
@@ -18,7 +22,26 @@ public partial class Asteroid : Planet
 	{
 		AsteroidColorRect = GetNode<ColorRect>("Asteroid");
 		AsteroidColorRect.Material = (Material)AsteroidColorRect.Material.Duplicate(true);
+		StartTimer = GetNode<Timer>("Timer");
 		base._Ready();
+	}
+
+	public override void _PhysicsProcess(double delta)
+	{
+		RotationDegrees += RotationSpeed;
+		Position += Velocity;
+		ShaderMaterial mat = (ShaderMaterial)AsteroidColorRect.Material;
+		mat.SetShaderParameter("alpha", 1.0f - StartTimer.TimeLeft / StartTimer.WaitTime);
+	}
+
+	public void SetMovementData(float newRotationSpeed, Vector2 newVelocity)
+	{
+		RotationSpeed = newRotationSpeed;
+		Velocity = newVelocity;
+		GetTree().CreateTimer(20).Timeout += QueueFree;
+		ShaderMaterial mat = (ShaderMaterial)AsteroidColorRect.Material;
+		mat.SetShaderParameter("alpha", 0.0f);
+		SetPhysicsProcess(true);
 	}
 
 	public override void SetPixels(int _amount)
@@ -27,6 +50,7 @@ public partial class Asteroid : Planet
 		_mat.SetShaderParameter("pixels", _amount);
 		AsteroidColorRect.Material = _mat;
 		AsteroidColorRect.Size = new Vector2(_amount, _amount);
+		PivotOffset = AsteroidColorRect.Size/2;
 	}
 
 	public override void SetLight(Vector2 _pos)

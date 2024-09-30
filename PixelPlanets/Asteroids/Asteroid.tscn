@@ -15,9 +15,9 @@ shader_parameter/size = 5.294
 shader_parameter/octaves = 2
 shader_parameter/seed = 1.567
 shader_parameter/should_dither = true
+shader_parameter/alpha = 1.0
 
 [node name="Asteroid" instance=ExtResource("2")]
-custom_minimum_size = Vector2(0, 0)
 offset_right = -412.0
 offset_bottom = -200.0
 script = ExtResource("2_px650")
@@ -28,3 +28,8 @@ layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
 mouse_filter = 2
+
+[node name="Timer" type="Timer" parent="." index="1"]
+wait_time = 2.0
+one_shot = true
+autostart = true
