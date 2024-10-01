@@ -1,10 +1,13 @@
-[gd_resource type="Theme" load_steps=18 format=3 uid="uid://b2qtdaxrtr5jx"]
+[gd_resource type="Theme" load_steps=24 format=3 uid="uid://b2qtdaxrtr5jx"]
 
 [ext_resource type="Texture2D" uid="uid://j41biow82fc2" path="res://UI/button_disabled.png" id="1_a8nwi"]
 [ext_resource type="Texture2D" uid="uid://cne4py8jrjwss" path="res://UI/button_hover.png" id="2_5l3oj"]
 [ext_resource type="Texture2D" uid="uid://dnssuj048bhoh" path="res://UI/button_normal.png" id="3_3rj4e"]
 [ext_resource type="Texture2D" uid="uid://dvx42028kar0h" path="res://UI/button_pressed.png" id="4_uojbf"]
 [ext_resource type="Texture2D" uid="uid://4o8tfiej4lwc" path="res://UI/9patch_test.png" id="5_e1das"]
+[ext_resource type="Texture2D" uid="uid://b50dg2k2jbe7m" path="res://UI/CheckBoxNormalCheck.png" id="5_i346t"]
+[ext_resource type="Texture2D" uid="uid://baj8jwctobjjq" path="res://UI/CheckBoxNormal.png" id="5_xwmk5"]
+[ext_resource type="Texture2D" uid="uid://w7dxqiklkjfu" path="res://UI/CheckBoxNormalUnCheck.png" id="6_70avj"]
 [ext_resource type="FontFile" uid="uid://cevs2as2to3ke" path="res://UI/Orbitron-VariableFont_wght.ttf" id="6_712fq"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h17ba"]
@@ -34,6 +37,14 @@ texture_margin_left = 8.0
 texture_margin_top = 16.0
 texture_margin_right = 8.0
 texture_margin_bottom = 11.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ioc15"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ckcr5"]
+texture = ExtResource("5_xwmk5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mv2xr"]
+texture = ExtResource("5_xwmk5")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_smmu1"]
 texture = ExtResource("5_e1das")
@@ -91,6 +102,17 @@ Button/styles/disabled = SubResource("StyleBoxTexture_h17ba")
 Button/styles/hover = SubResource("StyleBoxTexture_t5s6y")
 Button/styles/normal = SubResource("StyleBoxTexture_74tgg")
 Button/styles/pressed = SubResource("StyleBoxTexture_wh6h1")
+CheckBox/icons/checked = ExtResource("5_i346t")
+CheckBox/icons/checked_disabled = null
+CheckBox/icons/radio_checked = null
+CheckBox/icons/radio_checked_disabled = null
+CheckBox/icons/radio_unchecked = null
+CheckBox/icons/radio_unchecked_disabled = null
+CheckBox/icons/unchecked = ExtResource("6_70avj")
+CheckBox/icons/unchecked_disabled = null
+CheckBox/styles/focus = SubResource("StyleBoxEmpty_ioc15")
+CheckBox/styles/normal = SubResource("StyleBoxTexture_ckcr5")
+CheckBox/styles/pressed = SubResource("StyleBoxTexture_mv2xr")
 FlatPanel/base_type = &"Panel"
 FlatPanel/styles/panel = SubResource("StyleBoxTexture_smmu1")
 Label/colors/font_outline_color = Color(0, 0, 0, 1)

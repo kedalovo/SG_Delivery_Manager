@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://huvowrxh5x0l"]
+[gd_scene load_steps=19 format=3 uid="uid://huvowrxh5x0l"]
 
 [ext_resource type="Script" path="res://Main/Main.cs" id="1_ei6yb"]
 [ext_resource type="PackedScene" uid="uid://bvwjgxmq2ro5h" path="res://Location/Location.tscn" id="3_dt0bp"]
@@ -6,25 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://dfd4qgmg3todd" path="res://NPC/Faces/Faces.png" id="5_mmjq5"]
 [ext_resource type="Texture2D" uid="uid://g0o15jg5f87f" path="res://NPC/Bodies/Bodies.png" id="5_xd0hc"]
 [ext_resource type="Texture2D" uid="uid://d4dje22awji6e" path="res://Location/Star.png" id="7_arlnc"]
-[ext_resource type="PackedScene" uid="uid://krk0tryxukwu" path="res://Achievements/Achievement.tscn" id="8_656hj"]
-[ext_resource type="Texture2D" uid="uid://2iiemvy07xw0" path="res://Achievements/Sprites/All_Deliveries_Amount_1.png" id="8_oqerx"]
-[ext_resource type="Texture2D" uid="uid://df25arj7toepl" path="res://Achievements/Sprites/All_Deliveries_Amount_2.png" id="9_ntv02"]
-[ext_resource type="Texture2D" uid="uid://d0ev8dq0ufptc" path="res://Achievements/Sprites/All_Deliveries_Amount_3.png" id="10_1km8m"]
-[ext_resource type="Texture2D" uid="uid://col650e5fubpd" path="res://Achievements/Sprites/All_Items_Combined_Amount_1.png" id="11_h8pji"]
-[ext_resource type="Texture2D" uid="uid://nukpiqu784lp" path="res://Achievements/Sprites/All_Items_Combined_Amount_2.png" id="12_idm6s"]
-[ext_resource type="Texture2D" uid="uid://cp7wtxaweb2ke" path="res://Achievements/Sprites/All_Items_Combined_Amount_3.png" id="13_tsg6s"]
-[ext_resource type="Texture2D" uid="uid://bhlmfn7myvbxw" path="res://Achievements/Sprites/All_Items_Individual_Amount_1.png" id="14_4qptk"]
-[ext_resource type="Texture2D" uid="uid://cyvkcxgvm0hxh" path="res://Achievements/Sprites/All_Items_Individual_Amount_2.png" id="15_3qsrs"]
-[ext_resource type="Texture2D" uid="uid://biw6y57iv8owy" path="res://Achievements/Sprites/All_Items_Individual_Amount_3.png" id="16_e3qcq"]
-[ext_resource type="Texture2D" uid="uid://cenbeaaooku3w" path="res://Achievements/Sprites/Failed_Deliveries_Amount_1.png" id="17_eb0qk"]
-[ext_resource type="Texture2D" uid="uid://dpvbc71owftrn" path="res://Achievements/Sprites/Failed_Deliveries_Amount_2.png" id="18_87wap"]
-[ext_resource type="Texture2D" uid="uid://c3wh71pmm82q2" path="res://Achievements/Sprites/Failed_Deliveries_Amount_3.png" id="19_qbok1"]
-[ext_resource type="Texture2D" uid="uid://chmh4ljr3yk5h" path="res://Achievements/Sprites/Having_Multiple_Deliveries_1.png" id="20_633xo"]
-[ext_resource type="Texture2D" uid="uid://f02v71b25cnb" path="res://Achievements/Sprites/Having_Multiple_Deliveries_2.png" id="21_kjnu7"]
-[ext_resource type="Texture2D" uid="uid://disxoutdqccer" path="res://Achievements/Sprites/Having_Multiple_Deliveries_3.png" id="22_mfblu"]
-[ext_resource type="Texture2D" uid="uid://b20hohe44csw6" path="res://Achievements/Sprites/Making_Multiple_Deliveries_1.png" id="23_2txuo"]
-[ext_resource type="Texture2D" uid="uid://dl4aq245e2aso" path="res://Achievements/Sprites/Making_Multiple_Deliveries_2.png" id="24_3yhed"]
-[ext_resource type="Texture2D" uid="uid://da4tdvo4egtp1" path="res://Achievements/Sprites/Making_Multiple_Deliveries_3.png" id="26_1qdlg"]
+[ext_resource type="PackedScene" uid="uid://krk0tryxukwu" path="res://Achievements/Achievement.tscn" id="8_aqrfd"]
+[ext_resource type="Texture2D" uid="uid://blyc4wffyor4s" path="res://UI/AchievementIcon.png" id="9_i406f"]
 [ext_resource type="Texture2D" uid="uid://cnd44eaxmi8br" path="res://UI/BCG_3.jpg" id="27_n8v4t"]
 [ext_resource type="Theme" uid="uid://b2qtdaxrtr5jx" path="res://UI/new_theme.tres" id="28_5dl8r"]
 [ext_resource type="Shader" path="res://UI/NPC_shader.gdshader" id="29_6bxq1"]
@@ -163,6 +146,8 @@ expand_mode = 2
 metadata/_edit_lock_ = true
 
 [node name="Locations" type="Node2D" parent="."]
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
 [node name="Location" parent="Locations" instance=ExtResource("3_dt0bp")]
 position = Vector2(227, 131)
@@ -505,6 +490,140 @@ offset_right = 66.0
 offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="AchievementsContainer" type="MarginContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -356.0
+offset_bottom = 372.0
+grow_horizontal = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/AchievementsContainer"]
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="UI/AchievementsContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AchievementsVBox" type="VBoxContainer" parent="UI/AchievementsContainer/PanelContainer/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Achievement" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Novice hauler.
+You've managed to make 15 deliveries total. Keep on keeping on!"
+
+[node name="Achievement2" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Advanced hauler.
+When it comes to delivering packages - you don't mess around. And 25 total deliveries is not the limit for you."
+
+[node name="Achievement3" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Master hauler.
+While delivering packages you've seen it all. You can even smell what each package contains. That's what making 50 deliveries does to a person."
+
+[node name="Achievement4" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Small collector.
+You like collecting lots of items - doesn't matter what they are, the quantity is all that matters. And that quantity is 20."
+
+[node name="Achievement5" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Mediocre collector.
+You might want to get a separate ship just to carry the stuff you pick. 50 items might be pushing it."
+
+[node name="Achievement6" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Expert collector.
+Your collection knows no bounds. It's time to have a garage sale, because a 100 items is just too many."
+
+[node name="Achievement7" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Variety newbie.
+You took an interest to delivering every kind of item. In fact, you just delivered 5 of each, which is just the beginning."
+
+[node name="Achievement8" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Variety enthusiast.
+It's always \"more\" and always \"different\". 10 of each item is not enough for you, however, you strive for perfection."
+
+[node name="Achievement9" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Variety perfectionist.
+You've achieved variety worthy of a museum. Each item was delivered 15 times, what an achievement!"
+
+[node name="Achievement10" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "It happens.
+You failed a couple of deliveries, but you know what? You keep on going, because failure is only complete when you don't pick yourself up again."
+
+[node name="Achievement11" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "We learn from your mistakes.
+Failing a couple times was not enough, you've decided to show everyone how determined you are by failing another delivery."
+
+[node name="Achievement12" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Self induced suffering.
+At this point no one knows anymore. Is it a bit? Do you just like losing money? Picking up too many deliveries? All we know is that you don't lose, even if your balance is getting thinner."
+
+[node name="Achievement13" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Beginner multitasker.
+You like to have multiple focuses at the same time. Having 3 deliveries helps you be on your toes."
+
+[node name="Achievement14" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Multitasking addict.
+You just can't get enough of having multiple deliveries. Will you be able to deliver all of those 5 that you have? We'll find out soon enough."
+
+[node name="Achievement15" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Indian god.
+You seem to have several hands, maybe even several heads to handle all of the deliveries you maintain. No one doubts your abilities anymore."
+
+[node name="Achievement16" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Keeping promises.
+Who said multitasking doesn't work? Here you are, making 3 deliveries at the same time without batting an eye."
+
+[node name="Achievement17" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Oathkeeper.
+A promise is sacred to you, so when you say you will deliver 5 packages, you just do it."
+
+[node name="Achievement18" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
+layout_mode = 2
+Description = "Sworn protector.
+You save stations by deliveries alone, bringing them 10 packages in one go, feeding many and providing to all."
+
+[node name="PanelContainer" type="PanelContainer" parent="UI"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -86.0
+offset_top = -86.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/PanelContainer"]
+modulate = Color(0.925781, 0.716034, 0, 1)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("9_i406f")
+expand_mode = 3
 
 [node name="Ship" parent="." instance=ExtResource("4_tp5ri")]
 position = Vector2(687, 127)
@@ -1198,161 +1317,6 @@ text = "Quatro"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AchievementsMenu" type="PopupPanel" parent="."]
-disable_3d = true
-transparent_bg = true
-position = Vector2i(50, 50)
-size = Vector2i(500, 300)
-transparent = true
-theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
-
-[node name="Margin" type="MarginContainer" parent="AchievementsMenu"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 500.0
-offset_bottom = 300.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="Scroll" type="ScrollContainer" parent="AchievementsMenu/Margin"]
-layout_mode = 2
-
-[node name="VBox" type="VBoxContainer" parent="AchievementsMenu/Margin/Scroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Achievement" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Novice hauler.
-You've managed to make 15 deliveries total. Keep on keeping on!"
-IconTexture = ExtResource("8_oqerx")
-
-[node name="Achievement2" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Advanced hauler.
-When it comes to delivering packages - you don't mess around. And 25 total deliveries is not the limit for you."
-IconTexture = ExtResource("9_ntv02")
-
-[node name="Achievement3" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Master hauler.
-While delivering packages you've seen it all. You can even smell what each package contains. That's what making 50 deliveries does to a person."
-IconTexture = ExtResource("10_1km8m")
-
-[node name="Achievement4" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Small collector.
-You like collecting lots of items - doesn't matter what they are, the quantity is all that matters. And that quantity is 20."
-IconTexture = ExtResource("11_h8pji")
-
-[node name="Achievement5" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Mediocre collector.
-You might want to get a separate ship just to carry the stuff you pick. 50 items might be pushing it."
-IconTexture = ExtResource("12_idm6s")
-
-[node name="Achievement6" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Expert collector.
-Your collection knows no bounds. It's time to have a garage sale, because a 100 items is just too many."
-IconTexture = ExtResource("13_tsg6s")
-
-[node name="Achievement7" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Variety newbie.
-You took an interest to delivering every kind of item. In fact, you just delivered 5 of each, which is just the beginning."
-IconTexture = ExtResource("14_4qptk")
-
-[node name="Achievement8" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Variety enthusiast.
-It's always \"more\" and always \"different\". 10 of each item is not enough for you, however, you strive for perfection."
-IconTexture = ExtResource("15_3qsrs")
-
-[node name="Achievement9" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Variety perfectionist.
-You've achieved variety worthy of a museum. Each item was delivered 15 times, what an achievement!"
-IconTexture = ExtResource("16_e3qcq")
-
-[node name="Achievement10" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "It happens.
-You failed a couple of deliveries, but you know what? You keep on going, because failure is only complete when you don't pick yourself up again."
-IconTexture = ExtResource("17_eb0qk")
-
-[node name="Achievement11" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "We learn from your mistakes.
-Failing a couple times was not enough, you've decided to show everyone how determined you are by failing another delivery."
-IconTexture = ExtResource("18_87wap")
-
-[node name="Achievement12" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Self induced suffering.
-At this point no one knows anymore. Is it a bit? Do you just like losing money? Picking up too many deliveries? All we know is that you don't lose, even if your balance is getting thinner."
-IconTexture = ExtResource("19_qbok1")
-
-[node name="Achievement13" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Beginner multitasker.
-You like to have multiple focuses at the same time. Having 3 deliveries helps you be on your toes."
-IconTexture = ExtResource("20_633xo")
-
-[node name="Achievement14" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Multitasking addict.
-You just can't get enough of having multiple deliveries. Will you be able to deliver all of those 5 that you have? We'll find out soon enough."
-IconTexture = ExtResource("21_kjnu7")
-
-[node name="Achievement15" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Indian god.
-You seem to have several hands, maybe even several heads to handle all of the deliveries you maintain. No one doubts your abilities anymore."
-IconTexture = ExtResource("22_mfblu")
-
-[node name="Achievement16" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Keeping promises.
-Who said multitasking doesn't work? Here you are, making 3 deliveries at the same time without batting an eye."
-IconTexture = ExtResource("23_2txuo")
-
-[node name="Achievement17" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Oathkeeper.
-A promise is sacred to you, so when you say you will deliver 5 packages, you just do it."
-IconTexture = ExtResource("24_3yhed")
-
-[node name="Achievement18" parent="AchievementsMenu/Margin/Scroll/VBox" instance=ExtResource("8_656hj")]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-layout_mode = 2
-Description = "Sworn protector.
-You save stations by deliveries alone, bringing them 10 packages in one go, feeding many and providing to all."
-IconTexture = ExtResource("26_1qdlg")
-
 [node name="VictoryScreen" type="PopupPanel" parent="."]
 disable_3d = true
 transparent_bg = true
@@ -1366,8 +1330,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 550.0
-offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1420,8 +1382,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 600.0
-offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -1524,6 +1484,7 @@ polygon = PackedVector2Array(8.61389, 25.6086, 5.12817, 34.9814, 0.0698242, 25.6
 [connection signal="timeout" from="Asteroids/Timer" to="." method="OnAsteroidTimerTimeout"]
 [connection signal="pressed" from="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
 [connection signal="pressed" from="UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
+[connection signal="OnShipArrived" from="Ship" to="." method="OnShipArrived"]
 [connection signal="pressed" from="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
 [connection signal="pressed" from="LeftMenu/AchievementsButton" to="." method="OnAchievementsButtonPressed"]
 [connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]

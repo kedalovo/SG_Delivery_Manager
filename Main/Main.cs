@@ -82,8 +82,8 @@ public partial class Main : Node2D
 	private Texture2D ShutdownIcon;
 	private Texture2D FaultyIcon;
 
-	private Button AchieventsButton;
-	private PopupPanel AchievementsMenu;
+	// private Button AchieventsButton;
+	// private PopupPanel AchievementsMenu;
 
 	private enum Achievements
 	{
@@ -107,8 +107,9 @@ public partial class Main : Node2D
 		MAKING_MULTIPLE_DELIVERIES_3,
 	}
 
-	private VBoxContainer AchievementsContainer;
-	private TextureRect AchievementRect;
+	private MarginContainer AchievementsContainer;
+	private VBoxContainer AchievementsVBoxContainer;
+	private PanelContainer AchievementRect;
 	private Achievement[] AchievementQueue;
 
 	private int ACH_TotalDeliveries;
@@ -146,6 +147,9 @@ public partial class Main : Node2D
 	private Dictionary<string, uint> PlanetSeeds;
 
 	private Node2D AsteroidContainer;
+
+	private Location LastPressedLocation;
+	private int LastJumpDistance;
 
 	private Random Rnd;
 
@@ -328,11 +332,12 @@ public partial class Main : Node2D
 
 		AchievementQueue = Array.Empty<Achievement>();
 
-		AchieventsButton = GetNode<Button>("LeftMenu/AchievementsButton");
-		AchievementsMenu = GetNode<PopupPanel>("AchievementsMenu");
+		// AchieventsButton = GetNode<Button>("UI/MarginContainer/PanelContainer/VBox/ExitButton");
+		// AchievementsMenu = GetNode<PopupPanel>("AchievementsMenu");
 
-		AchievementsContainer = AchievementsMenu.GetNode<VBoxContainer>("Margin/Scroll/VBox");
-		AchievementRect = GetNode<TextureRect>("Control/AchievementRect");
+		AchievementsContainer = GetNode<MarginContainer>("UI/AchievementsContainer");
+		AchievementsVBoxContainer = GetNode<VBoxContainer>("UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox");
+		AchievementRect = GetNode<PanelContainer>("UI/PanelContainer");
 
 		ACH_TotalDifferentItems = new();
 
@@ -591,6 +596,10 @@ public partial class Main : Node2D
 		if (@event.IsActionPressed("esc"))
 		{
 			GetTree().Quit();
+		}
+		if (@event.IsActionPressed("achievement_menu"))
+		{
+			AchievementsContainer.Visible = !AchievementsContainer.Visible;
 		}
 	}
 
@@ -990,125 +999,134 @@ public partial class Main : Node2D
 
 	private void OnLocationPressed(int pressedID)
 	{
-		Location PressedLocation = AllLocations[pressedID];
-		if (CurrentLocation != PressedLocation && StarMap.ArePointsConnected(CurrentLocation.ID, PressedLocation.ID) && !StarMap.IsPointDisabled(pressedID))
+		LastPressedLocation = AllLocations[pressedID];
+		if (CurrentLocation != LastPressedLocation && StarMap.ArePointsConnected(CurrentLocation.ID, LastPressedLocation.ID) && !StarMap.IsPointDisabled(pressedID))
 		{
-			int JumpDistance = GetJumpDistance(CurrentLocation, PressedLocation);
-			if (CurrentLocation.Hazards.Contains("Disentery")) JumpDistance *= int.Parse(CurrentLocation.GetHazardData("Disentery")["jumpCost"]);
-			if (JumpDistance <= FuelLevel && Spaceship.IsAvailable())
+			LastJumpDistance = GetJumpDistance(CurrentLocation, LastPressedLocation);
+			if (CurrentLocation.Hazards.Contains("Disentery")) LastJumpDistance *= int.Parse(CurrentLocation.GetHazardData("Disentery")["jumpCost"]);
+			if (LastJumpDistance <= FuelLevel && Spaceship.IsAvailable())
 			{
-				if (CurrentLocation.Hazards.Contains("Disentery")) CurrentLocation.RemoveHazard("Disentery");
-				FuelLevel -= JumpDistance;
-				CreateNewNPC();
-				if (PressedLocation.Hazards.Contains("Faulty"))
-				{
-					UpdateDeliveries(JumpDistance * 2);
-					PressedLocation.RemoveHazard("Faulty");
-				}
-				else UpdateDeliveries(JumpDistance);
-				StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
-				CurrentLocation = PressedLocation;
-				DisplayQuest(CreateNewQuest(Rnd.Next(11)));
-				CurrentLocationLabel.Text = CurrentLocation.LocationName;
-				Spaceship.SetMoveTarget(PressedLocation.Position, .5f);
-				int[] CompletedQuestIDs = CurrentLocation.GetQuests();
-				ACH_CompletedQuests = 0;
-				ACH_TotalFails = 0;
-				// Getting the payout for completing deliveries
-				foreach (int id in CompletedQuestIDs)
-				{
-					Delivery delivery = GetDeliveryByID(id);
-					if (!(delivery.HasTag("Segmented") && delivery.GetTagData("Segmented")["middle-man-met"] == "false"))
-					{
-						Deliveries = Deliveries.Where(val => val != delivery).ToArray();
-						delivery.OnDeliveryFailed -= DeliveryFailed;
-						delivery.OnDeliveryMouseEntered -= OnDeliveryHoverStart;
-						delivery.OnDeliveryMouseExited -= OnDeliveryHoverFinish;
-						delivery.OnSegmentCompleted -= OnSegmentDone;
-						AcceptedQuests.Remove(id);
-						CurrentLocation.RemoveQuest(id);
-						int Payout = 0;
-						Item[] items = delivery.GetItems();
-						foreach (Item item in items) Payout += (int)Mathf.Floor(item.Fragility * 10 * item.HP / 100);
-						if (delivery.HasTag("Timed")) Payout = Mathf.FloorToInt(Payout * (1f + .15f * int.Parse(delivery.GetTagData("Timed")["tier"])));
-						if (delivery.HasTag("Fragile")) Payout = Mathf.FloorToInt(Payout * 1.2f);
-						if (delivery.HasTag("Segmented")) Payout = Mathf.FloorToInt(Payout * 1.2f);
-						Payout = Mathf.FloorToInt(Payout * (1.0f + delivery.TotalDistance / 10.0f));
-						PopupBalance(Payout);
-						Balance += Payout;
-						ACH_TotalDeliveries++;
-						ACH_TotalItems += delivery.GetItemsSurvivedNum();
-						foreach (Item item in delivery.GetItemsSurvived()) ACH_TotalDifferentItems[item.ItemName]++;
-						delivery.QueueFree();
-						ACH_CompletedQuests++;
-					}
-				}
-				if (CompletedQuestIDs.Length > 0) CurrentLocation.SetCompleteQuest();
-				foreach (Delivery delivery in Deliveries) delivery.Jump(CurrentLocation.ID);
-				CheckAchievements();
-				// Creating new hazard every 3'rd jump
-				if (HazardCounter == 2)
-				{
-					HazardCounter = 0;
-					CreateNewHazard();
-				}
-				else HazardCounter++;
-				// Hazard functionality for arriving at the Location
-				if (CurrentLocation.Hazards.Contains("MarketCrash")) FuelButton.Text = "$" + (50 * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])).ToString();
-				else FuelButton.Text = "$50";
-				if (CurrentLocation.Hazards.Contains("Rum"))
-				{
-					int tax = 0;
-					Dictionary<string, string> data = CurrentLocation.GetHazardData("Rum");
-					if (Balance > 700) tax = Mathf.CeilToInt(int.Parse(data["secondThreshold"]) / 100f * Balance);
-					else if (Balance > 300) tax = Mathf.CeilToInt(int.Parse(data["firstThreshold"]) / 100f * Balance);
-					Balance -= tax;
-					CurrentLocation.RemoveHazard("Rum");
-				}
-				if (CurrentLocation.Hazards.Contains("Hectic"))
-				{
-					foreach (Delivery delivery in Deliveries)
-					{
-						Dictionary<string, string> newTagData = new() { { "tier", CurrentLocation.GetHazardData("Hectic")["tier"] } };
-						// delivery.AddTag("Timed", newTagData, GetNewModifierIcon("Timed", newTagData));
-						delivery.AddTag("Timed", newTagData);
-					}
-					CurrentLocation.RemoveHazard("Hectic");
-				}
-				if (CurrentLocation.Hazards.Contains("Bacteria"))
-				{
-					foreach (Delivery delivery in Deliveries)
-					{
-						Dictionary<string, string> newTagData = new();
-						Location destination = AcceptedQuests[delivery.ID].Destination;
-						int distance = (StarMap.GetIdPath(CurrentLocation.ID, destination.ID).Length + Rnd.Next(2)) * int.Parse(CurrentLocation.GetHazardData("Bacteria")["multiplier"]);
-						newTagData["jumps"] = distance.ToString();
-						// delivery.AddTag("Fragile", newTagData, GetNewModifierIcon("Fragile", newTagData));
-						delivery.AddTag("Fragile", newTagData);
-					}
-					CurrentLocation.RemoveHazard("Bacteria");
-				}
-				if (LeapDay)
-				{
-					LeapDay = false;
-					foreach (Location location in AllLocations.Values) location.AddFuel(1);
-				}
-				else LeapDay = true;
-				foreach (Location location in AllLocations.Values) location.Jump();
-				foreach (long i in StarMap.GetPointConnections(CurrentLocation.ID))
-				{
-					JumpDistance = GetJumpDistance(CurrentLocation, AllLocations[(int)i]);
-					if (CurrentLocation.Hazards.Contains("Disentery")) JumpDistance *= int.Parse(CurrentLocation.GetHazardData("Disentery")["jumpCost"]);
-					if (FuelLevel >= JumpDistance) return;
-				}
-				if (CurrentLocation.Hazards.Contains("MarketCrash"))
-				{
-					if (Balance >= 50 * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])) return;
-				}
-				else if (Balance >= 50 && CurrentLocation.GetFuelLevel() > 0) return;
-				GameOver();
+				MoveShip(LastPressedLocation);
 			}
 		}
+	}
+
+	private void MoveShip(Location ToLocation)
+	{
+		Spaceship.SetMoveTarget(ToLocation.Position, .5f);
+	}
+
+	private void OnShipArrived()
+	{
+		if (CurrentLocation.Hazards.Contains("Disentery")) CurrentLocation.RemoveHazard("Disentery");
+		FuelLevel -= LastJumpDistance;
+		CreateNewNPC();
+		if (LastPressedLocation.Hazards.Contains("Faulty"))
+		{
+			UpdateDeliveries(LastJumpDistance * 2);
+			LastPressedLocation.RemoveHazard("Faulty");
+		}
+		else UpdateDeliveries(LastJumpDistance);
+		StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
+		CurrentLocation = LastPressedLocation;
+		DisplayQuest(CreateNewQuest(Rnd.Next(11)));
+		CurrentLocationLabel.Text = CurrentLocation.LocationName;
+		int[] CompletedQuestIDs = CurrentLocation.GetQuests();
+		ACH_CompletedQuests = 0;
+		ACH_TotalFails = 0;
+		// Getting the payout for completing deliveries
+		foreach (int id in CompletedQuestIDs)
+		{
+			Delivery delivery = GetDeliveryByID(id);
+			if (!(delivery.HasTag("Segmented") && delivery.GetTagData("Segmented")["middle-man-met"] == "false"))
+			{
+				Deliveries = Deliveries.Where(val => val != delivery).ToArray();
+				delivery.OnDeliveryFailed -= DeliveryFailed;
+				delivery.OnDeliveryMouseEntered -= OnDeliveryHoverStart;
+				delivery.OnDeliveryMouseExited -= OnDeliveryHoverFinish;
+				delivery.OnSegmentCompleted -= OnSegmentDone;
+				AcceptedQuests.Remove(id);
+				CurrentLocation.RemoveQuest(id);
+				int Payout = 0;
+				Item[] items = delivery.GetItems();
+				foreach (Item item in items) Payout += (int)Mathf.Floor(item.Fragility * 10 * item.HP / 100);
+				if (delivery.HasTag("Timed")) Payout = Mathf.FloorToInt(Payout * (1f + .15f * int.Parse(delivery.GetTagData("Timed")["tier"])));
+				if (delivery.HasTag("Fragile")) Payout = Mathf.FloorToInt(Payout * 1.2f);
+				if (delivery.HasTag("Segmented")) Payout = Mathf.FloorToInt(Payout * 1.2f);
+				Payout = Mathf.FloorToInt(Payout * (1.0f + delivery.TotalDistance / 10.0f));
+				PopupBalance(Payout);
+				Balance += Payout;
+				ACH_TotalDeliveries++;
+				ACH_TotalItems += delivery.GetItemsSurvivedNum();
+				foreach (Item item in delivery.GetItemsSurvived()) ACH_TotalDifferentItems[item.ItemName]++;
+				delivery.QueueFree();
+				ACH_CompletedQuests++;
+			}
+		}
+		if (CompletedQuestIDs.Length > 0) CurrentLocation.SetCompleteQuest();
+		foreach (Delivery delivery in Deliveries) delivery.Jump(CurrentLocation.ID);
+		CheckAchievements();
+		// Creating new hazard every 3'rd jump
+		if (HazardCounter == 2)
+		{
+			HazardCounter = 0;
+			CreateNewHazard();
+		}
+		else HazardCounter++;
+		// Hazard functionality for arriving at the Location
+		if (CurrentLocation.Hazards.Contains("MarketCrash")) FuelButton.Text = "$" + (50 * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])).ToString();
+		else FuelButton.Text = "$50";
+		if (CurrentLocation.Hazards.Contains("Rum"))
+		{
+			int tax = 0;
+			Dictionary<string, string> data = CurrentLocation.GetHazardData("Rum");
+			if (Balance > 700) tax = Mathf.CeilToInt(int.Parse(data["secondThreshold"]) / 100f * Balance);
+			else if (Balance > 300) tax = Mathf.CeilToInt(int.Parse(data["firstThreshold"]) / 100f * Balance);
+			Balance -= tax;
+			CurrentLocation.RemoveHazard("Rum");
+		}
+		if (CurrentLocation.Hazards.Contains("Hectic"))
+		{
+			foreach (Delivery delivery in Deliveries)
+			{
+				Dictionary<string, string> newTagData = new() { { "tier", CurrentLocation.GetHazardData("Hectic")["tier"] } };
+				// delivery.AddTag("Timed", newTagData, GetNewModifierIcon("Timed", newTagData));
+				delivery.AddTag("Timed", newTagData);
+			}
+			CurrentLocation.RemoveHazard("Hectic");
+		}
+		if (CurrentLocation.Hazards.Contains("Bacteria"))
+		{
+			foreach (Delivery delivery in Deliveries)
+			{
+				Dictionary<string, string> newTagData = new();
+				Location destination = AcceptedQuests[delivery.ID].Destination;
+				int distance = (StarMap.GetIdPath(CurrentLocation.ID, destination.ID).Length + Rnd.Next(2)) * int.Parse(CurrentLocation.GetHazardData("Bacteria")["multiplier"]);
+				newTagData["jumps"] = distance.ToString();
+				// delivery.AddTag("Fragile", newTagData, GetNewModifierIcon("Fragile", newTagData));
+				delivery.AddTag("Fragile", newTagData);
+			}
+			CurrentLocation.RemoveHazard("Bacteria");
+		}
+		if (LeapDay)
+		{
+			LeapDay = false;
+			foreach (Location location in AllLocations.Values) location.AddFuel(1);
+		}
+		else LeapDay = true;
+		foreach (Location location in AllLocations.Values) location.Jump();
+		foreach (long i in StarMap.GetPointConnections(CurrentLocation.ID))
+		{
+			LastJumpDistance = GetJumpDistance(CurrentLocation, AllLocations[(int)i]);
+			if (CurrentLocation.Hazards.Contains("Disentery")) LastJumpDistance *= int.Parse(CurrentLocation.GetHazardData("Disentery")["jumpCost"]);
+			if (FuelLevel >= LastJumpDistance) return;
+		}
+		if (CurrentLocation.Hazards.Contains("MarketCrash"))
+		{
+			if (Balance >= 50 * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])) return;
+		}
+		else if (Balance >= 50 && CurrentLocation.GetFuelLevel() > 0) return;
+		GameOver();
 	}
 
 	private void OnLocationAvailable(int locationID)
@@ -1377,11 +1395,11 @@ public partial class Main : Node2D
 		LabelTween.TweenCallback(Callable.From(PopupLabel.QueueFree)).SetDelay(1.0d);
 	}
 
-	private void OnAchievementsButtonPressed()
-	{
-		if (AchievementsMenu.Visible) AchievementsMenu.Hide();
-		else AchievementsMenu.Show();
-	}
+	// private void OnAchievementsButtonPressed()
+	// {
+	// 	if (AchievementsMenu.Visible) AchievementsMenu.Hide();
+	// 	else AchievementsMenu.Show();
+	// }
 
 	private void CheckAchievements()
 	{
@@ -1428,58 +1446,58 @@ public partial class Main : Node2D
 		switch (achievement)
 		{
 			case Achievements.TOTAL_DELIVERIES_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Novice hauler")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Novice hauler")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_DELIVERIES_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Advanced hauler")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Advanced hauler")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_DELIVERIES_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Master hauler")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Master hauler")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_ITEMS_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Small collector")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Small collector")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_ITEMS_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Mediocre collector")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Mediocre collector")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_ITEMS_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Expert collector")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Expert collector")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_DIFFERENT_ITEMS_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety newbie")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Variety newbie")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_DIFFERENT_ITEMS_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety enthusiast")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Variety enthusiast")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_DIFFERENT_ITEMS_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Variety perfectionist")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Variety perfectionist")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_FAILS_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("It happens")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("It happens")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_FAILS_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("We learn from your mistakes")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("We learn from your mistakes")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.TOTAL_FAILS_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Self induced suffering")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Self induced suffering")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.HAVING_MULTIPLE_DELIVERIES_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Beginner multitasker")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Beginner multitasker")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.HAVING_MULTIPLE_DELIVERIES_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Multitasking addict")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Multitasking addict")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.HAVING_MULTIPLE_DELIVERIES_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Indian god")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Indian god")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.MAKING_MULTIPLE_DELIVERIES_1:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Keeping promises")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Keeping promises")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.MAKING_MULTIPLE_DELIVERIES_2:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Oathkeeper")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Oathkeeper")) { QueueAchievement(child); break; }
 				break;
 			case Achievements.MAKING_MULTIPLE_DELIVERIES_3:
-				foreach (Achievement child in AchievementsContainer.GetChildren()) if (child.Description.StartsWith("Sworn protector")) { QueueAchievement(child); break; }
+				foreach (Achievement child in AchievementsVBoxContainer.GetChildren()) if (child.Description.StartsWith("Sworn protector")) { QueueAchievement(child); break; }
 				break;
 		}
 	}
@@ -1488,7 +1506,7 @@ public partial class Main : Node2D
 	{
 		if (!newAchievement.Enabled)
 		{
-			GD.Print("Queued achievement: ", newAchievement.Description.Substring(0, newAchievement.Description.IndexOf('.')));
+			GD.Print("Queued achievement: ", newAchievement.Description[..newAchievement.Description.IndexOf('.')]);
 			newAchievement.Enabled = true;
 			AchievementQueue = AchievementQueue.Append(newAchievement).ToArray();
 			if (!AchievementTween.IsRunning())
@@ -1507,7 +1525,6 @@ public partial class Main : Node2D
 			GD.Print("Animation queue is clear");
 			return;
 		}
-		AchievementRect.Texture = (Texture2D)AchievementQueue[0].IconTexture.Duplicate();
 		AchievementTween = GetTree().CreateTween();
 		AchievementTween.TweenProperty(AchievementRect, "modulate:a", 1.0f, 2.0d);
 		AchievementTween.TweenProperty(AchievementRect, "modulate:a", 0.0f, 2.0d).SetDelay(2.0d);
@@ -1545,7 +1562,7 @@ public partial class Main : Node2D
 
 	private void CheckCompletion()
 	{
-		foreach (Achievement achievement in AchievementsContainer.GetChildren()) if (!achievement.Enabled) return;
+		foreach (Achievement achievement in AchievementsVBoxContainer.GetChildren()) if (!achievement.Enabled) return;
 		VictoryScreen.Show();
 	}
 

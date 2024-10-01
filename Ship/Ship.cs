@@ -2,6 +2,9 @@ using Godot;
 
 public partial class Ship : Node2D
 {
+	[Signal]
+	public delegate void OnShipArrivedEventHandler();
+
 	private Node2D Pivot;
 	private Sprite2D ShipSprite;
 
@@ -91,6 +94,7 @@ public partial class Ship : Node2D
 	{
 		Animator.Play();
 		CurrentState = States.PARKED;
+		EmitSignal(SignalName.OnShipArrived);
 	}
 
 	public float GetShipRotation()

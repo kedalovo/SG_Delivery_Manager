@@ -1,13 +1,15 @@
 [gd_scene load_steps=2 format=3 uid="uid://krk0tryxukwu"]
 
-[ext_resource type="Script" path="res://Achievements/Achievement.cs" id="1_kg31w"]
+[ext_resource type="Script" path="res://Achievements/Achievement.cs" id="1_ey0jc"]
 
 [node name="Achievement" type="HBoxContainer"]
-modulate = Color(0.282353, 0.282353, 0.282353, 1)
-script = ExtResource("1_kg31w")
+mouse_filter = 2
+script = ExtResource("1_ey0jc")
 
-[node name="Icon" type="TextureRect" parent="."]
+[node name="Check" type="CheckBox" parent="."]
 layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="DescriptionLabel" type="Label" parent="."]
 texture_filter = 1

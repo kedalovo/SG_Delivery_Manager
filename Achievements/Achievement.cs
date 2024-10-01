@@ -1,44 +1,35 @@
 using Godot;
-using System;
 
-[Tool]
 public partial class Achievement : HBoxContainer
 {
-    private string description;
-    private Texture2D icon_texture;
-    private bool enabled;
+	private CheckBox Check;
 
-    [Export(PropertyHint.MultilineText)]
-    public string Description
-    {
-        get => description;
-        set { DescriptionLabel ??= GetNode<Label>("DescriptionLabel"); DescriptionLabel.Text = value; description = value; }
-    }
-    [Export]
-    public Texture2D IconTexture
-    {
-        get => icon_texture;
-        set { Icon ??= GetNode<TextureRect>("Icon"); Icon.Texture = value; icon_texture = value; }
-    }
-    [Export]
-    public bool Enabled
-    {
-        get => enabled;
-        set
-        {
-            if (value == true) Modulate = Colors.White;
-            else Modulate = new Color("484848");
-            enabled = value;
-        }
-    }
+	private string description;
 
-    private TextureRect Icon;
-    private Label DescriptionLabel;
+	[Export(PropertyHint.MultilineText)]
+	public string Description
+	{
+		get => description;
+		set { DescriptionLabel ??= GetNode<Label>("DescriptionLabel"); DescriptionLabel.Text = value; description = value; }
+	}
+	[Export]
+	public bool Enabled
+	{
+		get => Check.ButtonPressed;
+		set
+		{
+			Check ??= GetNode<CheckBox>("Check"); Check.ButtonPressed = value;
+		}
+	}
 
-    public override void _Ready()
-    {
-        Modulate = new Color("484848");
-        Icon = GetNode<TextureRect>("Icon");
-        DescriptionLabel = GetNode<Label>("DescriptionLabel");
-    }
+	private Label DescriptionLabel;
+
+	public override void _Ready()
+	{
+		DescriptionLabel = GetNode<Label>("DescriptionLabel");
+		Check = GetNode<CheckBox>("Check");
+
+		DescriptionLabel.Text = description;
+		Check.ButtonPressed = Enabled;
+	}
 }
