@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://huvowrxh5x0l"]
+[gd_scene load_steps=17 format=3 uid="uid://huvowrxh5x0l"]
 
 [ext_resource type="Script" path="res://Main/Main.cs" id="1_ei6yb"]
 [ext_resource type="PackedScene" uid="uid://bvwjgxmq2ro5h" path="res://Location/Location.tscn" id="3_dt0bp"]
@@ -119,12 +119,6 @@ shader_parameter/roll_line_amount = 0.3
 shader_parameter/roll_speed = 1.0
 shader_parameter/scan_line_strength = -8.0
 shader_parameter/pixel_strength = -2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_23vaj"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_b76yp"]
-font_size = 24
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ei6yb")
@@ -646,220 +640,6 @@ expand_mode = 3
 [node name="Ship" parent="." instance=ExtResource("4_tp5ri")]
 position = Vector2(687, 127)
 
-[node name="LeftMenu" type="Control" parent="."]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_right = 144.0
-offset_bottom = 256.0
-
-[node name="PanelContainer" type="PanelContainer" parent="LeftMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="VBox" type="VBoxContainer" parent="LeftMenu/PanelContainer"]
-z_index = 1
-layout_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="CurrentLocationLabel" type="Label" parent="LeftMenu/PanelContainer/VBox"]
-layout_mode = 2
-text = "Current Location"
-horizontal_alignment = 1
-
-[node name="NPCNameLabel" type="Label" parent="LeftMenu/PanelContainer/VBox"]
-layout_mode = 2
-text = "NPC Name"
-horizontal_alignment = 1
-
-[node name="Spacer" type="Control" parent="LeftMenu/PanelContainer/VBox"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="CenterContainer" type="CenterContainer" parent="LeftMenu/PanelContainer/VBox"]
-layout_mode = 2
-
-[node name="VBox" type="VBoxContainer" parent="LeftMenu/PanelContainer/VBox/CenterContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="Label" type="Label" parent="LeftMenu/PanelContainer/VBox/CenterContainer/VBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "Buy fuel:"
-
-[node name="HBox" type="HBoxContainer" parent="LeftMenu/PanelContainer/VBox/CenterContainer/VBox"]
-layout_mode = 2
-
-[node name="FuelButton" type="Button" parent="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 16
-text = "$50"
-
-[node name="FuelLevelLabel" type="Label" parent="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "15
-left"
-horizontal_alignment = 1
-
-[node name="AchievementsButton" type="Button" parent="LeftMenu"]
-layout_mode = 1
-offset_left = 115.0
-offset_top = 186.0
-offset_right = 144.0
-offset_bottom = 204.0
-text = "[A]"
-
-[node name="NPC" type="Node2D" parent="."]
-visible = false
-position = Vector2(72, 96)
-
-[node name="BodySprite" type="Sprite2D" parent="NPC"]
-self_modulate = Color(0.123492, 0.484375, 0.0605469, 1)
-texture_filter = 1
-position = Vector2(0, 32)
-scale = Vector2(3, 3)
-texture = ExtResource("5_xd0hc")
-region_enabled = true
-region_rect = Rect2(0, 0, 48, 48)
-
-[node name="FaceSprite" type="Sprite2D" parent="NPC"]
-self_modulate = Color(0.038269, 0.816406, 0.068665, 1)
-texture_filter = 1
-position = Vector2(0, -40)
-scale = Vector2(3.5, 3.5)
-texture = ExtResource("5_mmjq5")
-region_enabled = true
-region_rect = Rect2(0, 0, 32, 32)
-
-[node name="BottomMenu" type="Control" parent="."]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_top = 256.0
-offset_right = 600.0
-offset_bottom = 400.0
-
-[node name="PanelContainer" type="PanelContainer" parent="BottomMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="MarginContainer" type="MarginContainer" parent="BottomMenu/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-metadata/_edit_use_anchors_ = true
-
-[node name="HBox" type="HBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="DeliveryVBox" type="VBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="DeliveryLabel" type="Label" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox"]
-layout_mode = 2
-text = "Deliver these:"
-
-[node name="ModifiersHBox" type="HBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox"]
-layout_mode = 2
-
-[node name="DeliveryContentsLabel" type="RichTextLabel" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox"]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Delivery item 1 (4)
-Delivery Item 2 (2)
-..."
-
-[node name="HBox" type="HBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox"]
-layout_mode = 2
-
-[node name="DestinationLabel" type="Label" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox"]
-layout_mode = 2
-text = "Delivery Destination"
-
-[node name="AcceptButton" type="Button" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox"]
-custom_minimum_size = Vector2(40, 0)
-layout_mode = 2
-text = "Yes"
-
-[node name="DeclineButton" type="Button" parent="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox"]
-custom_minimum_size = Vector2(40, 0)
-layout_mode = 2
-text = "No"
-
-[node name="CargoVBox" type="VBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="CargoLabel" type="Label" parent="BottomMenu/PanelContainer/MarginContainer/HBox/CargoVBox"]
-layout_mode = 2
-text = "Current Cargo:"
-
-[node name="Scroll" type="ScrollContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox/CargoVBox"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="CargoVBox" type="VBoxContainer" parent="BottomMenu/PanelContainer/MarginContainer/HBox/CargoVBox/Scroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Control" type="Control" parent="."]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_right = 600.0
-offset_bottom = 400.0
-mouse_filter = 2
-metadata/_edit_use_anchors_ = true
-metadata/_edit_lock_ = true
-
-[node name="InfoVBox" type="VBoxContainer" parent="Control"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -104.0
-offset_bottom = 40.0
-grow_horizontal = 0
-mouse_filter = 2
-
-[node name="MoneyLabel" type="Label" parent="Control/InfoVBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "$9999999"
-horizontal_alignment = 2
-
-[node name="FuelLabel" type="Label" parent="Control/InfoVBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "Fuel:"
-horizontal_alignment = 2
-
-[node name="AchievementRect" type="TextureRect" parent="Control"]
-modulate = Color(1, 0.772549, 0, 0)
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 0
-offset_left = 210.0
-offset_top = 298.0
-offset_right = 274.0
-offset_bottom = 362.0
-
 [node name="ReferenceStartMap" type="Node2D" parent="."]
 position = Vector2(669, -520)
 
@@ -1335,118 +1115,6 @@ text = "Quatro"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VictoryScreen" type="PopupPanel" parent="."]
-disable_3d = true
-transparent_bg = true
-position = Vector2i(25, 25)
-size = Vector2i(550, 350)
-transparent = true
-theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
-
-[node name="Control" type="Control" parent="VictoryScreen"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 550.0
-offset_bottom = 350.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="MarginContainer" type="MarginContainer" parent="VictoryScreen/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VictoryScreen/Control/MarginContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="Label" type="Label" parent="VictoryScreen/Control/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Victory!"
-label_settings = SubResource("LabelSettings_b76yp")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="RichTextLabel" type="RichTextLabel" parent="VictoryScreen/Control/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/normal_font_size = 16
-text = "
-Congratulations! You have managed to complete all the achievements. It must have been tough. You can keep playing by pressing the button below, if you want, but you can consider this game finished. Thank you for playing!"
-
-[node name="KeepPlayingButton" type="Button" parent="VictoryScreen/Control/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Keep playing"
-
-[node name="FailScreen" type="PopupPanel" parent="."]
-disable_3d = true
-transparent_bg = true
-size = Vector2i(600, 400)
-transparent = true
-theme_override_styles/panel = SubResource("StyleBoxFlat_23vaj")
-
-[node name="Control" type="Control" parent="FailScreen"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 600.0
-offset_bottom = 400.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="MarginContainer" type="MarginContainer" parent="FailScreen/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="VBoxContainer" type="VBoxContainer" parent="FailScreen/Control/MarginContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="Label" type="Label" parent="FailScreen/Control/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "GameOver
-"
-label_settings = SubResource("LabelSettings_b76yp")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="RichTextLabel" type="RichTextLabel" parent="FailScreen/Control/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/normal_font_size = 16
-text = "
-You have played well, but it seems you are stuck with no money to buy more fuel for a warp jump.
-
-Sorry, but you'll have to try again..."
-
-[node name="RetryButton" type="Button" parent="FailScreen/Control/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Retry"
-
 [node name="TestingConnections" type="Node2D" parent="."]
 visible = false
 
@@ -1503,13 +1171,157 @@ polygon = PackedVector2Array(-0.348511, 0.937256, 4.77161, -9.96155, 9.13269, 1.
 [node name="Polygon2D2" type="Polygon2D" parent="TestingConnections/Con2/ColorRect"]
 polygon = PackedVector2Array(8.61389, 25.6086, 5.12817, 34.9814, 0.0698242, 25.6319)
 
+[node name="FailScreen" type="Control" parent="."]
+visible = false
+z_index = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="FailScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="FailScreen/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBox" type="VBoxContainer" parent="FailScreen/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="GameOverLabel" type="Label" parent="FailScreen/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 72
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="FailScreen/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="SpacerControl" type="Control" parent="FailScreen/PanelContainer/MarginContainer/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DescriptionLabel" type="Label" parent="FailScreen/PanelContainer/MarginContainer/VBox/HBox"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "You have played well, but it seems you are stuck with no money to buy more fuel for a warp jump.
+
+Don't worry, I'm sure you'll get it next try!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="SpacerControl2" type="Control" parent="FailScreen/PanelContainer/MarginContainer/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RetryButton" type="Button" parent="FailScreen/PanelContainer/MarginContainer/VBox"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 64
+text = "Retry"
+
+[node name="VictoryScreen" type="Control" parent="."]
+visible = false
+z_index = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VictoryScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VictoryScreen/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBox" type="VBoxContainer" parent="VictoryScreen/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="VictoryLabel" type="Label" parent="VictoryScreen/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 72
+text = "VICTORY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="VictoryScreen/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="SpacerControl" type="Control" parent="VictoryScreen/PanelContainer/MarginContainer/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DescriptionLabel" type="Label" parent="VictoryScreen/PanelContainer/MarginContainer/VBox/HBox"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Congratulations! You have managed to complete all the achievements. It must have been tough.
+
+You can keep playing by pressing the button below, if you want, but you can consider this game finished. Thank you for playing!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="SpacerControl2" type="Control" parent="VictoryScreen/PanelContainer/MarginContainer/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ButtonsHBox" type="HBoxContainer" parent="VictoryScreen/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 32
+alignment = 1
+
+[node name="ContinueButton" type="Button" parent="VictoryScreen/PanelContainer/MarginContainer/VBox/ButtonsHBox"]
+custom_minimum_size = Vector2(356, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 64
+text = "Continue"
+
+[node name="ExitButton" type="Button" parent="VictoryScreen/PanelContainer/MarginContainer/VBox/ButtonsHBox"]
+custom_minimum_size = Vector2(176, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Exit"
+
 [connection signal="timeout" from="Asteroids/Timer" to="." method="OnAsteroidTimerTimeout"]
 [connection signal="pressed" from="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
 [connection signal="pressed" from="UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
 [connection signal="OnShipArrived" from="Ship" to="." method="OnShipArrived"]
-[connection signal="pressed" from="LeftMenu/PanelContainer/VBox/CenterContainer/VBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
-[connection signal="pressed" from="LeftMenu/AchievementsButton" to="." method="OnAchievementsButtonPressed"]
-[connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
-[connection signal="pressed" from="BottomMenu/PanelContainer/MarginContainer/HBox/DeliveryVBox/HBox/DeclineButton" to="." method="OnDeclineQuestButtonPressed"]
-[connection signal="pressed" from="VictoryScreen/Control/MarginContainer/VBoxContainer/KeepPlayingButton" to="." method="OnKeepPlayingButtonPressed"]
-[connection signal="pressed" from="FailScreen/Control/MarginContainer/VBoxContainer/RetryButton" to="." method="OnRetryButtonPressed"]
+[connection signal="pressed" from="FailScreen/PanelContainer/MarginContainer/VBox/RetryButton" to="." method="OnRetryButtonPressed"]
+[connection signal="pressed" from="VictoryScreen/PanelContainer/MarginContainer/VBox/ButtonsHBox/ContinueButton" to="." method="OnKeepPlayingButtonPressed"]
+[connection signal="pressed" from="VictoryScreen/PanelContainer/MarginContainer/VBox/ButtonsHBox/ExitButton" to="." method="OnExitButtonPressed"]

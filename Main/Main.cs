@@ -24,7 +24,7 @@ public partial class Main : Node2D
 	private AStar2D StarMap;
 
 	private Ship Spaceship;
-	private Label CurrentLocationLabel;
+	// private Label CurrentLocationLabel;
 
 	private string[] NPCFirstNames = {"Jeremy", "Ashley", "Buck", "Zeta", "Froleen", "John", "Kasma", "Amber", "Rapier", "Sultan", "Sorrow", "Hattempati", "Jeelaz"};
 	private string[] NPCLastNames = {"Black", "Threes", "Meener", "Fungal", "Spadow", "Fraulein", "Stix", "Pisstorn", "Jarbin", "Maystone", "Yu", "Suntor", "Lephyn"};
@@ -45,10 +45,10 @@ public partial class Main : Node2D
 	// Accepted quests are formerly displayed quests that have been accepted
 	private Dictionary<int, Quest> AcceptedQuests;
 	private Button AcceptButton;
-	private Button DeclineButton;
+	// private Button DeclineButton;
 	private Button FuelButton;
 
-	private VBoxContainer CargoVBox;
+	// private VBoxContainer CargoVBox;
 	private PackedScene DeliveryScene;
 
 	private Delivery[] Deliveries;
@@ -118,8 +118,8 @@ public partial class Main : Node2D
 	private int ACH_TotalFails;
 	private int ACH_CompletedQuests;
 
-	private PopupPanel VictoryScreen;
-	private PopupPanel FailScreen;
+	private Control VictoryScreen;
+	private Control FailScreen;
 
 	private Tween AchievementTween;
 
@@ -263,10 +263,10 @@ public partial class Main : Node2D
 
 		#region OtherDeclaration
 
-		string HBoxPath = "BottomMenu/PanelContainer/MarginContainer/HBox/";
+		// string HBoxPath = "BottomMenu/PanelContainer/MarginContainer/HBox/";
 
 		Spaceship = GetNode<Ship>("Ship");
-		CurrentLocationLabel = GetNode<Label>("LeftMenu/PanelContainer/VBox/CurrentLocationLabel");
+		// CurrentLocationLabel = GetNode<Label>("LeftMenu/PanelContainer/VBox/CurrentLocationLabel");
 
 		NPCBodySprite = GetNode<Sprite2D>("UI/UIHBox/NPCControl/Panel/SpriteContainer/BodySprite");
 		NPCFaceSprite = GetNode<Sprite2D>("UI/UIHBox/NPCControl/Panel/SpriteContainer/FaceSprite");
@@ -277,7 +277,7 @@ public partial class Main : Node2D
 		DestinationPlanet = GetNode<Control>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/PlanetSpace");
 		DeliveryContentsLabel = GetNode<RichTextLabel>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/DeliveryContentsLabel");
 		AcceptButton = GetNode<Button>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton");
-		DeclineButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/DeclineButton");
+		// DeclineButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/DeclineButton");
 		FuelButton = GetNode<Button>("UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton");
 
 		DeliveryItems = Array.Empty<ItemData>();
@@ -299,7 +299,7 @@ public partial class Main : Node2D
 		AcceptedQuests = new();
 		Deliveries = Array.Empty<Delivery>();
 		
-		CargoVBox = GetNode<VBoxContainer>(HBoxPath + "CargoVBox/Scroll/CargoVBox");
+		// CargoVBox = GetNode<VBoxContainer>(HBoxPath + "CargoVBox/Scroll/CargoVBox");
 		DeliveryScene = GD.Load<PackedScene>("res://Delivery/NewDelivery.tscn");
 
 		DeliveriesContainer = GetNode<VBoxContainer>("UI/DeliveriesContainer/ScrollContainer/VBoxContainer");
@@ -358,8 +358,8 @@ public partial class Main : Node2D
 		ACH_TotalFails = 0;
 		ACH_CompletedQuests = 0;
 
-		VictoryScreen = GetNode<PopupPanel>("VictoryScreen");
-		FailScreen = GetNode<PopupPanel>("FailScreen");
+		VictoryScreen = GetNode<Control>("VictoryScreen");
+		FailScreen = GetNode<Control>("FailScreen");
 
 		// AlphaMini = GD.Load<Texture2D>("res://UI/Locations/Alpha/Alpha_mini.png");
 		// AuroraMini = GD.Load<Texture2D>("res://UI/Locations/Aurora/Aurora_mini.png");
@@ -535,7 +535,7 @@ public partial class Main : Node2D
 
 		#endregion OtherDeclaration
 
-		CurrentLocationLabel.Text = l2.LocationName;
+		// CurrentLocationLabel.Text = l2.LocationName;
 		CurrentLocation = l2;
 		Spaceship.Transform = CurrentLocation.Transform;
 
@@ -572,7 +572,6 @@ public partial class Main : Node2D
 		if (@event.IsActionPressed("test"))
 		{
 			GD.Print("TESTING");
-			// GetTree().Paused = true;
 			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
 			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
 			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_3);
@@ -591,23 +590,21 @@ public partial class Main : Node2D
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_1);
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_2);
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_3);
-			// GameOver();
-
-			GetTree().Paused = true;
+			GameOver();
 		}
 		if (@event.IsActionPressed("esc"))
 		{
 			GetTree().Quit();
 		}
-		if (@event.IsActionPressed("achievement_menu"))
+		if (@event.IsActionPressed("achievement_menu") && !FailScreen.Visible && !VictoryScreen.Visible)
 		{
 			AchievementsContainer.Visible = !AchievementsContainer.Visible;
 		}
-		if (@event.IsActionPressed("buy_fuel"))
+		if (@event.IsActionPressed("buy_fuel") && !FailScreen.Visible && !VictoryScreen.Visible)
 		{
 			OnFuelButtonPressed();
 		}
-		if (@event.IsActionPressed("accept_quest"))
+		if (@event.IsActionPressed("accept_quest") && !FailScreen.Visible && !VictoryScreen.Visible)
 		{
 			OnAcceptQuestButtonPressed();
 		}
@@ -1041,7 +1038,7 @@ public partial class Main : Node2D
 		CurrentLocation = LastPressedLocation;
 		UpdateLocationFuelLevel();
 		DisplayQuest(CreateNewQuest(Rnd.Next(11)));
-		CurrentLocationLabel.Text = CurrentLocation.LocationName;
+		// CurrentLocationLabel.Text = CurrentLocation.LocationName;
 		int[] CompletedQuestIDs = CurrentLocation.GetQuests();
 		ACH_CompletedQuests = 0;
 		ACH_TotalFails = 0;
@@ -1260,16 +1257,16 @@ public partial class Main : Node2D
 	{
 		AcceptButton.Disabled = false;
 		AcceptButton.Visible = true;
-		DeclineButton.Disabled = false;
-		DeclineButton.Visible = true;
+		// DeclineButton.Disabled = false;
+		// DeclineButton.Visible = true;
 	}
 
 	private void DisableQuestButtons()
 	{
 		AcceptButton.Disabled = true;
 		AcceptButton.Visible = false;
-		DeclineButton.Disabled = true;
-		DeclineButton.Visible = false;
+		// DeclineButton.Disabled = true;
+		// DeclineButton.Visible = false;
 	}
 
 	private void OnAcceptQuestButtonPressed()
@@ -1586,6 +1583,11 @@ public partial class Main : Node2D
 	private void OnKeepPlayingButtonPressed()
 	{
 		VictoryScreen.Hide();
+	}
+
+	private void OnExitButtonPressed()
+	{
+		GetTree().Quit();
 	}
 
 	private void GameOver()
