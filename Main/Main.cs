@@ -307,6 +307,7 @@ public partial class Main : Node2D
 		MoneyLabel = GetNode<Label>("UI/UIHBox/VBox/BalancePanel/BalanceHBox/BalanceLabel");
 
 		FuelLabel = GetNode<Label>("UI/UIHBox/VBox/FuelPanel/FuelVBox/LabelsHBox/FuelLabel");
+		FuelLevelLabel = GetNode<Label>("UI/UIHBox/VBox/LocationFuelPanel/HBox/FuelLabel");
 
 		ModifiersHBox = GetNode<HBoxContainer>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/ModifiersHBox");
 		ModifierIconScene = GD.Load<PackedScene>("res://Modifiers/ModifierIcon.tscn");
@@ -544,6 +545,7 @@ public partial class Main : Node2D
 		CreateNewNPC();
 		DisplayQuest(CreateNewQuest(0, 1));
 		FailScreen.Hide();
+		UpdateLocationFuelLevel();
 
 		AchievementTween = GetTree().CreateTween();
 		AchievementTween.Stop();
@@ -1037,6 +1039,7 @@ public partial class Main : Node2D
 		else UpdateDeliveries(LastJumpDistance);
 		StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
 		CurrentLocation = LastPressedLocation;
+		UpdateLocationFuelLevel();
 		DisplayQuest(CreateNewQuest(Rnd.Next(11)));
 		CurrentLocationLabel.Text = CurrentLocation.LocationName;
 		int[] CompletedQuestIDs = CurrentLocation.GetQuests();
@@ -1364,8 +1367,14 @@ public partial class Main : Node2D
 				FuelLevel += 1;
 				PopupBalance(-Cost);
 				foreach (Location location in AllLocations.Values) location.MarketCrashUpdate();
+				UpdateLocationFuelLevel();
 			}
 		}
+	}
+
+	private void UpdateLocationFuelLevel()
+	{
+		FuelLevelLabel.Text = CurrentLocation.GetFuelLevel().ToString();
 	}
 
 	private void ClearQuestHighlight() { DisplayedQuest.Destination.ClearHighlight(); }
