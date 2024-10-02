@@ -601,6 +601,14 @@ public partial class Main : Node2D
 		{
 			AchievementsContainer.Visible = !AchievementsContainer.Visible;
 		}
+		if (@event.IsActionPressed("buy_fuel"))
+		{
+			OnFuelButtonPressed();
+		}
+		if (@event.IsActionPressed("accept_quest"))
+		{
+			OnAcceptQuestButtonPressed();
+		}
 	}
 
 	private void CreateNewPlanetAtLocation(Location Parent, string PlanetType, string PlanetPreset)
