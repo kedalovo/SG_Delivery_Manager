@@ -1,13 +1,17 @@
-[gd_scene load_steps=17 format=3 uid="uid://huvowrxh5x0l"]
+[gd_scene load_steps=24 format=3 uid="uid://huvowrxh5x0l"]
 
 [ext_resource type="Script" path="res://Main/Main.cs" id="1_ei6yb"]
 [ext_resource type="PackedScene" uid="uid://bvwjgxmq2ro5h" path="res://Location/Location.tscn" id="3_dt0bp"]
 [ext_resource type="PackedScene" uid="uid://ck7a82me5xux0" path="res://Ship/Ship.tscn" id="4_tp5ri"]
 [ext_resource type="Texture2D" uid="uid://dfd4qgmg3todd" path="res://NPC/Faces/Faces.png" id="5_mmjq5"]
+[ext_resource type="AudioStream" uid="uid://bifsvedyva8l3" path="res://Audio/UI SFX/Click_Low.wav" id="5_q70ja"]
 [ext_resource type="Texture2D" uid="uid://g0o15jg5f87f" path="res://NPC/Bodies/Bodies.png" id="5_xd0hc"]
 [ext_resource type="Texture2D" uid="uid://d4dje22awji6e" path="res://Location/Star.png" id="7_arlnc"]
 [ext_resource type="PackedScene" uid="uid://krk0tryxukwu" path="res://Achievements/Achievement.tscn" id="8_aqrfd"]
 [ext_resource type="Texture2D" uid="uid://blyc4wffyor4s" path="res://UI/AchievementIcon.png" id="9_i406f"]
+[ext_resource type="AudioStream" uid="uid://bbpk7lqwnlsjw" path="res://Audio/JDSherbert - Ambiences Music Pack - Cosmic Star.mp3" id="12_kpf8c"]
+[ext_resource type="AudioStream" uid="uid://csl3hcnlhgde1" path="res://Audio/UI SFX/Tone1C.wav" id="14_aihar"]
+[ext_resource type="AudioStream" uid="uid://cskps58yat3ds" path="res://Audio/UI SFX/Impact_1_Low.wav" id="15_0c1n5"]
 [ext_resource type="Texture2D" uid="uid://cnd44eaxmi8br" path="res://UI/BCG_3.jpg" id="27_n8v4t"]
 [ext_resource type="Theme" uid="uid://b2qtdaxrtr5jx" path="res://UI/new_theme.tres" id="28_5dl8r"]
 [ext_resource type="Shader" path="res://UI/NPC_shader.gdshader" id="29_6bxq1"]
@@ -119,6 +123,41 @@ shader_parameter/roll_line_amount = 0.3
 shader_parameter/roll_speed = 1.0
 shader_parameter/scan_line_strength = -8.0
 shader_parameter/pixel_strength = -2.0
+
+[sub_resource type="Animation" id="Animation_w2vs6"]
+resource_name = "startup"
+length = 3.0
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-80, 0, 0, 2, 0, 0, -2, 0, 0, 0),
+"times": PackedFloat32Array(0, 3)
+}
+
+[sub_resource type="Animation" id="Animation_f3vuo"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f840k"]
+_data = {
+"RESET": SubResource("Animation_f3vuo"),
+"startup": SubResource("Animation_w2vs6")
+}
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ei6yb")
@@ -339,6 +378,10 @@ size_flags_horizontal = 8
 focus_mode = 0
 text = "Accept"
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton"]
+stream = ExtResource("5_q70ja")
+bus = &"SFX"
+
 [node name="UIHBox" type="HBoxContainer" parent="UI"]
 layout_mode = 1
 anchors_preset = 2
@@ -419,6 +462,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 text = "Buy Fuel"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton"]
+stream = ExtResource("5_q70ja")
 
 [node name="FuelPriceLabel" type="Label" parent="UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox"]
 layout_mode = 2
@@ -1318,7 +1364,25 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "Exit"
 
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_kpf8c")
+autoplay = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundMusic"]
+libraries = {
+"": SubResource("AnimationLibrary_f840k")
+}
+autoplay = "startup"
+
+[node name="LocationPickSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_aihar")
+
+[node name="LocationArrivalSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_0c1n5")
+volume_db = 10.0
+
 [connection signal="timeout" from="Asteroids/Timer" to="." method="OnAsteroidTimerTimeout"]
+[connection signal="button_down" from="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonDown"]
 [connection signal="pressed" from="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
 [connection signal="pressed" from="UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
 [connection signal="OnShipArrived" from="Ship" to="." method="OnShipArrived"]

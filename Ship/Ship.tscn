@@ -118,18 +118,16 @@ autoplay = "rotating"
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-mouse_filter = 1
 theme_override_font_sizes/font_size = 16
 
 [node name="Label2" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-mouse_filter = 1
 theme_override_font_sizes/font_size = 16
 
 [node name="Label3" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-mouse_filter = 1
 theme_override_font_sizes/font_size = 16

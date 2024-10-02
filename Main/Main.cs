@@ -45,8 +45,10 @@ public partial class Main : Node2D
 	// Accepted quests are formerly displayed quests that have been accepted
 	private Dictionary<int, Quest> AcceptedQuests;
 	private Button AcceptButton;
+	private AudioStreamPlayer AcceptButtonSound;
 	// private Button DeclineButton;
 	private Button FuelButton;
+	private AudioStreamPlayer FuelButtonSound;
 
 	// private VBoxContainer CargoVBox;
 	private PackedScene DeliveryScene;
@@ -150,6 +152,9 @@ public partial class Main : Node2D
 
 	private Location LastPressedLocation;
 	private int LastJumpDistance;
+
+	private AudioStreamPlayer LocationPickSound;
+	private AudioStreamPlayer LocationArrivalSound;
 
 	private Random Rnd;
 
@@ -277,8 +282,10 @@ public partial class Main : Node2D
 		DestinationPlanet = GetNode<Control>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/PlanetSpace");
 		DeliveryContentsLabel = GetNode<RichTextLabel>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/DeliveryContentsLabel");
 		AcceptButton = GetNode<Button>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton");
+		AcceptButtonSound = GetNode<AudioStreamPlayer>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton/AudioStreamPlayer");
 		// DeclineButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/DeclineButton");
 		FuelButton = GetNode<Button>("UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton");
+		FuelButtonSound = GetNode<AudioStreamPlayer>("UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton/AudioStreamPlayer");
 
 		DeliveryItems = Array.Empty<ItemData>();
 		
@@ -532,6 +539,9 @@ public partial class Main : Node2D
 		l16.SetMovement(Rnd.NextSingle() + 1.0f, Rnd.NextSingle(), Color.FromHsv(Rnd.NextSingle(), Rnd.Next(30, 70) / 100.0f, Rnd.Next(50, 100) / 100.0f));
 
 		AsteroidContainer = GetNode<Node2D>("Asteroids");
+
+		LocationPickSound = GetNode<AudioStreamPlayer>("LocationPickSound");
+		LocationArrivalSound = GetNode<AudioStreamPlayer>("LocationArrivalSound");
 
 		#endregion OtherDeclaration
 
@@ -1013,6 +1023,7 @@ public partial class Main : Node2D
 			if (CurrentLocation.Hazards.Contains("Disentery")) LastJumpDistance *= int.Parse(CurrentLocation.GetHazardData("Disentery")["jumpCost"]);
 			if (LastJumpDistance <= FuelLevel && Spaceship.IsAvailable())
 			{
+				LocationPickSound.Play();
 				MoveShip(LastPressedLocation);
 			}
 		}
@@ -1025,6 +1036,7 @@ public partial class Main : Node2D
 
 	private void OnShipArrived()
 	{
+		LocationArrivalSound.Play(1.0f);
 		if (CurrentLocation.Hazards.Contains("Disentery")) CurrentLocation.RemoveHazard("Disentery");
 		FuelLevel -= LastJumpDistance;
 		CreateNewNPC();
@@ -1567,7 +1579,7 @@ public partial class Main : Node2D
 		Vector2[] Path = StarMap.GetPointPath(From.ID, To.ID);
 		if (Path.Length != 2)
 		{
-			GD.PrintErr("Path from ", From.LocationName, " to ", To.LocationName, " is ", Path.Length);
+			GD.PrintErr("Path from ", From.LocationName, " to ", To.LocationName, " is ", Path.Length, "\n\t", To.LocationName, " disabled: ", StarMap.IsPointDisabled(To.ID));
 		}
 		Vector2 Distance = Path[1] - Path[0];
 		if (Distance.X == 0f) return (int)Mathf.Abs(Distance.Y);
@@ -1582,6 +1594,7 @@ public partial class Main : Node2D
 
 	private void OnKeepPlayingButtonPressed()
 	{
+		AcceptButtonSound.Play();
 		VictoryScreen.Hide();
 	}
 
@@ -1617,6 +1630,16 @@ public partial class Main : Node2D
 		// }
 		// foreach (Achievement item in AchievementsContainer.GetChildren()) item.Enabled = false;
 		// _Ready();
+	}
+
+	private void OnAcceptQuestButtonDown()
+	{
+		AcceptButtonSound.Play();
+	}
+
+	private void OnFuelButtonDown()
+	{
+		FuelButtonSound.Play();
 	}
 
 	private ItemData GetItemByName(string NameOfItem)
