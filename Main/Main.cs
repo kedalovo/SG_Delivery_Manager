@@ -65,6 +65,7 @@ public partial class Main : Node2D
 	private int FuelLevel { get => fuel; set { FuelLabel.Text = value.ToString(); fuel = value; } } 
 	private Label FuelLabel;
 	private Label FuelLevelLabel;
+	private Label FuelPriceLabel;
 
 	private HBoxContainer ModifiersHBox;
 	private PackedScene ModifierIconScene;
@@ -315,6 +316,7 @@ public partial class Main : Node2D
 
 		FuelLabel = GetNode<Label>("UI/UIHBox/VBox/FuelPanel/FuelVBox/LabelsHBox/FuelLabel");
 		FuelLevelLabel = GetNode<Label>("UI/UIHBox/VBox/LocationFuelPanel/HBox/FuelLabel");
+		FuelPriceLabel = GetNode<Label>("UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelPriceLabel");
 
 		ModifiersHBox = GetNode<HBoxContainer>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/ModifiersHBox");
 		ModifierIconScene = GD.Load<PackedScene>("res://Modifiers/ModifierIcon.tscn");
@@ -418,6 +420,23 @@ public partial class Main : Node2D
 		l14.LocationPressed += OnLocationPressed;
 		l15.LocationPressed += OnLocationPressed;
 		l16.LocationPressed += OnLocationPressed;
+
+		l1.LocationAvailable += OnLocationAvailable;
+		l2.LocationAvailable += OnLocationAvailable;
+		l3.LocationAvailable += OnLocationAvailable;
+		l4.LocationAvailable += OnLocationAvailable;
+		l5.LocationAvailable += OnLocationAvailable;
+		l6.LocationAvailable += OnLocationAvailable;
+		l7.LocationAvailable += OnLocationAvailable;
+		l8.LocationAvailable += OnLocationAvailable;
+		l9.LocationAvailable += OnLocationAvailable;
+		l10.LocationAvailable += OnLocationAvailable;
+		l11.LocationAvailable += OnLocationAvailable;
+		l12.LocationAvailable += OnLocationAvailable;
+		l13.LocationAvailable += OnLocationAvailable;
+		l14.LocationAvailable += OnLocationAvailable;
+		l15.LocationAvailable += OnLocationAvailable;
+		l16.LocationAvailable += OnLocationAvailable;
 
 		PlanetScenes = new() {
 			{"Asteroids", GD.Load<PackedScene>("res://PixelPlanets/Asteroids/Asteroid.tscn")},
@@ -550,7 +569,7 @@ public partial class Main : Node2D
 		Spaceship.Transform = CurrentLocation.Transform;
 
 		Balance = 0;
-		FuelLevel = 1000;
+		FuelLevel = 10;
 
 		CreateNewNPC();
 		DisplayQuest(CreateNewQuest(0, 1));
@@ -908,9 +927,9 @@ public partial class Main : Node2D
 		}
 	}
 
-	private Quest CreateNewQuest(int NumOfItems = 0, int newQuestTier = -1)
+	private Quest CreateNewQuest(int NumOfItems = 0, int newQuestTier = -1, int tagDifficulty = 0)
 	{
-		NumOfItems = Math.Clamp(NumOfItems, 0, 5);
+		NumOfItems = Math.Clamp(NumOfItems, 0, 10);
 		string[] PossibleItems = Array.Empty<string>();
 		foreach (ItemData itemData in DeliveryItems) PossibleItems = PossibleItems.Append(itemData.ItemName).ToArray();
 		Quest NewQuest = new();
@@ -966,9 +985,9 @@ public partial class Main : Node2D
 		Location ChosenLocation = PossibleLocations[Rnd.Next(PossibleLocations.Length)];
 
 		// Adding a modifier
-		switch (Rnd.Next(5))
+		switch (Rnd.Next(1 + Mathf.Clamp(tagDifficulty, 0, 3)))
 		{
-			case 0:
+			case 2:
 				string newTag = "";
 				Dictionary<string, string> newTagData = new();
 				switch (Rnd.Next(3))
@@ -993,13 +1012,12 @@ public partial class Main : Node2D
 				}
 				NewQuest.AddTag(newTag, newTagData);
 				break;
-			case 1:
+			case 3:
 				NewQuest.AddTag("Timed", new Dictionary<string, string>() { {"tier", (Rnd.Next(3) + 1).ToString()}, {"texture_path", "res://UI/Icons/Modifiers/Timed.svg"} });
 				NewQuest.AddTag("Fragile", new Dictionary<string, string>() { {"jumps", (StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length + Rnd.Next(2)).ToString()},
 					{"texture_path", "res://UI/Icons/Modifiers/Fragile.svg"} });
-				// GD.Print("COMBO");
 				break;
-			case 2:
+			case 4:
 				NewQuest.AddTag("Timed", new Dictionary<string, string>() { {"tier", (Rnd.Next(3) + 1).ToString()}, {"texture_path", "res://UI/Icons/Modifiers/Timed.svg"} });
 				string temp1 = StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID)[Rnd.Next(1, StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length-1)].ToString();
 				NewQuest.AddTag("Segmented", new Dictionary<string, string>() {
@@ -1049,7 +1067,22 @@ public partial class Main : Node2D
 		StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
 		CurrentLocation = LastPressedLocation;
 		UpdateLocationFuelLevel();
-		DisplayQuest(CreateNewQuest(Rnd.Next(11)));
+
+		// Creating and displaying quest according to the current difficulty
+		if (ACH_TotalDeliveries < 10)
+		{
+			DisplayQuest(CreateNewQuest(3 + Rnd.Next(-1, 2), 0, 0));
+		}
+		else if (ACH_TotalDeliveries < 20)
+		{
+			foreach(Location loc in AllLocations.Values) { loc.SetMaxFuelLevel(7); loc.SetFuelCost(25); }
+			DisplayQuest(CreateNewQuest(6 + Rnd.Next(-1, 2), Rnd.Next(2), 2));
+		}
+		else
+		{
+			foreach(Location loc in AllLocations.Values) { loc.SetMaxFuelLevel(5); loc.SetFuelCost(50); }
+			DisplayQuest(CreateNewQuest(9 + Rnd.Next(-1, 2), Rnd.Next(1, 3), 3));
+		}
 		// CurrentLocationLabel.Text = CurrentLocation.LocationName;
 		int[] CompletedQuestIDs = CurrentLocation.GetQuests();
 		ACH_CompletedQuests = 0;
@@ -1094,8 +1127,8 @@ public partial class Main : Node2D
 		}
 		else HazardCounter++;
 		// Hazard functionality for arriving at the Location
-		if (CurrentLocation.Hazards.Contains("MarketCrash")) FuelButton.Text = "$" + (50 * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])).ToString();
-		else FuelButton.Text = "$50";
+		if (CurrentLocation.Hazards.Contains("MarketCrash")) FuelPriceLabel.Text = "$" + (CurrentLocation.GetFuelCost() * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])).ToString();
+		else FuelPriceLabel.Text = "$" + CurrentLocation.GetFuelCost().ToString();
 		if (CurrentLocation.Hazards.Contains("Rum"))
 		{
 			int tax = 0;
@@ -1103,6 +1136,7 @@ public partial class Main : Node2D
 			if (Balance > 700) tax = Mathf.CeilToInt(int.Parse(data["secondThreshold"]) / 100f * Balance);
 			else if (Balance > 300) tax = Mathf.CeilToInt(int.Parse(data["firstThreshold"]) / 100f * Balance);
 			Balance -= tax;
+			PopupBalance(-tax);
 			CurrentLocation.RemoveHazard("Rum");
 		}
 		if (CurrentLocation.Hazards.Contains("Hectic"))
@@ -1123,6 +1157,7 @@ public partial class Main : Node2D
 				Location destination = AcceptedQuests[delivery.ID].Destination;
 				int distance = (StarMap.GetIdPath(CurrentLocation.ID, destination.ID).Length + Rnd.Next(2)) * int.Parse(CurrentLocation.GetHazardData("Bacteria")["multiplier"]);
 				newTagData["jumps"] = distance.ToString();
+				newTagData["texture_path"] = "res://UI/Icons/Modifiers/Fragile.svg";
 				// delivery.AddTag("Fragile", newTagData, GetNewModifierIcon("Fragile", newTagData));
 				delivery.AddTag("Fragile", newTagData);
 			}
@@ -1143,9 +1178,9 @@ public partial class Main : Node2D
 		}
 		if (CurrentLocation.Hazards.Contains("MarketCrash"))
 		{
-			if (Balance >= 50 * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])) return;
+			if (Balance >= CurrentLocation.GetFuelCost() * int.Parse(CurrentLocation.GetHazardData("MarketCrash")["fuelCost"])) return;
 		}
-		else if (Balance >= 50 && CurrentLocation.GetFuelLevel() > 0) return;
+		else if (Balance >= CurrentLocation.GetFuelCost() && CurrentLocation.GetFuelLevel() > 0) return;
 		GameOver();
 	}
 
@@ -1361,8 +1396,20 @@ public partial class Main : Node2D
 		PopupBalance(-Payout);
 		Balance -= Payout;
 		FailedDelivery.QueueFree();
-		GD.Print(string.Format("Delivery [{0}] failed!\n\tReason: {1}", FailedDeliveryID, FailReason));
+		PopupFail("Delivery failed!\n\tReason: " + FailReason);
 		ACH_TotalFails++;
+	}
+
+	private void PopupFail(string failText)
+	{
+		Label newFailLabel = new() { Text = failText, Modulate = Colors.Red };
+		AddChild(newFailLabel);
+		newFailLabel.ZIndex = 1;
+		newFailLabel.Position = new Vector2(DeliveriesContainer.GlobalPosition.X + Rnd.Next(-300, -100), DeliveriesContainer.GlobalPosition.Y + 400.0f);
+		Tween LabelTween = GetTree().CreateTween();
+		LabelTween.TweenProperty(newFailLabel, "position:y", DeliveriesContainer.GlobalPosition.Y + 400.0f - (float)Rnd.NextDouble() * 5.0f - 40.0f, 5.0d);
+		LabelTween.TweenProperty(newFailLabel, "modulate", Colors.Transparent, 0.3d).SetDelay(4.7d);
+		LabelTween.TweenCallback(Callable.From(newFailLabel.QueueFree)).SetDelay(1.0d);
 	}
 
 	private void OnFuelButtonPressed()
@@ -1414,9 +1461,10 @@ public partial class Main : Node2D
 		if (Difference > 0) { PopupLabel.Text = "$" + Difference.ToString(); PopupLabel.Modulate = Colors.Green; }
 		else { PopupLabel.Text = Difference.ToString().Insert(1, "$"); PopupLabel.Modulate = Colors.Red; }
 		AddChild(PopupLabel);
-		PopupLabel.Position = new Godot.Vector2(MoneyLabel.GlobalPosition.X + Rnd.Next(-100, 20), MoneyLabel.GlobalPosition.Y - 32);
+		PopupLabel.ZIndex = 1;
+		PopupLabel.Position = new Vector2(MoneyLabel.GlobalPosition.X + Rnd.Next(-100, 20), MoneyLabel.GlobalPosition.Y - 80);
 		Tween LabelTween = GetTree().CreateTween();
-		LabelTween.TweenProperty(PopupLabel, "position:y", MoneyLabel.GlobalPosition.Y - (float)Rnd.NextDouble() * 5.0f - 40.0f, 1.0d);
+		LabelTween.TweenProperty(PopupLabel, "position:y", MoneyLabel.GlobalPosition.Y - (float)Rnd.NextDouble() * 20.0f - 85.0f, 1.0d);
 		LabelTween.TweenProperty(PopupLabel, "modulate", Colors.Transparent, 0.3d).SetDelay(0.7d);
 		LabelTween.TweenCallback(Callable.From(PopupLabel.QueueFree)).SetDelay(1.0d);
 	}

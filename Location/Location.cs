@@ -52,9 +52,9 @@ public partial class Location : Node2D
 		HazardsData = Array.Empty<Dictionary<string, string>>();
 		HazardsIcons = Array.Empty<Node>();
 
-		FuelCost = 50;
-		FuelLevel = 5;
-		MaxFuel = 5;
+		FuelCost = 10;
+		FuelLevel = 10;
+		MaxFuel = 10;
 		QuestCompleted = 0;
 
 		NameLabel = GetNode<Label>("Visuals/VBox/Label");
@@ -127,31 +127,32 @@ public partial class Location : Node2D
 			HazardsData = HazardsData.Append(newHazardData).ToArray();
 			TextureRect newRect = new() { Texture = newIcon };
 			PanelContainer newPanel = new();
+			newRect.MouseFilter = Control.MouseFilterEnum.Ignore;
 			HazardsHBox.AddChild(newPanel);
 			newPanel.AddChild(newRect);
 			HazardsIcons = HazardsIcons.Append(newPanel).ToArray();
 			switch (newHazard)
 			{
 				case "MarketCrash":
-					newRect.TooltipText = "Market crash! \nFuel now costs a bit more than usual. \nBut you can stabilize the market by buying 10 fuel from other places.";
+					newPanel.TooltipText = "Market crash! \nFuel now costs a bit more than usual. \nBut you can stabilize the market by buying 10 fuel from other places.";
 					break;
 				case "Disentery":
-					newRect.TooltipText = "Disentery! \nThe sanitation on this station is not working properly. \nHeat leeches attach to your ship to drain your fuel. \nNext jump costs twice as much.";
+					newPanel.TooltipText = "Disentery! \nThe sanitation on this station is not working properly. \nHeat leeches attach to your ship to drain your fuel. \nNext jump costs twice as much.";
 					break;
 				case "Rum":
-					newRect.TooltipText = "The legal department of rum connoisseurs! \nSome pirates are around and it's time to pay your taxes. \nPay 50% if your balance is above $300. \nPay 70% if your balance is above $700.";
+					newPanel.TooltipText = "The legal department of rum connoisseurs! \nSome pirates are around and it's time to pay your taxes. \nPay 50% if your balance is above $300. \nPay 70% if your balance is above $700.";
 					break;
 				case "Hectic":
-					newRect.TooltipText = "Hectic field! \nSomeone set up a device that makes everything around more hectic! \nEvery delivery is now timed.";
+					newPanel.TooltipText = "Hectic field! \nSomeone set up a device that makes everything around more hectic! \nEvery delivery is now timed.";
 					break;
 				case "Bacteria":
-					newRect.TooltipText = "Omnivorous bacteria! \nSome dangerous bacteria got into your cargo and is eating through it. \nYou have to deliver everything or it will go bad.";
+					newPanel.TooltipText = "Omnivorous bacteria! \nSome dangerous bacteria got into your cargo and is eating through it. \nYou have to deliver everything or it will go bad.";
 					break;
 				case "Shutdown":
-					newRect.TooltipText = "Shutdown! \nThe station is malfuntioning and it won't be available for a while. \nShouldn't take too long.";
+					newPanel.TooltipText = "Shutdown! \nThe station is malfuntioning and it won't be available for a while. \nShouldn't take too long.";
 					break;
 				case "Faulty":
-					newRect.TooltipText = "Faulty equipment! \nDue to this station's faulty equipment your cargo will be damaged a bit more than usual.";
+					newPanel.TooltipText = "Faulty equipment! \nDue to this station's faulty equipment your cargo will be damaged a bit more than usual.";
 					break;
 			}
 		}
@@ -278,5 +279,15 @@ public partial class Location : Node2D
 	public int GetFuelLevel()
 	{
 		return FuelLevel;
+	}
+
+	public void SetMaxFuelLevel(int newMaxFuelLevel)
+	{
+		MaxFuel = newMaxFuelLevel;
+	}
+
+	public void SetFuelCost(int newFuelCost)
+	{
+		FuelCost = newFuelCost;
 	}
 }

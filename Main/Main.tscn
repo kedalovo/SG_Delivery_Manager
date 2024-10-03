@@ -124,6 +124,20 @@ shader_parameter/roll_speed = 1.0
 shader_parameter/scan_line_strength = -8.0
 shader_parameter/pixel_strength = -2.0
 
+[sub_resource type="Animation" id="Animation_f3vuo"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
 [sub_resource type="Animation" id="Animation_w2vs6"]
 resource_name = "startup"
 length = 3.0
@@ -137,20 +151,6 @@ tracks/0/keys = {
 "handle_modes": PackedInt32Array(0, 0),
 "points": PackedFloat32Array(-80, 0, 0, 2, 0, 0, -2, 0, 0, 0),
 "times": PackedFloat32Array(0, 3)
-}
-
-[sub_resource type="Animation" id="Animation_f3vuo"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:volume_db")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_f840k"]
@@ -267,7 +267,11 @@ metadata/_edit_lock_ = true
 [node name="Timer" type="Timer" parent="Asteroids"]
 autostart = true
 
+[node name="Ship" parent="." instance=ExtResource("4_tp5ri")]
+position = Vector2(687, 127)
+
 [node name="UI" type="Control" parent="."]
+z_index = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -468,7 +472,7 @@ stream = ExtResource("5_q70ja")
 
 [node name="FuelPriceLabel" type="Label" parent="UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox"]
 layout_mode = 2
-text = "$50"
+text = "$10"
 
 [node name="NPCControl" type="Control" parent="UI/UIHBox"]
 custom_minimum_size = Vector2(144, 229)
@@ -682,9 +686,6 @@ layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("9_i406f")
 expand_mode = 3
-
-[node name="Ship" parent="." instance=ExtResource("4_tp5ri")]
-position = Vector2(687, 127)
 
 [node name="ReferenceStartMap" type="Node2D" parent="."]
 position = Vector2(669, -520)
@@ -1382,10 +1383,10 @@ stream = ExtResource("15_0c1n5")
 volume_db = 10.0
 
 [connection signal="timeout" from="Asteroids/Timer" to="." method="OnAsteroidTimerTimeout"]
+[connection signal="OnShipArrived" from="Ship" to="." method="OnShipArrived"]
 [connection signal="button_down" from="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonDown"]
 [connection signal="pressed" from="UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton" to="." method="OnAcceptQuestButtonPressed"]
 [connection signal="pressed" from="UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton" to="." method="OnFuelButtonPressed"]
-[connection signal="OnShipArrived" from="Ship" to="." method="OnShipArrived"]
 [connection signal="pressed" from="FailScreen/PanelContainer/MarginContainer/VBox/RetryButton" to="." method="OnRetryButtonPressed"]
 [connection signal="pressed" from="VictoryScreen/PanelContainer/MarginContainer/VBox/ButtonsHBox/ContinueButton" to="." method="OnKeepPlayingButtonPressed"]
 [connection signal="pressed" from="VictoryScreen/PanelContainer/MarginContainer/VBox/ButtonsHBox/ExitButton" to="." method="OnExitButtonPressed"]
