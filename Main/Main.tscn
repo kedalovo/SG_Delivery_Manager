@@ -1283,6 +1283,7 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
 size_flags_horizontal = 4
+focus_mode = 0
 theme_override_font_sizes/font_size = 64
 text = "Retry"
 
@@ -1356,12 +1357,14 @@ alignment = 1
 custom_minimum_size = Vector2(356, 0)
 layout_mode = 2
 size_flags_horizontal = 4
+focus_mode = 0
 theme_override_font_sizes/font_size = 64
 text = "Continue"
 
 [node name="ExitButton" type="Button" parent="VictoryScreen/PanelContainer/MarginContainer/VBox/ButtonsHBox"]
 custom_minimum_size = Vector2(176, 0)
 layout_mode = 2
+focus_mode = 0
 theme_override_font_sizes/font_size = 64
 text = "Exit"
 

@@ -131,3 +131,13 @@ theme_override_font_sizes/font_size = 16
 [node name="Label3" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
+
+[node name="RectPivot" type="Node2D" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="RectPivot"]
+offset_left = -110.0
+offset_top = -10.0
+offset_right = -90.0
+offset_bottom = 10.0
+color = Color(1, 0, 0, 1)

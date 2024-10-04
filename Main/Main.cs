@@ -157,6 +157,8 @@ public partial class Main : Node2D
 	private AudioStreamPlayer LocationPickSound;
 	private AudioStreamPlayer LocationArrivalSound;
 
+	private bool IsQuestAccepted;
+
 	private Random Rnd;
 
 	#endregion Initialization
@@ -619,7 +621,8 @@ public partial class Main : Node2D
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_1);
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_2);
 			// CompleteAchievement(Achievements.TOTAL_ITEMS_3);
-			GameOver();
+			// GameOver();
+			Engine.TimeScale = 0.2f;
 		}
 		if (@event.IsActionPressed("esc"))
 		{
@@ -815,6 +818,7 @@ public partial class Main : Node2D
 		PathCounter = 0;
 		while (ReadableConnections.ContainsKey(PathCounter))
 		{
+			GD.Print("\t\t|Adding PathCounter... ", PathCounter);
 			PathCounter++;
 		}
 		DrawingPaths[PathCounter] = newPath;
@@ -929,7 +933,7 @@ public partial class Main : Node2D
 
 	private Quest CreateNewQuest(int NumOfItems = 0, int newQuestTier = -1, int tagDifficulty = 0)
 	{
-		NumOfItems = Math.Clamp(NumOfItems, 0, 10);
+		NumOfItems = Math.Clamp(NumOfItems, 0, 5);
 		string[] PossibleItems = Array.Empty<string>();
 		foreach (ItemData itemData in DeliveryItems) PossibleItems = PossibleItems.Append(itemData.ItemName).ToArray();
 		Quest NewQuest = new();
@@ -944,6 +948,7 @@ public partial class Main : Node2D
 
 		while (i < NumOfItems)
 		{
+			GD.Print("\t\t|Filling with items...");
 			ItemData NewItem = DeliveryItems[Rnd.Next(DeliveryItems.Length)];
 			if (!QuestItems.Contains(NewItem) & ItemsTiers[QuestTier].Contains(NewItem.Fragility))
 			{
@@ -1034,13 +1039,15 @@ public partial class Main : Node2D
 
 	private void OnLocationPressed(int pressedID)
 	{
-		LastPressedLocation = AllLocations[pressedID];
-		if (CurrentLocation != LastPressedLocation && StarMap.ArePointsConnected(CurrentLocation.ID, LastPressedLocation.ID) && !StarMap.IsPointDisabled(pressedID))
+		Location pressedLocation = AllLocations[pressedID];
+		if (CurrentLocation != pressedLocation && StarMap.ArePointsConnected(CurrentLocation.ID, pressedID) && !StarMap.IsPointDisabled(pressedID))
 		{
-			LastJumpDistance = GetJumpDistance(CurrentLocation, LastPressedLocation);
-			if (CurrentLocation.Hazards.Contains("Disentery")) LastJumpDistance *= int.Parse(CurrentLocation.GetHazardData("Disentery")["jumpCost"]);
-			if (LastJumpDistance <= FuelLevel && Spaceship.IsAvailable())
+			int jumpDistance = GetJumpDistance(CurrentLocation, pressedLocation);
+			if (CurrentLocation.Hazards.Contains("Disentery")) jumpDistance *= int.Parse(CurrentLocation.GetHazardData("Disentery")["jumpCost"]);
+			if (jumpDistance <= FuelLevel && Spaceship.IsAvailable())
 			{
+				LastPressedLocation = pressedLocation;
+				LastJumpDistance = jumpDistance;
 				LocationPickSound.Play();
 				MoveShip(LastPressedLocation);
 			}
@@ -1068,20 +1075,24 @@ public partial class Main : Node2D
 		CurrentLocation = LastPressedLocation;
 		UpdateLocationFuelLevel();
 
+		float payoutModifier = 0.0f;
 		// Creating and displaying quest according to the current difficulty
 		if (ACH_TotalDeliveries < 10)
 		{
-			DisplayQuest(CreateNewQuest(3 + Rnd.Next(-1, 2), 0, 0));
+			DisplayQuest(CreateNewQuest(2 + Rnd.Next(-1, 2), 0, 0));
+			payoutModifier = 0.3f;
 		}
 		else if (ACH_TotalDeliveries < 20)
 		{
 			foreach(Location loc in AllLocations.Values) { loc.SetMaxFuelLevel(7); loc.SetFuelCost(25); }
-			DisplayQuest(CreateNewQuest(6 + Rnd.Next(-1, 2), Rnd.Next(2), 2));
+			DisplayQuest(CreateNewQuest(3 + Rnd.Next(-1, 2), Rnd.Next(2), 2));
+			payoutModifier = 0.6f;
 		}
 		else
 		{
 			foreach(Location loc in AllLocations.Values) { loc.SetMaxFuelLevel(5); loc.SetFuelCost(50); }
-			DisplayQuest(CreateNewQuest(9 + Rnd.Next(-1, 2), Rnd.Next(1, 3), 3));
+			DisplayQuest(CreateNewQuest(4 + Rnd.Next(-1, 2), Rnd.Next(1, 3), 3));
+			payoutModifier = 1.0f;
 		}
 		// CurrentLocationLabel.Text = CurrentLocation.LocationName;
 		int[] CompletedQuestIDs = CurrentLocation.GetQuests();
@@ -1106,7 +1117,7 @@ public partial class Main : Node2D
 				if (delivery.HasTag("Timed")) Payout = Mathf.FloorToInt(Payout * (1f + .15f * int.Parse(delivery.GetTagData("Timed")["tier"])));
 				if (delivery.HasTag("Fragile")) Payout = Mathf.FloorToInt(Payout * 1.2f);
 				if (delivery.HasTag("Segmented")) Payout = Mathf.FloorToInt(Payout * 1.2f);
-				Payout = Mathf.FloorToInt(Payout * (1.0f + delivery.TotalDistance / 10.0f));
+				Payout = Mathf.FloorToInt(Payout * payoutModifier * (1.0f + delivery.TotalDistance / 10.0f));
 				PopupBalance(Payout);
 				Balance += Payout;
 				ACH_TotalDeliveries++;
@@ -1254,7 +1265,11 @@ public partial class Main : Node2D
 			StarMap.SetPointDisabled(location.ID);
 			location.Modulate = new Color(1f, 1f, 1f, 0.5f);
 		}
-		else while (location == CurrentLocation) location = AllLocations[Rnd.Next(AllLocations.Count)];
+		else while (location == CurrentLocation)
+		{
+			GD.Print("\t\t|Picking location...");
+			location = AllLocations[Rnd.Next(AllLocations.Count)];
+		}
 		location.AddHazard(newHazard, newHazardData, newIcon);
 		GD.Print("Created hazard ", newHazard, " at ", location.LocationName);
 	}
@@ -1296,6 +1311,7 @@ public partial class Main : Node2D
 				newMod.HideData();
 			}
 		}
+		IsQuestAccepted = false;
 		CreateNewPlanet(DestinationPlanet, DeliveryLocation.PlanetType, DeliveryLocation.PlanetPreset, 40);
 		HighlightPath(CurrentLocation.ID, DeliveryLocation.ID, DeliveryLocation.LocationColor);
 	}
@@ -1318,6 +1334,7 @@ public partial class Main : Node2D
 
 	private void OnAcceptQuestButtonPressed()
 	{
+		if (IsQuestAccepted) return;
 		StopHighlightPath(CurrentLocation.ID, DisplayedQuest.Destination.ID);
 		ClearQuestHighlight();
 		DisableQuestButtons();
@@ -1334,6 +1351,7 @@ public partial class Main : Node2D
 
 	private void AcceptDisplayedQuest()
 	{
+		IsQuestAccepted = true;
 		// Creating entry for currently displayed quest like: [ID]:[DisplayedQuest]
 		AcceptedQuests[DisplayedQuest.ID] = DisplayedQuest;
 		// Adding a new destination to display on the map
