@@ -178,6 +178,28 @@ texture = ExtResource("27_n8v4t")
 expand_mode = 2
 metadata/_edit_lock_ = true
 
+[node name="BackgroundParticles" type="CPUParticles2D" parent="Background"]
+position = Vector2(960, 540)
+amount = 2000
+lifetime = 5.0
+preprocess = 20.0
+emission_shape = 3
+emission_rect_extents = Vector2(960, 540)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 6.0
+angular_velocity_max = 50.0
+tangential_accel_max = 10.0
+damping_max = 10.0
+angle_min = -10.0
+angle_max = 10.0
+scale_amount_max = 3.0
+color = Color(0.721569, 1, 1, 1)
+color_ramp = SubResource("Gradient_uhli4")
+hue_variation_max = 1.0
+metadata/_edit_lock_ = true
+
 [node name="Locations" type="Node2D" parent="."]
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
@@ -282,28 +304,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("28_5dl8r")
-metadata/_edit_lock_ = true
-
-[node name="BackgroundParticles" type="CPUParticles2D" parent="UI"]
-position = Vector2(960, 540)
-amount = 1000
-lifetime = 5.0
-preprocess = 20.0
-emission_shape = 3
-emission_rect_extents = Vector2(960, 540)
-spread = 180.0
-gravity = Vector2(0, 0)
-initial_velocity_min = 2.0
-initial_velocity_max = 6.0
-angular_velocity_max = 50.0
-tangential_accel_max = 10.0
-damping_max = 10.0
-angle_min = -10.0
-angle_max = 10.0
-scale_amount_max = 3.0
-color = Color(0.721569, 1, 1, 1)
-color_ramp = SubResource("Gradient_uhli4")
-hue_variation_max = 1.0
 metadata/_edit_lock_ = true
 
 [node name="DeliveriesContainer" type="MarginContainer" parent="UI"]
@@ -637,12 +637,12 @@ At this point no one knows anymore. Is it a bit? Do you just like losing money? 
 [node name="Achievement13" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
 layout_mode = 2
 Description = "Beginner multitasker.
-You like to have multiple focuses at the same time. Having 3 deliveries helps you be on your toes."
+You like to have multiple focuses at the same time. Having 2 deliveries helps you be on your toes."
 
 [node name="Achievement14" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
 layout_mode = 2
 Description = "Multitasking addict.
-You just can't get enough of having multiple deliveries. Will you be able to deliver all of those 5 that you have? We'll find out soon enough."
+You just can't get enough of having multiple deliveries. Will you be able to deliver all of those 3 that you have? We'll find out soon enough."
 
 [node name="Achievement15" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
 layout_mode = 2
@@ -652,17 +652,17 @@ You seem to have several hands, maybe even several heads to handle all of the de
 [node name="Achievement16" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
 layout_mode = 2
 Description = "Keeping promises.
-Who said multitasking doesn't work? Here you are, making 3 deliveries at the same time without batting an eye."
+Who said multitasking doesn't work? Here you are, making 2 deliveries at the same time without batting an eye."
 
 [node name="Achievement17" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
 layout_mode = 2
 Description = "Oathkeeper.
-A promise is sacred to you, so when you say you will deliver 5 packages, you just do it."
+A promise is sacred to you, so when you say you will deliver 3 packages, you just do it."
 
 [node name="Achievement18" parent="UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox" instance=ExtResource("8_aqrfd")]
 layout_mode = 2
 Description = "Sworn protector.
-You save stations by deliveries alone, bringing them 10 packages in one go, feeding many and providing to all."
+You save stations by deliveries alone, bringing them 4 packages in one go, feeding many and providing to all."
 
 [node name="PanelContainer" type="PanelContainer" parent="UI"]
 modulate = Color(1, 1, 1, 0)

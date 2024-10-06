@@ -204,7 +204,7 @@ public partial class Main : Node2D
 
 		StarMap = new();
 
-		StarMap.AddPoint(l1.ID, Godot.Vector2.Zero);
+		StarMap.AddPoint(l1.ID, Vector2.Zero);
 		StarMap.AddPoint(l2.ID, new(3f, 0f));
 		StarMap.AddPoint(l3.ID, new(4f, 0f));
 		StarMap.AddPoint(l4.ID, new(6f, 0f));
@@ -246,26 +246,28 @@ public partial class Main : Node2D
         DrawingPaths = new();
 		ReadableConnections = new();
 
-		DrawingConnections[new [] {0, 1}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {1, 2}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {2, 3}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {3, 4}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {4, 5}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {5, 6}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {6, 7}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {6, 8}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {8, 9}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {9, 5}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {9, 2}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {9, 10}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {10, 11}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {11, 12}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {8, 12}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {12, 13}] = new Dictionary<string, string> {{"distance", "2"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {13, 0}] = new Dictionary<string, string> {{"distance", "3"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {11, 14}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {14, 15}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
-		DrawingConnections[new [] {15, 1}] = new Dictionary<string, string> {{"distance", "1"}, {"color", "ffffff"}, {"line_width", "1"}};
+		string conColor = "505050";
+
+		DrawingConnections[new [] {0, 1}] = new Dictionary<string, string> {{"distance", "3"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {1, 2}] = new Dictionary<string, string> {{"distance", "1"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {2, 3}] = new Dictionary<string, string> {{"distance", "2"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {3, 4}] = new Dictionary<string, string> {{"distance", "1"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {4, 5}] = new Dictionary<string, string> {{"distance", "2"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {5, 6}] = new Dictionary<string, string> {{"distance", "1"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {6, 7}] = new Dictionary<string, string> {{"distance", "3"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {6, 8}] = new Dictionary<string, string> {{"distance", "3"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {8, 9}] = new Dictionary<string, string> {{"distance", "1"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {9, 5}] = new Dictionary<string, string> {{"distance", "3"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {9, 2}] = new Dictionary<string, string> {{"distance", "2"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {9, 10}] = new Dictionary<string, string> {{"distance", "1"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {10, 11}] = new Dictionary<string, string> {{"distance", "1"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {11, 12}] = new Dictionary<string, string> {{"distance", "1"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {8, 12}] = new Dictionary<string, string> {{"distance", "2"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {12, 13}] = new Dictionary<string, string> {{"distance", "2"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {13, 0}] = new Dictionary<string, string> {{"distance", "3"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {11, 14}] = new Dictionary<string, string> {{"distance", "1"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {14, 15}] = new Dictionary<string, string> {{"distance", "1"}, {"color", conColor}, {"line_width", "1"}};
+		DrawingConnections[new [] {15, 1}] = new Dictionary<string, string> {{"distance", "1"}, {"color", conColor}, {"line_width", "1"}};
 
 		#endregion ConnectionsDeclaration
 
@@ -603,26 +605,26 @@ public partial class Main : Node2D
 		if (@event.IsActionPressed("test"))
 		{
 			GD.Print("TESTING");
-			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
-			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
-			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_3);
-			// CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_1);
-			// CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_2);
-			// CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_3);
-			// CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_1);
-			// CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_2);
-			// CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_3);
-			// CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_1);
-			// CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_2);
-			// CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_3);
-			// CompleteAchievement(Achievements.TOTAL_FAILS_1);
-			// CompleteAchievement(Achievements.TOTAL_FAILS_2);
-			// CompleteAchievement(Achievements.TOTAL_FAILS_3);
-			// CompleteAchievement(Achievements.TOTAL_ITEMS_1);
-			// CompleteAchievement(Achievements.TOTAL_ITEMS_2);
-			// CompleteAchievement(Achievements.TOTAL_ITEMS_3);
+			CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
+			CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
+			CompleteAchievement(Achievements.TOTAL_DELIVERIES_3);
+			CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_1);
+			CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_2);
+			CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_3);
+			CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_1);
+			CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_2);
+			CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_3);
+			CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_1);
+			CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_2);
+			CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_3);
+			CompleteAchievement(Achievements.TOTAL_FAILS_1);
+			CompleteAchievement(Achievements.TOTAL_FAILS_2);
+			CompleteAchievement(Achievements.TOTAL_FAILS_3);
+			CompleteAchievement(Achievements.TOTAL_ITEMS_1);
+			CompleteAchievement(Achievements.TOTAL_ITEMS_2);
+			CompleteAchievement(Achievements.TOTAL_ITEMS_3);
 			// GameOver();
-			Engine.TimeScale = 0.2f;
+			// Engine.TimeScale = 0.2f;
 		}
 		if (@event.IsActionPressed("esc"))
 		{
@@ -1117,7 +1119,7 @@ public partial class Main : Node2D
 				if (delivery.HasTag("Timed")) Payout = Mathf.FloorToInt(Payout * (1f + .15f * int.Parse(delivery.GetTagData("Timed")["tier"])));
 				if (delivery.HasTag("Fragile")) Payout = Mathf.FloorToInt(Payout * 1.2f);
 				if (delivery.HasTag("Segmented")) Payout = Mathf.FloorToInt(Payout * 1.2f);
-				Payout = Mathf.FloorToInt(Payout * payoutModifier * (1.0f + delivery.TotalDistance / 10.0f));
+				Payout = Mathf.FloorToInt(Payout * payoutModifier * (1.0f + delivery.TotalDistance / 5.0f));
 				PopupBalance(Payout);
 				Balance += Payout;
 				ACH_TotalDeliveries++;
@@ -1154,7 +1156,7 @@ public partial class Main : Node2D
 		{
 			foreach (Delivery delivery in Deliveries)
 			{
-				Dictionary<string, string> newTagData = new() { { "tier", CurrentLocation.GetHazardData("Hectic")["tier"] } };
+				Dictionary<string, string> newTagData = new() { { "tier", CurrentLocation.GetHazardData("Hectic")["tier"] }, {"texture_path", "res://UI/Icons/Modifiers/Timed.svg"} };
 				// delivery.AddTag("Timed", newTagData, GetNewModifierIcon("Timed", newTagData));
 				delivery.AddTag("Timed", newTagData);
 			}
@@ -1408,9 +1410,22 @@ public partial class Main : Node2D
 		AcceptedQuests.Remove(FailedDeliveryID);
 		foreach (Location location in AllLocations.Values) if (location.GetQuests().Contains(FailedDeliveryID)) { location.RemoveQuest(FailedDeliveryID); break; }
 		int Payout = 0;
+		float payoutModifier = 1.0f;
+		if (ACH_TotalDeliveries < 10)
+		{
+			payoutModifier = 0.3f;
+		}
+		else if (ACH_TotalDeliveries < 20)
+		{
+			payoutModifier = 0.6f;
+		}
+		else
+		{
+			payoutModifier = 1.0f;
+		}
 		Item[] items = FailedDelivery.GetItems();
 		foreach (Item item in items) Payout += item.Fragility * 10;
-		Payout = Mathf.FloorToInt(Payout * (1.0f + FailedDelivery.TotalDistance / 10.0f));
+		Payout = Mathf.FloorToInt(Payout * payoutModifier * (1.0f + FailedDelivery.TotalDistance / 10.0f));
 		PopupBalance(-Payout);
 		Balance -= Payout;
 		FailedDelivery.QueueFree();
@@ -1495,17 +1510,17 @@ public partial class Main : Node2D
 
 	private void CheckAchievements()
 	{
-		if (ACH_CompletedQuests > 9) CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_3);
-		else if (ACH_CompletedQuests > 4) CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_2);
-		else if (ACH_CompletedQuests > 2) CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_1);
+		if (ACH_CompletedQuests > 3) CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_3);
+		if (ACH_CompletedQuests > 2) CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_2);
+		if (ACH_CompletedQuests > 1) CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_1);
 
-		if (Deliveries.Length > 9) CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_3);
-		else if (Deliveries.Length > 4) CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_2);
-		else if (Deliveries.Length > 2) CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_1);
+		if (Deliveries.Length > 3) CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_3);
+		if (Deliveries.Length > 2) CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_2);
+		if (Deliveries.Length > 1) CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_1);
 
 		if (ACH_TotalFails > 4) CompleteAchievement(Achievements.TOTAL_FAILS_3);
-		else if (ACH_TotalFails > 2) CompleteAchievement(Achievements.TOTAL_FAILS_2);
-		else if (ACH_TotalFails > 1) CompleteAchievement(Achievements.TOTAL_FAILS_1);
+		if (ACH_TotalFails > 2) CompleteAchievement(Achievements.TOTAL_FAILS_2);
+		if (ACH_TotalFails > 1) CompleteAchievement(Achievements.TOTAL_FAILS_1);
 
 		int tier = 3;
 		foreach (KeyValuePair<string, int> item in ACH_TotalDifferentItems) if (item.Value < 15) { tier--; break; }
@@ -1517,20 +1532,23 @@ public partial class Main : Node2D
 				CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_1);
 				break;
 			case 2:
+				CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_1);
 				CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_2);
 				break;
 			case 3:
+				CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_1);
+				CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_2);
 				CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_3);
 				break;
 		}
 
 		if (ACH_TotalItems > 99) CompleteAchievement(Achievements.TOTAL_ITEMS_3);
-		else if (ACH_TotalItems > 49) CompleteAchievement(Achievements.TOTAL_ITEMS_2);
-		else if (ACH_TotalItems > 19) CompleteAchievement(Achievements.TOTAL_ITEMS_1);
+		if (ACH_TotalItems > 49) CompleteAchievement(Achievements.TOTAL_ITEMS_2);
+		if (ACH_TotalItems > 19) CompleteAchievement(Achievements.TOTAL_ITEMS_1);
 
 		if (ACH_TotalDeliveries > 49) CompleteAchievement(Achievements.TOTAL_DELIVERIES_3);
-		else if (ACH_TotalDeliveries > 24) CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
-		else if (ACH_TotalDeliveries > 14) CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
+		if (ACH_TotalDeliveries > 24) CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
+		if (ACH_TotalDeliveries > 14) CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
 	}
 
 	private void CompleteAchievement(Achievements achievement)
