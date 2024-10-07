@@ -605,26 +605,27 @@ public partial class Main : Node2D
 		if (@event.IsActionPressed("test"))
 		{
 			GD.Print("TESTING");
-			CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
-			CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
-			CompleteAchievement(Achievements.TOTAL_DELIVERIES_3);
-			CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_1);
-			CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_2);
-			CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_3);
-			CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_1);
-			CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_2);
-			CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_3);
-			CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_1);
-			CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_2);
-			CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_3);
-			CompleteAchievement(Achievements.TOTAL_FAILS_1);
-			CompleteAchievement(Achievements.TOTAL_FAILS_2);
-			CompleteAchievement(Achievements.TOTAL_FAILS_3);
-			CompleteAchievement(Achievements.TOTAL_ITEMS_1);
-			CompleteAchievement(Achievements.TOTAL_ITEMS_2);
-			CompleteAchievement(Achievements.TOTAL_ITEMS_3);
+			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_1);
+			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_2);
+			// CompleteAchievement(Achievements.TOTAL_DELIVERIES_3);
+			// CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_1);
+			// CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_2);
+			// CompleteAchievement(Achievements.HAVING_MULTIPLE_DELIVERIES_3);
+			// CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_1);
+			// CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_2);
+			// CompleteAchievement(Achievements.MAKING_MULTIPLE_DELIVERIES_3);
+			// CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_1);
+			// CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_2);
+			// CompleteAchievement(Achievements.TOTAL_DIFFERENT_ITEMS_3);
+			// CompleteAchievement(Achievements.TOTAL_FAILS_1);
+			// CompleteAchievement(Achievements.TOTAL_FAILS_2);
+			// CompleteAchievement(Achievements.TOTAL_FAILS_3);
+			// CompleteAchievement(Achievements.TOTAL_ITEMS_1);
+			// CompleteAchievement(Achievements.TOTAL_ITEMS_2);
+			// CompleteAchievement(Achievements.TOTAL_ITEMS_3);
 			// GameOver();
 			// Engine.TimeScale = 0.2f;
+			// CreateNewHazard();
 		}
 		if (@event.IsActionPressed("esc"))
 		{
@@ -637,10 +638,12 @@ public partial class Main : Node2D
 		if (@event.IsActionPressed("buy_fuel") && !FailScreen.Visible && !VictoryScreen.Visible)
 		{
 			OnFuelButtonPressed();
+			FuelButtonSound.Play();
 		}
 		if (@event.IsActionPressed("accept_quest") && !FailScreen.Visible && !VictoryScreen.Visible)
 		{
 			OnAcceptQuestButtonPressed();
+			AcceptButtonSound.Play();
 		}
 	}
 

@@ -68,7 +68,7 @@ public partial class Ship : Node2D
 		// }
 		// LastRotation = value1;
 		// Label1.Text = ShipSprite.GlobalPosition.DistanceTo(Target.GlobalPosition).ToString();
-		if (CurrentState == States.ROTATING && ShipSprite.GlobalPosition.DistanceTo(Target.GlobalPosition) < 25.0f)
+		if (CurrentState == States.ROTATING && ShipSprite.GlobalPosition.DistanceTo(Target.GlobalPosition) < 15.0f)
 		{
 			Move(MoveTarget, MoveDuration);
 		}
