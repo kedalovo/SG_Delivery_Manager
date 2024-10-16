@@ -3,7 +3,7 @@ using System;
 
 public partial class Galaxy : Planet
 {
-    public override float Time {get; set;}
+	public override float Time {get; set;}
 	public override bool OverrideTime {get; set;}
 	public override Color[] OriginalColors {get; set;}
 
@@ -42,7 +42,7 @@ public partial class Galaxy : Planet
 		GalaxyColorRect.Material = _mat;
 	}
 
-	public override void SetRotation(float _rotation)
+	public override void SetPlanetRotation(float _rotation)
 	{
 		ShaderMaterial _mat = (ShaderMaterial)GalaxyColorRect.Material;
 		_mat.SetShaderParameter("rotation", _rotation);
@@ -51,7 +51,7 @@ public partial class Galaxy : Planet
 
 	public override void UpdateTime(float _time)
 	{
-        ShaderMaterial _mat = (ShaderMaterial)GalaxyColorRect.Material;
+		ShaderMaterial _mat = (ShaderMaterial)GalaxyColorRect.Material;
 		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat) * 0.04f);
 		GalaxyColorRect.Material = _mat;
 	}
@@ -69,7 +69,7 @@ public partial class Galaxy : Planet
 	}
 
 	public override void SetColors(Color[] _colors)
-    {
+	{
 		ShaderMaterial new_mat = SetColorsOnShader((ShaderMaterial)GalaxyColorRect.Material, _colors);
 		GalaxyColorRect.Material = new_mat;
 	}

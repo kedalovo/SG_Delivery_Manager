@@ -4,7 +4,7 @@ using System.Linq;
 
 public partial class GasPlanetLayers : Planet
 {
-    public override float Time {get; set;}
+	public override float Time {get; set;}
 	public override bool OverrideTime {get; set;}
 	public override Color[] OriginalColors {get; set;}
 
@@ -13,13 +13,13 @@ public partial class GasPlanetLayers : Planet
 	[Export]
 	public override float GUIZoom {get; set;}
 
-    private ColorRect GasLayersColorRect;
-    private ColorRect RingColorRect;
+	private ColorRect GasLayersColorRect;
+	private ColorRect RingColorRect;
 
-    public override void _Ready()
+	public override void _Ready()
 	{
 		GasLayersColorRect = GetNode<ColorRect>("GasLayers");
-        RingColorRect = GetNode<ColorRect>("Ring");
+		RingColorRect = GetNode<ColorRect>("Ring");
 		GasLayersColorRect.Material = (Material)GasLayersColorRect.Material.Duplicate(true);
 		RingColorRect.Material = (Material)RingColorRect.Material.Duplicate(true);
 		base._Ready();
@@ -36,7 +36,7 @@ public partial class GasPlanetLayers : Planet
 
 		_mat2.SetShaderParameter("pixels", _amount * 3.0f);
 		RingColorRect.Material = _mat2;
-        RingColorRect.Position = new Vector2(-_amount, -_amount);
+		RingColorRect.Position = new Vector2(-_amount, -_amount);
 		RingColorRect.Size = new Vector2(_amount, _amount) * 3.0f;
 	}
 
@@ -59,14 +59,14 @@ public partial class GasPlanetLayers : Planet
 		_mat.SetShaderParameter("seed", converted_seed);
 		GasLayersColorRect.Material = _mat;
 
-        ShaderMaterial _mat2 = (ShaderMaterial)RingColorRect.Material;
+		ShaderMaterial _mat2 = (ShaderMaterial)RingColorRect.Material;
 		_mat2.SetShaderParameter("seed", converted_seed);
 		RingColorRect.Material = _mat2;
 	}
 
-	public override void SetRotation(float _rotation)
+	public override void SetPlanetRotation(float _rotation)
 	{
-        ShaderMaterial _mat = (ShaderMaterial)GasLayersColorRect.Material;
+		ShaderMaterial _mat = (ShaderMaterial)GasLayersColorRect.Material;
 		_mat.SetShaderParameter("rotation", _rotation);
 		GasLayersColorRect.Material = _mat;
 
@@ -77,11 +77,11 @@ public partial class GasPlanetLayers : Planet
 
 	public override void UpdateTime(float _time)
 	{
-        ShaderMaterial _mat = (ShaderMaterial)GasLayersColorRect.Material;
+		ShaderMaterial _mat = (ShaderMaterial)GasLayersColorRect.Material;
 		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat) * 0.004f);
 		GasLayersColorRect.Material = _mat;
 
-        ShaderMaterial _mat2 = (ShaderMaterial)RingColorRect.Material;
+		ShaderMaterial _mat2 = (ShaderMaterial)RingColorRect.Material;
 		_mat2.SetShaderParameter("time", _time * 314.15f * 0.004f);
 		RingColorRect.Material = _mat2;
 	}
@@ -92,31 +92,31 @@ public partial class GasPlanetLayers : Planet
 		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat));
 		GasLayersColorRect.Material = _mat;
 
-        ShaderMaterial _mat2 = (ShaderMaterial)RingColorRect.Material;
+		ShaderMaterial _mat2 = (ShaderMaterial)RingColorRect.Material;
 		_mat2.SetShaderParameter("time", _time * 314.15f * (float)_mat.GetShaderParameter("time_speed") * 0.5f);
 		RingColorRect.Material = _mat2;
 	}
 
 	public override Color[] GetColors()
 	{
-        Color[] _colors = Array.Empty<Color>();
-        foreach (Color color in GetColorsFromShader((ShaderMaterial)GasLayersColorRect.Material)) _colors = _colors.Append(color).ToArray();
-        foreach (Color color in GetColorsFromShader((ShaderMaterial)RingColorRect.Material)) _colors = _colors.Append(color).ToArray();
+		Color[] _colors = Array.Empty<Color>();
+		foreach (Color color in GetColorsFromShader((ShaderMaterial)GasLayersColorRect.Material)) _colors = _colors.Append(color).ToArray();
+		foreach (Color color in GetColorsFromShader((ShaderMaterial)RingColorRect.Material)) _colors = _colors.Append(color).ToArray();
 		return _colors;
 	}
 
 	public override void SetColors(Color[] _colors)
 	{
 		Color[] cols1 = _colors[0..3];
-        Color[] cols2 = _colors[3..6];
-        
-        ShaderMaterial _mat = (ShaderMaterial)GasLayersColorRect.Material;
+		Color[] cols2 = _colors[3..6];
+		
+		ShaderMaterial _mat = (ShaderMaterial)GasLayersColorRect.Material;
 		ShaderMaterial _mat2 = (ShaderMaterial)RingColorRect.Material;
-        
-        ShaderMaterial new_mat = SetColorsOnShader(_mat, cols1);
-        ShaderMaterial new_mat2 = SetColorsOnShader(_mat2, cols2);
+		
+		ShaderMaterial new_mat = SetColorsOnShader(_mat, cols1);
+		ShaderMaterial new_mat2 = SetColorsOnShader(_mat2, cols2);
 
-        GasLayersColorRect.Material = new_mat;
-        RingColorRect.Material = new_mat2;
+		GasLayersColorRect.Material = new_mat;
+		RingColorRect.Material = new_mat2;
 	}
 }

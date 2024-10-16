@@ -14,17 +14,10 @@ public partial class Main : Node2D
 	private Dictionary<long, Dictionary<int[], Dictionary<string, string>>> DrawingPaths;
 	private Dictionary<long, int[]> ReadableConnections;
 	private long PathCounter;
-	[Export(PropertyHint.Range, "1, 16,")]
-	private int ConSegmentMargin = 1;
-	[Export(PropertyHint.Range, "1, 16,")]
-	private int ConLineWidth = 1;
-	[Export]
-	private Color ConLineColor = new();
-
+	
 	private AStar2D StarMap;
 
 	private Ship Spaceship;
-	// private Label CurrentLocationLabel;
 
 	private string[] NPCFirstNames = {"Jeremy", "Ashley", "Buck", "Zeta", "Froleen", "John", "Kasma", "Amber", "Rapier", "Sultan", "Sorrow", "Hattempati", "Jeelaz"};
 	private string[] NPCLastNames = {"Black", "Threes", "Meener", "Fungal", "Spadow", "Fraulein", "Stix", "Pisstorn", "Jarbin", "Maystone", "Yu", "Suntor", "Lephyn"};
@@ -46,11 +39,9 @@ public partial class Main : Node2D
 	private Dictionary<int, Quest> AcceptedQuests;
 	private Button AcceptButton;
 	private AudioStreamPlayer AcceptButtonSound;
-	// private Button DeclineButton;
 	private Button FuelButton;
 	private AudioStreamPlayer FuelButtonSound;
 
-	// private VBoxContainer CargoVBox;
 	private PackedScene DeliveryScene;
 
 	private Delivery[] Deliveries;
@@ -74,8 +65,6 @@ public partial class Main : Node2D
 	private SpriteFrames FragileFrames;
 	private SpriteFrames SegmentedFrames;
 
-	// private Dictionary<string, SpriteFrames> TagFrames;
-
 	private int HazardCounter;
 	private Texture2D MarketCrashIcon;
 	private Texture2D DisenteryIcon;
@@ -84,9 +73,6 @@ public partial class Main : Node2D
 	private Texture2D BacteriaIcon;
 	private Texture2D ShutdownIcon;
 	private Texture2D FaultyIcon;
-
-	// private Button AchieventsButton;
-	// private PopupPanel AchievementsMenu;
 
 	private enum Achievements
 	{
@@ -127,23 +113,6 @@ public partial class Main : Node2D
 	private Tween AchievementTween;
 
 	private bool LeapDay = false;
-
-	// private Texture2D AlphaMini;
-	// private Texture2D AuroraMini;
-	// private Texture2D BetaMini;
-	// private Texture2D BorealisMini;
-	// private Texture2D CupidMini;
-	// private Texture2D DreadMini;
-	// private Texture2D EpsilonMini;
-	// private Texture2D FateMini;
-	// private Texture2D GammaMini;
-	// private Texture2D OmegaMini;
-	// private Texture2D QuatroMini;
-	// private Texture2D SigmaMini;
-	// private Texture2D ThetaMini;
-	// private Texture2D TitanMini;
-	// private Texture2D TrifectaMini;
-	// private Texture2D ZeppelinMini;
 
 	private Dictionary<string, PackedScene> PlanetScenes;
 	private Dictionary<string, Color[]> PlanetColorPresets;
@@ -243,7 +212,7 @@ public partial class Main : Node2D
 		StarMap.ConnectPoints(15, 1);
 
 		DrawingConnections = new();
-        DrawingPaths = new();
+		DrawingPaths = new();
 		ReadableConnections = new();
 
 		string conColor = "505050";
@@ -273,10 +242,7 @@ public partial class Main : Node2D
 
 		#region OtherDeclaration
 
-		// string HBoxPath = "BottomMenu/PanelContainer/MarginContainer/HBox/";
-
 		Spaceship = GetNode<Ship>("Ship");
-		// CurrentLocationLabel = GetNode<Label>("LeftMenu/PanelContainer/VBox/CurrentLocationLabel");
 
 		NPCBodySprite = GetNode<Sprite2D>("UI/UIHBox/NPCControl/Panel/SpriteContainer/BodySprite");
 		NPCFaceSprite = GetNode<Sprite2D>("UI/UIHBox/NPCControl/Panel/SpriteContainer/FaceSprite");
@@ -288,22 +254,21 @@ public partial class Main : Node2D
 		DeliveryContentsLabel = GetNode<RichTextLabel>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/DeliveryContentsLabel");
 		AcceptButton = GetNode<Button>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton");
 		AcceptButtonSound = GetNode<AudioStreamPlayer>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/HBox/AcceptButton/AudioStreamPlayer");
-		// DeclineButton = GetNode<Button>(HBoxPath + "DeliveryVBox/HBox/DeclineButton");
 		FuelButton = GetNode<Button>("UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton");
 		FuelButtonSound = GetNode<AudioStreamPlayer>("UI/UIHBox/VBox/FuelPanel/FuelVBox/HBox/FuelButton/AudioStreamPlayer");
 
 		DeliveryItems = Array.Empty<ItemData>();
 		
-		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Wood", Texture = GD.Load<Texture2D>("res://Item Sprites/Wood.png"), Fragility = 1}).ToArray();
-		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Cosmic propaganda", Texture = GD.Load<Texture2D>("res://Item Sprites/Cosmic propaganda.png"), Fragility = 2}).ToArray();
-		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Asteroid samples", Texture = GD.Load<Texture2D>("res://Item Sprites/Cosmic propaganda.png"), Fragility = 3}).ToArray();
-		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Pencils", Texture = GD.Load<Texture2D>("res://Item Sprites/Pencils.png"), Fragility = 4}).ToArray();
-		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Lab vials", Texture = GD.Load<Texture2D>("res://Item Sprites/Lab vials.png"), Fragility = 5}).ToArray();
-		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Miniature Glass City", Texture = GD.Load<Texture2D>("res://Item Sprites/Miniature glass city.png"), Fragility = 6}).ToArray();
-		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Cheesecake", Texture = GD.Load<Texture2D>("res://Item Sprites/Cheesecake.png"), Fragility = 7}).ToArray();
-		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Stuffed Crust Pizza", Texture = GD.Load<Texture2D>("res://Item Sprites/Stuffed crust pizza.png"), Fragility = 8}).ToArray();
-		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Archeology Findings", Texture = GD.Load<Texture2D>("res://Item Sprites/Archeology findings.png"), Fragility = 9}).ToArray();
-		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Old explosives", Texture = GD.Load<Texture2D>("res://Item Sprites/Old explosives.png"), Fragility = 10}).ToArray();
+		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Wood", Fragility = 1}).ToArray();
+		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Cosmic propaganda", Fragility = 2}).ToArray();
+		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Asteroid samples", Fragility = 3}).ToArray();
+		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Pencils", Fragility = 4}).ToArray();
+		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Lab vials", Fragility = 5}).ToArray();
+		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Miniature Glass City", Fragility = 6}).ToArray();
+		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Cheesecake", Fragility = 7}).ToArray();
+		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Stuffed Crust Pizza", Fragility = 8}).ToArray();
+		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Archeology Findings", Fragility = 9}).ToArray();
+		DeliveryItems = DeliveryItems.Append(new ItemData() { ItemName = "Old explosives", Fragility = 10}).ToArray();
 
 		QuestCounter = 1;
 		HazardCounter = 0;
@@ -311,8 +276,7 @@ public partial class Main : Node2D
 		AcceptedQuests = new();
 		Deliveries = Array.Empty<Delivery>();
 		
-		// CargoVBox = GetNode<VBoxContainer>(HBoxPath + "CargoVBox/Scroll/CargoVBox");
-		DeliveryScene = GD.Load<PackedScene>("res://Delivery/NewDelivery.tscn");
+		DeliveryScene = GD.Load<PackedScene>("res://Delivery/Delivery.tscn");
 
 		DeliveriesContainer = GetNode<VBoxContainer>("UI/DeliveriesContainer/ScrollContainer/VBoxContainer");
 
@@ -325,29 +289,15 @@ public partial class Main : Node2D
 		ModifiersHBox = GetNode<HBoxContainer>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/ModifiersHBox");
 		ModifierIconScene = GD.Load<PackedScene>("res://Modifiers/ModifierIcon.tscn");
 
-		TimedFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Timed.tres");
-		FragileFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Fragile.tres");
-		SegmentedFrames = GD.Load<SpriteFrames>("res://Modifiers/SpriteFrames/Segmented.tres");
-
-		// TagFrames = new()
-		// {
-		// 	["Timed"] = TimedFrames,
-		// 	["Fragile"] = FragileFrames,
-		// 	["Segmented"] = SegmentedFrames
-		// };
-
-		MarketCrashIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/FuelCrash.svg");
-		DisenteryIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/HeatLeeches.svg");
-		RumIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/Pirates.svg");
-		HecticIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/Timed.svg");
-		BacteriaIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/Fragile.svg");
-		ShutdownIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/Shutdown.svg");
-		FaultyIcon = GD.Load<Texture2D>("res://Location/Hazards/New Icons/Faulty.svg");
+		MarketCrashIcon = GD.Load<Texture2D>("res://Location/Hazards/FuelCrash.svg");
+		DisenteryIcon = GD.Load<Texture2D>("res://Location/Hazards/HeatLeeches.svg");
+		RumIcon = GD.Load<Texture2D>("res://Location/Hazards/Pirates.svg");
+		HecticIcon = GD.Load<Texture2D>("res://Location/Hazards/Timed.svg");
+		BacteriaIcon = GD.Load<Texture2D>("res://Location/Hazards/Fragile.svg");
+		ShutdownIcon = GD.Load<Texture2D>("res://Location/Hazards/Shutdown.svg");
+		FaultyIcon = GD.Load<Texture2D>("res://Location/Hazards/Faulty.svg");
 
 		AchievementQueue = Array.Empty<Achievement>();
-
-		// AchieventsButton = GetNode<Button>("UI/MarginContainer/PanelContainer/VBox/ExitButton");
-		// AchievementsMenu = GetNode<PopupPanel>("AchievementsMenu");
 
 		AchievementsContainer = GetNode<MarginContainer>("UI/AchievementsContainer");
 		AchievementsVBoxContainer = GetNode<VBoxContainer>("UI/AchievementsContainer/PanelContainer/Scroll/AchievementsVBox");
@@ -373,40 +323,6 @@ public partial class Main : Node2D
 
 		VictoryScreen = GetNode<Control>("VictoryScreen");
 		FailScreen = GetNode<Control>("FailScreen");
-
-		// AlphaMini = GD.Load<Texture2D>("res://UI/Locations/Alpha/Alpha_mini.png");
-		// AuroraMini = GD.Load<Texture2D>("res://UI/Locations/Aurora/Aurora_mini.png");
-		// BetaMini = GD.Load<Texture2D>("res://UI/Locations/Beta/Beta_mini.png");
-		// BorealisMini = GD.Load<Texture2D>("res://UI/Locations/Borealis/Borealis_mini.png");
-		// CupidMini = GD.Load<Texture2D>("res://UI/Locations/Cupid/Cupid_mini.png");
-		// DreadMini = GD.Load<Texture2D>("res://UI/Locations/Dread/Dread_mini.png");
-		// EpsilonMini = GD.Load<Texture2D>("res://UI/Locations/Epsilon/Epsilon_mini.png");
-		// FateMini = GD.Load<Texture2D>("res://UI/Locations/Fate/Fate_mini.png");
-		// GammaMini = GD.Load<Texture2D>("res://UI/Locations/Gamma/Gamma_mini.png");
-		// OmegaMini = GD.Load<Texture2D>("res://UI/Locations/Omega/Omega_mini.png");
-		// QuatroMini = GD.Load<Texture2D>("res://UI/Locations/Quatro/Quatro_mini.png");
-		// SigmaMini = GD.Load<Texture2D>("res://UI/Locations/Sigma/Sigma_mini.png");
-		// ThetaMini = GD.Load<Texture2D>("res://UI/Locations/Theta/Theta_mini.png");
-		// TitanMini = GD.Load<Texture2D>("res://UI/Locations/Titan/Titan_mini.png");
-		// TrifectaMini = GD.Load<Texture2D>("res://UI/Locations/Trifecta/Trifecta_mini.png");
-		// ZeppelinMini = GD.Load<Texture2D>("res://UI/Locations/Zeppelin/Zeppelin_mini.png");
-
-		// l1.SetTexture(AuroraMini);
-		// l2.SetTexture(AlphaMini);
-		// l3.SetTexture(BetaMini);
-		// l4.SetTexture(GammaMini);
-		// l5.SetTexture(EpsilonMini);
-		// l6.SetTexture(BorealisMini);
-		// l7.SetTexture(OmegaMini);
-		// l8.SetTexture(ZeppelinMini);
-		// l9.SetTexture(TrifectaMini);
-		// l10.SetTexture(CupidMini);
-		// l11.SetTexture(ThetaMini);
-		// l12.SetTexture(FateMini);
-		// l13.SetTexture(SigmaMini);
-		// l14.SetTexture(QuatroMini);
-		// l15.SetTexture(TitanMini);
-		// l16.SetTexture(DreadMini);
 
 		l1.LocationPressed += OnLocationPressed;
 		l2.LocationPressed += OnLocationPressed;
@@ -568,7 +484,6 @@ public partial class Main : Node2D
 
 		#endregion OtherDeclaration
 
-		// CurrentLocationLabel.Text = l2.LocationName;
 		CurrentLocation = l2;
 		Spaceship.Transform = CurrentLocation.Transform;
 
@@ -684,7 +599,7 @@ public partial class Main : Node2D
 		NewPlanet.SetPixels(100);
 		NewPlanet.SetSeed(PlanetSeeds[PlanetPreset]);
 		float RandomRotation = Rnd.Next(-50, 50) / 100.0f;
-		NewPlanet.SetRotation(-0.75f + RandomRotation);
+		NewPlanet.SetPlanetRotation(-0.75f + RandomRotation);
 		NewPlanet.SetColors(PlanetColorPresets[PlanetPreset]);
 		switch (PlanetType)
 		{
@@ -698,12 +613,12 @@ public partial class Main : Node2D
 			case "GasPlanetLayers":
 				NewPlanet.RelativeScale = 3f;
 				NewPlanet.GUIZoom = 2.5f;
-				NewPlanet.SetRotation(-1.2f);
+				NewPlanet.SetPlanetRotation(-1.2f);
 				break;
 			case "Star":
 				NewPlanet.RelativeScale = 2f;
 				NewPlanet.GUIZoom = 2f;
-				NewPlanet.SetRotation(2.0f + RandomRotation);
+				NewPlanet.SetPlanetRotation(2.0f + RandomRotation);
 				break;
 		}
 		if (Parent.PlanetType == "") Parent.PlanetType = PlanetType;
@@ -719,7 +634,7 @@ public partial class Main : Node2D
 		NewPlanet.SetPixels(pixels);
 		NewPlanet.SetSeed(PlanetSeeds[PlanetPreset]);
 		float RandomRotation = Rnd.Next(-pixels/2, pixels/2) / 100.0f;
-		NewPlanet.SetRotation(-0.75f + RandomRotation);
+		NewPlanet.SetPlanetRotation(-0.75f + RandomRotation);
 		NewPlanet.SetColors(PlanetColorPresets[PlanetPreset]);
 		switch (PlanetType)
 		{
@@ -733,12 +648,12 @@ public partial class Main : Node2D
 			case "GasPlanetLayers":
 				NewPlanet.RelativeScale = 3f;
 				NewPlanet.GUIZoom = 2.5f;
-				NewPlanet.SetRotation(-1.2f);
+				NewPlanet.SetPlanetRotation(-1.2f);
 				break;
 			case "Star":
 				NewPlanet.RelativeScale = 2f;
 				NewPlanet.GUIZoom = 2f;
-				NewPlanet.SetRotation(2.0f + RandomRotation);
+				NewPlanet.SetPlanetRotation(2.0f + RandomRotation);
 				break;
 		}
 		return NewPlanet;
@@ -764,46 +679,9 @@ public partial class Main : Node2D
 		newAsteroid.SetMovementData(rotationSpeed, velocity);
 	}
 
-	// private void ChangeConnection(int idFrom, int idTo, int distance, string color = "2ba69a", int segment_margin = 4, int line_width = 3)
-	// {
-	// 	Dictionary<string, string> newData = new() {{"color", color}, {"distance", distance.ToString()}, {"segment_margin", segment_margin.ToString()}, {"line_width", line_width.ToString()}};
-	// 	foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
-	// 	{
-	// 		if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo)) DrawingConnections[Con.Key] = newData;
-	// 	}
-	// }
-
-	// private void HighlightSingleConnection(int idFrom, int idTo)
-	// {
-	// 	foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
-	// 	{
-	// 		if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo))
-	// 		{
-	// 			DrawingConnections[Con.Key]["color"] = "2c9eca";
-	// 		}
-	// 	}
-	// }
-
-	// private void StopHighlightSingleConnection(int idFrom, int idTo)
-	// {
-	// 	foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
-	// 	{
-	// 		if (Con.Key.Contains(idFrom) && Con.Key.Contains(idTo))
-	// 		{
-	// 			DrawingConnections[Con.Key]["color"] = "2ba69a";
-	// 		}
-	// 	}
-	// }
-
 	private void HighlightPath(int idFrom, int idTo, Color color)
 	{
 		Dictionary<int[], Dictionary<string, string>> newPath = new();
-		// long[] pathID = StarMap.GetIdPath(idFrom, idTo);
-		// Godot.Vector2[] pathPoint = StarMap.GetPointPath(idFrom, idTo);
-		// for (int i = 0; i < pathID.Length - 1; i++)
-		// {
-		// 	ChangeConnection((int)pathID[i], (int)pathID[i+1], Mathf.FloorToInt(Math.Abs(pathPoint[i].DistanceTo(pathPoint[i+1]))), color, 3, 4);
-		// }
 		long[] pathID = StarMap.GetIdPath(idFrom, idTo);
 		for (int i = 0; i < pathID.Length - 1; i++)
 		{
@@ -832,12 +710,6 @@ public partial class Main : Node2D
 
 	private void StopHighlightPath(int idFrom, int idTo)
 	{
-		// long[] pathID = StarMap.GetIdPath(idFrom, idTo);
-		// Godot.Vector2[] pathPoint = StarMap.GetPointPath(idFrom, idTo);
-		// for (int i = 0; i < pathID.Length - 1; i++)
-		// {
-		// 	ChangeConnection((int)pathID[i], (int)pathID[i+1], Mathf.FloorToInt(Math.Abs(pathPoint[i].DistanceTo(pathPoint[i+1]))));
-		// }
 		long target = -1;
 		foreach (KeyValuePair<long, int[]> Con in ReadableConnections)
 		{
@@ -856,13 +728,6 @@ public partial class Main : Node2D
 
 	public override void _Draw()
 	{
-		//int distance, string color, int segment_margin, int line_width
-		// foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
-		// {
-		// 	Godot.Vector2 From = AllLocations[Con.Key[0]].Position;
-		// 	Godot.Vector2 To = AllLocations[Con.Key[1]].Position;
-		// 	DrawSegmentedLine(From, To, new Color(Con.Value["color"]), int.Parse(Con.Value["distance"]), int.Parse(Con.Value["segment_margin"]), int.Parse(Con.Value["line_width"]));
-		// }
 		foreach (KeyValuePair<int[], Dictionary<string, string>> Con in DrawingConnections)
 		{
 			Control From = AllLocations[Con.Key[0]].Visuals;
@@ -1099,7 +964,6 @@ public partial class Main : Node2D
 			DisplayQuest(CreateNewQuest(4 + Rnd.Next(-1, 2), Rnd.Next(1, 3), 3));
 			payoutModifier = 1.0f;
 		}
-		// CurrentLocationLabel.Text = CurrentLocation.LocationName;
 		int[] CompletedQuestIDs = CurrentLocation.GetQuests();
 		ACH_CompletedQuests = 0;
 		ACH_TotalFails = 0;
@@ -1174,7 +1038,6 @@ public partial class Main : Node2D
 				int distance = (StarMap.GetIdPath(CurrentLocation.ID, destination.ID).Length + Rnd.Next(2)) * int.Parse(CurrentLocation.GetHazardData("Bacteria")["multiplier"]);
 				newTagData["jumps"] = distance.ToString();
 				newTagData["texture_path"] = "res://UI/Icons/Modifiers/Fragile.svg";
-				// delivery.AddTag("Fragile", newTagData, GetNewModifierIcon("Fragile", newTagData));
 				delivery.AddTag("Fragile", newTagData);
 			}
 			CurrentLocation.RemoveHazard("Bacteria");
@@ -1325,16 +1188,12 @@ public partial class Main : Node2D
 	{
 		AcceptButton.Disabled = false;
 		AcceptButton.Visible = true;
-		// DeclineButton.Disabled = false;
-		// DeclineButton.Visible = true;
 	}
 
 	private void DisableQuestButtons()
 	{
 		AcceptButton.Disabled = true;
 		AcceptButton.Visible = false;
-		// DeclineButton.Disabled = true;
-		// DeclineButton.Visible = false;
 	}
 
 	private void OnAcceptQuestButtonPressed()
@@ -1364,7 +1223,6 @@ public partial class Main : Node2D
 		Delivery NewDelivery = DeliveryScene.Instantiate<Delivery>();
 		// Adding a delivery in the cargo hold
 		DeliveriesContainer.AddChild(NewDelivery);
-		// CargoVBox.AddChild(NewDelivery);
 		GodotArray[] Result = Array.Empty<GodotArray>();
 		NewDelivery.SetPlanet(CreateNewPlanet(NewDelivery, DisplayedQuest.Destination.PlanetType, DisplayedQuest.Destination.PlanetPreset, 25), DisplayedQuest.Destination.LocationColor);
 		GD.Print("Creating new Delivery with ", DisplayedQuest.Tags.Length, " tags...");
@@ -1372,7 +1230,6 @@ public partial class Main : Node2D
 		{
 			string tag = DisplayedQuest.Tags[idx];
 			Dictionary<string, string> tagData = DisplayedQuest.TagsData[idx];
-			// NewDelivery.AddTag(tag, tagData, GetNewModifierIcon(tag, tagData));
 			NewDelivery.AddTag(tag, tagData);
 			if (tag == "Segmented")
 			{
@@ -1471,26 +1328,6 @@ public partial class Main : Node2D
 
 	private void ClearQuestHighlight() { DisplayedQuest.Destination.ClearHighlight(); }
 
-	// private void HighlightNeighbours()
-	// {
-	// 	long[] Connections = StarMap.GetPointConnections(CurrentLocation.ID);
-	// 	foreach (long id in Connections)
-	// 	{
-	// 		// AllLocations[(int)id].Choosable();
-	// 		HighlightSingleConnection(CurrentLocation.ID, (int)id);
-	// 	}
-	// }
-
-	// private void ClearHighlightNeighbours()
-	// {
-	// 	long[] Connections = StarMap.GetPointConnections(CurrentLocation.ID);
-	// 	foreach (long id in Connections)
-	// 	{
-	// 		// AllLocations[(int)id].ClearChoosable();
-	// 		StopHighlightSingleConnection(CurrentLocation.ID, (int)id);
-	// 	}
-	// }
-
 	private void PopupBalance(int Difference)
 	{
 		Label PopupLabel = new();
@@ -1504,12 +1341,6 @@ public partial class Main : Node2D
 		LabelTween.TweenProperty(PopupLabel, "modulate", Colors.Transparent, 0.3d).SetDelay(0.7d);
 		LabelTween.TweenCallback(Callable.From(PopupLabel.QueueFree)).SetDelay(1.0d);
 	}
-
-	// private void OnAchievementsButtonPressed()
-	// {
-	// 	if (AchievementsMenu.Visible) AchievementsMenu.Hide();
-	// 	else AchievementsMenu.Show();
-	// }
 
 	private void CheckAchievements()
 	{
@@ -1698,25 +1529,6 @@ public partial class Main : Node2D
 	private void OnRetryButtonPressed()
 	{
 		GD.Print("Reload: " + GetTree().ReloadCurrentScene());
-		// foreach (ItemData item in DeliveryItems) item.QueueFree();
-		// foreach (KeyValuePair<int, Quest> item in AcceptedQuests) item.Value.QueueFree();
-		// foreach (Delivery item in Deliveries)
-		// {
-		// 	item.OnDeliveryFailed -= DeliveryFailed;
-		// 	item.OnDeliveryMouseEntered -= OnDeliveryHoverStart;
-		// 	item.OnDeliveryMouseExited -= OnDeliveryHoverFinish;
-		// 	item.QueueFree();
-		// }
-		// foreach (KeyValuePair<int, Location> item in AllLocations) 
-		// {
-		// 	item.Value.ClearHighlight();
-		// 	string[] hazards = Array.Empty<string>();
-		// 	// item.Value.Hazards.CopyTo(hazards, 0);
-		// 	foreach (string hazard in item.Value.Hazards) item.Value.RemoveHazard(hazard);
-		// 	item.Value._Ready();
-		// }
-		// foreach (Achievement item in AchievementsContainer.GetChildren()) item.Enabled = false;
-		// _Ready();
 	}
 
 	private void OnAcceptQuestButtonDown()
@@ -1746,7 +1558,6 @@ public partial class Main : Node2D
 	{
 		ModifierIcon NewModifier = ModifierIconScene.Instantiate<ModifierIcon>();
 		NewModifier.Tag = newTag;
-		// NewModifier.SetSprite(TagFrames[newTag]);
 		switch (newTag)
 		{
 			case "Timed":

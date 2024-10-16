@@ -4,7 +4,7 @@ using System.Linq;
 
 public partial class NoAtmosphere : Planet
 {
-    public override float Time {get; set;}
+	public override float Time {get; set;}
 	public override bool OverrideTime {get; set;}
 	public override Color[] OriginalColors {get; set;}
 
@@ -13,13 +13,13 @@ public partial class NoAtmosphere : Planet
 	[Export]
 	public override float GUIZoom {get; set;}
 
-    private ColorRect GroundColorRect;
-    private ColorRect CratersColorRect;
+	private ColorRect GroundColorRect;
+	private ColorRect CratersColorRect;
 
-    public override void _Ready()
+	public override void _Ready()
 	{
 		GroundColorRect = GetNode<ColorRect>("Ground");
-        CratersColorRect = GetNode<ColorRect>("Craters");
+		CratersColorRect = GetNode<ColorRect>("Craters");
 		GroundColorRect.Material = (Material)GroundColorRect.Material.Duplicate(true);
 		CratersColorRect.Material = (Material)CratersColorRect.Material.Duplicate(true);
 		base._Ready();
@@ -45,7 +45,7 @@ public partial class NoAtmosphere : Planet
 		_mat.SetShaderParameter("light_origin", _pos);
 		GroundColorRect.Material = _mat;
 
-        ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
+		ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
 		_mat2.SetShaderParameter("light_origin", _pos);
 		CratersColorRect.Material = _mat2;
 	}
@@ -57,39 +57,39 @@ public partial class NoAtmosphere : Planet
 		_mat.SetShaderParameter("seed", converted_seed);
 		GroundColorRect.Material = _mat;
 
-        ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
+		ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
 		_mat2.SetShaderParameter("seed", converted_seed);
-        CratersColorRect.Material = _mat2;
+		CratersColorRect.Material = _mat2;
 	}
 
-	public override void SetRotation(float _rotation)
+	public override void SetPlanetRotation(float _rotation)
 	{
 		ShaderMaterial _mat = (ShaderMaterial)GroundColorRect.Material;
 		_mat.SetShaderParameter("rotation", _rotation);
 		GroundColorRect.Material = _mat;
 
-        ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
+		ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
 		_mat2.SetShaderParameter("rotation", _rotation);
 		CratersColorRect.Material = _mat2;
 	}
 
 	public override void UpdateTime(float _time)
 	{
-        ShaderMaterial _mat = (ShaderMaterial)GroundColorRect.Material;
+		ShaderMaterial _mat = (ShaderMaterial)GroundColorRect.Material;
 		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat) * 0.02f);
 		GroundColorRect.Material = _mat;
 
-        ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
+		ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
 		_mat2.SetShaderParameter("time", _time * GetMultiplier(_mat2) * 0.02f);
 		CratersColorRect.Material = _mat2;
 	}
 
 	public override void SetCustomTime(float _time)
 	{
-        ShaderMaterial _mat = (ShaderMaterial)GroundColorRect.Material;
+		ShaderMaterial _mat = (ShaderMaterial)GroundColorRect.Material;
 		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat));
 		GroundColorRect.Material = _mat;
-        
+		
 		ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
 		_mat2.SetShaderParameter("time", _time * GetMultiplier(_mat2));
 		CratersColorRect.Material = _mat2;
@@ -97,24 +97,24 @@ public partial class NoAtmosphere : Planet
 
 	public override Color[] GetColors()
 	{
-        Color[] _colors = Array.Empty<Color>();
-        foreach (Color color in GetColorsFromShader((ShaderMaterial)GroundColorRect.Material)) _colors = _colors.Append(color).ToArray();
-        foreach (Color color in GetColorsFromShader((ShaderMaterial)CratersColorRect.Material)) _colors = _colors.Append(color).ToArray();
+		Color[] _colors = Array.Empty<Color>();
+		foreach (Color color in GetColorsFromShader((ShaderMaterial)GroundColorRect.Material)) _colors = _colors.Append(color).ToArray();
+		foreach (Color color in GetColorsFromShader((ShaderMaterial)CratersColorRect.Material)) _colors = _colors.Append(color).ToArray();
 		return _colors;
 	}
 
 	public override void SetColors(Color[] _colors)
 	{
 		Color[] cols1 = _colors[0..3];
-        Color[] cols2 = _colors[3..5];
-        
-        ShaderMaterial _mat = (ShaderMaterial)GroundColorRect.Material;
+		Color[] cols2 = _colors[3..5];
+		
+		ShaderMaterial _mat = (ShaderMaterial)GroundColorRect.Material;
 		ShaderMaterial _mat2 = (ShaderMaterial)CratersColorRect.Material;
-        
-        ShaderMaterial new_mat = SetColorsOnShader(_mat, cols1);
-        ShaderMaterial new_mat2 = SetColorsOnShader(_mat2, cols2);
+		
+		ShaderMaterial new_mat = SetColorsOnShader(_mat, cols1);
+		ShaderMaterial new_mat2 = SetColorsOnShader(_mat2, cols2);
 
-        GroundColorRect.Material = new_mat;
-        CratersColorRect.Material = new_mat2;
+		GroundColorRect.Material = new_mat;
+		CratersColorRect.Material = new_mat2;
 	}
 }

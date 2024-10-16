@@ -3,7 +3,7 @@ using System;
 
 public partial class DryTerran : Planet
 {
-    public override float Time {get; set;}
+	public override float Time {get; set;}
 	public override bool OverrideTime {get; set;}
 	public override Color[] OriginalColors {get; set;}
 
@@ -44,7 +44,7 @@ public partial class DryTerran : Planet
 		LandColorRect.Material = _mat;
 	}
 
-	public override void SetRotation(float _rotation)
+	public override void SetPlanetRotation(float _rotation)
 	{
 		ShaderMaterial _mat = (ShaderMaterial)LandColorRect.Material;
 		_mat.SetShaderParameter("rotation", _rotation);
@@ -53,7 +53,7 @@ public partial class DryTerran : Planet
 
 	public override void UpdateTime(float _time)
 	{
-        ShaderMaterial _mat = (ShaderMaterial)LandColorRect.Material;
+		ShaderMaterial _mat = (ShaderMaterial)LandColorRect.Material;
 		_mat.SetShaderParameter("time", _time * GetMultiplier(_mat) * 0.02f);
 		LandColorRect.Material = _mat;
 	}
@@ -71,7 +71,7 @@ public partial class DryTerran : Planet
 	}
 
 	public override void SetColors(Color[] _colors)
-    {
+	{
 		ShaderMaterial new_mat = SetColorsOnShader((ShaderMaterial)LandColorRect.Material, _colors);
 		LandColorRect.Material = new_mat;
 	}

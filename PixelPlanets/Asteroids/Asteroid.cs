@@ -68,7 +68,7 @@ public partial class Asteroid : Planet
 		AsteroidColorRect.Material = _mat;
 	}
 
-	public override void SetRotation(float _rotation)
+	public override void SetPlanetRotation(float _rotation)
 	{
 		ShaderMaterial _mat = (ShaderMaterial)AsteroidColorRect.Material;
 		_mat.SetShaderParameter("rotation", _rotation);

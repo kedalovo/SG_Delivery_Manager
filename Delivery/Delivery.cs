@@ -17,14 +17,14 @@ public partial class Delivery : PanelContainer
 	private int id;
 
 	public int ID
-    {
-        get => id;
-        set
-        {
-            if (id == -1) id = value;
-            else GD.Print("Delivery already has ID: " + id.ToString());
-        }
-    }
+	{
+		get => id;
+		set
+		{
+			if (id == -1) id = value;
+			else GD.Print("Delivery already has ID: " + id.ToString());
+		}
+	}
 
 	private PackedScene ItemScene;
 	// private HFlowContainer ItemsHFlow;
@@ -63,7 +63,7 @@ public partial class Delivery : PanelContainer
 		MouseExited += () => EmitSignal(SignalName.OnDeliveryMouseExited, id);
 	}
 
-    public void SetItems(int newID, ItemData[] newItems, int newDistance)
+	public void SetItems(int newID, ItemData[] newItems, int newDistance)
 	{
 		id = newID;
 		GD.Print("Setting items for new delivery...");
@@ -73,7 +73,7 @@ public partial class Delivery : PanelContainer
 		{
 			Item NewItem = ItemScene.Instantiate<Item>();
 			ItemsControl.AddChild(NewItem);
-            Items = Items.Append(NewItem).ToArray();
+			Items = Items.Append(NewItem).ToArray();
 			NewItem.SetItem(newItemData);
 		}
 		TotalDistance = newDistance;
@@ -177,7 +177,7 @@ public partial class Delivery : PanelContainer
 		GD.Print("\tEmpty tag added");
 	}
 
-    public void AddTag(string newTag, Dictionary<string, string> newTagData) 
+	public void AddTag(string newTag, Dictionary<string, string> newTagData) 
 	{
 		if (HasTag(newTag)) return;
 		if (Tags.Keys.Count == 0)

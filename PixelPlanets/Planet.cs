@@ -28,7 +28,7 @@ public partial class Planet : Control
 	public virtual void SetPixels(int _amount) {}
 	public virtual void SetLight(Vector2 _pos) {}
 	public virtual void SetSeed(uint _seed) {}
-	public virtual void SetRotation(float _rotation) {}
+	public virtual void SetPlanetRotation(float _rotation) {}
 	public virtual void UpdateTime(float _time) {}
 	public virtual void SetCustomTime(float _time) {}
 

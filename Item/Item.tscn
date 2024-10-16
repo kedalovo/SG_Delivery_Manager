@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://eo8sjdn43ad7"]
+[gd_scene load_steps=2 format=3 uid="uid://eo8sjdn43ad7"]
 
 [ext_resource type="Script" path="res://Item/Item.cs" id="1_urfug"]
-[ext_resource type="Texture2D" uid="uid://cskg0vuygd6dd" path="res://Item Sprites/Archeology findings.png" id="1_wamyk"]
 
 [node name="Item" type="HBoxContainer"]
 modulate = Color(0, 1, 0, 1)
@@ -9,7 +8,6 @@ script = ExtResource("1_urfug")
 
 [node name="ItemIcon" type="TextureRect" parent="."]
 layout_mode = 2
-texture = ExtResource("1_wamyk")
 stretch_mode = 2
 
 [node name="DamageLabel" type="Label" parent="."]

@@ -71,7 +71,7 @@ public partial class Location : Node2D
 		NameLabel.Text = LocationName;
 	}
 
-    private void OnButtonPressed()
+	private void OnButtonPressed()
 	{
 		EmitSignal(SignalName.LocationPressed, ID);
 	}

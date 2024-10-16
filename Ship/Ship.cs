@@ -42,32 +42,6 @@ public partial class Ship : Node2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		// float value1 = Mathf.RadToDeg((Pivot.GlobalPosition - ShipSprite.GlobalPosition).Angle()) + 180.0f;
-		// float value2 = Mathf.RadToDeg((Pivot.GlobalPosition - MoveTarget).Angle()) + 180.0f;
-		// Label1.Text = Mathf.Round(value1).ToString();
-		// Label2.Text = Mathf.Round(value2).ToString();
-		// Label3.Text = HasLooped.ToString();
-		// if (CurrentState == States.ROTATING)
-		// {
-		// 	if (LastRotation > value1) HasLooped = true;
-		// 	if (IsOverTarget)
-		// 	{
-		// 		if (HasLooped && value1 > RotationTarget)
-		// 		{
-		// 			Move(MoveTarget, MoveDuration);
-		// 			GD.Print("Moved, rotation target is: ", Mathf.Round(RotationTarget), ", rotation is: ", Mathf.Round(value1), ", looped: ", HasLooped);
-		// 			HasLooped = false;
-		// 		}
-		// 	}
-		// 	else if (value1 > RotationTarget)
-		// 	{
-		// 		Move(MoveTarget, MoveDuration);
-		// 		GD.Print("Moved, rotation target is: ", Mathf.Round(RotationTarget), ", rotation is: ", Mathf.Round(value1));
-		// 		HasLooped = false;
-		// 	}
-		// }
-		// LastRotation = value1;
-		// Label1.Text = ShipSprite.GlobalPosition.DistanceTo(Target.GlobalPosition).ToString();
 		if (CurrentState == States.ROTATING && ShipSprite.GlobalPosition.DistanceTo(Target.GlobalPosition) < 15.0f)
 		{
 			Move(MoveTarget, MoveDuration);
@@ -85,7 +59,6 @@ public partial class Ship : Node2D
 		else if (RotationTarget > 360.0f) RotationTarget -= 360.0f;
 		IsOverTarget = RotationTarget < Mathf.RadToDeg((Pivot.GlobalPosition - ShipSprite.GlobalPosition).Angle()) + 180.0f;
 		GetNode<Node2D>("RectPivot").RotationDegrees = RotationTarget - 180.0f;
-		// GD.PrintS(Mathf.RadToDeg((Pivot.GlobalPosition - ShipSprite.GlobalPosition).Angle()) + 180.0f, RotationTarget, IsOverTarget);
 	}
 
 	private void Move(Vector2 newPosition, float duration)

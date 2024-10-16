@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://Main/Main.cs" id="1_ei6yb"]
 [ext_resource type="PackedScene" uid="uid://bvwjgxmq2ro5h" path="res://Location/Location.tscn" id="3_dt0bp"]
 [ext_resource type="PackedScene" uid="uid://ck7a82me5xux0" path="res://Ship/Ship.tscn" id="4_tp5ri"]
-[ext_resource type="Texture2D" uid="uid://dfd4qgmg3todd" path="res://NPC/Faces/Faces.png" id="5_mmjq5"]
+[ext_resource type="Texture2D" uid="uid://dfd4qgmg3todd" path="res://NPC/Faces.png" id="5_mmjq5"]
 [ext_resource type="AudioStream" uid="uid://bifsvedyva8l3" path="res://Audio/UI SFX/Click_Low.wav" id="5_q70ja"]
-[ext_resource type="Texture2D" uid="uid://g0o15jg5f87f" path="res://NPC/Bodies/Bodies.png" id="5_xd0hc"]
+[ext_resource type="Texture2D" uid="uid://g0o15jg5f87f" path="res://NPC/Bodies.png" id="5_xd0hc"]
 [ext_resource type="Texture2D" uid="uid://d4dje22awji6e" path="res://Location/Star.png" id="7_arlnc"]
 [ext_resource type="PackedScene" uid="uid://krk0tryxukwu" path="res://Achievements/Achievement.tscn" id="8_aqrfd"]
 [ext_resource type="Texture2D" uid="uid://blyc4wffyor4s" path="res://UI/AchievementIcon.png" id="9_i406f"]
@@ -161,9 +161,6 @@ _data = {
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ei6yb")
-ConSegmentMargin = 4
-ConLineWidth = 3
-ConLineColor = Color(0.168543, 0.650288, 0.605149, 1)
 
 [node name="Background" type="TextureRect" parent="."]
 z_index = -1
