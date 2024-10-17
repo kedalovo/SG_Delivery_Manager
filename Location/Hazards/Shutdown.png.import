@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://blratwcvev23g"
-path="res://.godot/imported/Fragile.svg-3e08629f452d6e3cba039d164982ebaa.ctex"
+uid="uid://bjno5phmhi77n"
+path="res://.godot/imported/Shutdown.png-3096f4fa11fd3e10ab0dbca2b91f5e14.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Location/Hazards/Fragile.svg"
-dest_files=["res://.godot/imported/Fragile.svg-3e08629f452d6e3cba039d164982ebaa.ctex"]
+source_file="res://Location/Hazards/Shutdown.png"
+dest_files=["res://.godot/imported/Shutdown.png-3096f4fa11fd3e10ab0dbca2b91f5e14.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=0.3
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

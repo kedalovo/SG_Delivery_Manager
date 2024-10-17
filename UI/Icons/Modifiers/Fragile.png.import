@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://o2pvbqal2ekw"
-path="res://.godot/imported/Pirates.svg-7c3bf920ac34a72ff04e76e254c3bb2f.ctex"
+uid="uid://3qiucoxhdd3s"
+path="res://.godot/imported/Fragile.png-5f131c31959e6280ccc6e37daa6b5668.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Location/Hazards/Pirates.svg"
-dest_files=["res://.godot/imported/Pirates.svg-7c3bf920ac34a72ff04e76e254c3bb2f.ctex"]
+source_file="res://UI/Icons/Modifiers/Fragile.png"
+dest_files=["res://.godot/imported/Fragile.png-5f131c31959e6280ccc6e37daa6b5668.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=0.3
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

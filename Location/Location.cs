@@ -128,6 +128,9 @@ public partial class Location : Node2D
 			TextureRect newRect = new() { Texture = newIcon };
 			PanelContainer newPanel = new();
 			newRect.MouseFilter = Control.MouseFilterEnum.Ignore;
+			newPanel.CustomMinimumSize = new Vector2(48, 48);
+			newRect.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
+			newRect.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
 			HazardsHBox.AddChild(newPanel);
 			newPanel.AddChild(newRect);
 			HazardsIcons = HazardsIcons.Append(newPanel).ToArray();

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6y5wcbr4gx2q"
-path="res://.godot/imported/FuelCrash.svg-98ff643b25dbfdf9d4ac5e95a1775e5d.ctex"
+uid="uid://kstnnab6hh8k"
+path="res://.godot/imported/FuelCrash.png-709b7986d2c138508c287ec1af298209.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Location/Hazards/FuelCrash.svg"
-dest_files=["res://.godot/imported/FuelCrash.svg-98ff643b25dbfdf9d4ac5e95a1775e5d.ctex"]
+source_file="res://Location/Hazards/FuelCrash.png"
+dest_files=["res://.godot/imported/FuelCrash.png-709b7986d2c138508c287ec1af298209.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=0.3
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

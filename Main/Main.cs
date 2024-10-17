@@ -289,13 +289,13 @@ public partial class Main : Node2D
 		ModifiersHBox = GetNode<HBoxContainer>("UI/NewQuestContainer/PanelContainer/MarginContainer/VBox/ModifiersHBox");
 		ModifierIconScene = GD.Load<PackedScene>("res://Modifiers/ModifierIcon.tscn");
 
-		MarketCrashIcon = GD.Load<Texture2D>("res://Location/Hazards/FuelCrash.svg");
-		DisenteryIcon = GD.Load<Texture2D>("res://Location/Hazards/HeatLeeches.svg");
-		RumIcon = GD.Load<Texture2D>("res://Location/Hazards/Pirates.svg");
-		HecticIcon = GD.Load<Texture2D>("res://Location/Hazards/Timed.svg");
-		BacteriaIcon = GD.Load<Texture2D>("res://Location/Hazards/Fragile.svg");
-		ShutdownIcon = GD.Load<Texture2D>("res://Location/Hazards/Shutdown.svg");
-		FaultyIcon = GD.Load<Texture2D>("res://Location/Hazards/Faulty.svg");
+		MarketCrashIcon = GD.Load<Texture2D>("res://Location/Hazards/FuelCrash.png");
+		DisenteryIcon = GD.Load<Texture2D>("res://Location/Hazards/HeatLeeches.png");
+		RumIcon = GD.Load<Texture2D>("res://Location/Hazards/Pirates.png");
+		HecticIcon = GD.Load<Texture2D>("res://Location/Hazards/Timed.png");
+		BacteriaIcon = GD.Load<Texture2D>("res://Location/Hazards/Fragile.png");
+		ShutdownIcon = GD.Load<Texture2D>("res://Location/Hazards/Shutdown.png");
+		FaultyIcon = GD.Load<Texture2D>("res://Location/Hazards/Faulty.png");
 
 		AchievementQueue = Array.Empty<Achievement>();
 
@@ -870,36 +870,36 @@ public partial class Main : Node2D
 					case 0:
 						newTag = "Timed";
 						newTagData["tier"] = (Rnd.Next(3) + 1).ToString();
-						newTagData["texture_path"] = "res://UI/Icons/Modifiers/Timed.svg";
+						newTagData["texture_path"] = "res://UI/Icons/Modifiers/Timed.png";
 						break;
 					case 1:
 						newTag = "Fragile";
 						newTagData["jumps"] = (StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length + Rnd.Next(2)).ToString();
-						newTagData["texture_path"] = "res://UI/Icons/Modifiers/Fragile.svg";
+						newTagData["texture_path"] = "res://UI/Icons/Modifiers/Fragile.png";
 						break;
 					case 2:
 						newTag = "Segmented";
 						newTagData["middle-man-id"] = StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID)[Rnd.Next(1, StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length-1)].ToString();
 						newTagData["middle-man-name"] = AllLocations[int.Parse(newTagData["middle-man-id"])].LocationName;
 						newTagData["middle-man-met"] = "false";
-						newTagData["texture_path"] = "res://UI/Icons/Modifiers/Segmented.svg";
+						newTagData["texture_path"] = "res://UI/Icons/Modifiers/Segmented.png";
 						break;
 				}
 				NewQuest.AddTag(newTag, newTagData);
 				break;
 			case 3:
-				NewQuest.AddTag("Timed", new Dictionary<string, string>() { {"tier", (Rnd.Next(3) + 1).ToString()}, {"texture_path", "res://UI/Icons/Modifiers/Timed.svg"} });
+				NewQuest.AddTag("Timed", new Dictionary<string, string>() { {"tier", (Rnd.Next(3) + 1).ToString()}, {"texture_path", "res://UI/Icons/Modifiers/Timed.png"} });
 				NewQuest.AddTag("Fragile", new Dictionary<string, string>() { {"jumps", (StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length + Rnd.Next(2)).ToString()},
-					{"texture_path", "res://UI/Icons/Modifiers/Fragile.svg"} });
+					{"texture_path", "res://UI/Icons/Modifiers/Fragile.png"} });
 				break;
 			case 4:
-				NewQuest.AddTag("Timed", new Dictionary<string, string>() { {"tier", (Rnd.Next(3) + 1).ToString()}, {"texture_path", "res://UI/Icons/Modifiers/Timed.svg"} });
+				NewQuest.AddTag("Timed", new Dictionary<string, string>() { {"tier", (Rnd.Next(3) + 1).ToString()}, {"texture_path", "res://UI/Icons/Modifiers/Timed.png"} });
 				string temp1 = StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID)[Rnd.Next(1, StarMap.GetIdPath(CurrentLocation.ID, ChosenLocation.ID).Length-1)].ToString();
 				NewQuest.AddTag("Segmented", new Dictionary<string, string>() {
 					{"middle-man-id", temp1},
 					{"middle-man-name", AllLocations[int.Parse(temp1)].LocationName},
 					{"middle-man-met", "false"},
-					{"texture_path", "res://UI/Icons/Modifiers/Segmented.svg"} });
+					{"texture_path", "res://UI/Icons/Modifiers/Segmented.png"} });
 				break;
 		}
 		NewQuest.Destination = ChosenLocation;
@@ -1023,7 +1023,7 @@ public partial class Main : Node2D
 		{
 			foreach (Delivery delivery in Deliveries)
 			{
-				Dictionary<string, string> newTagData = new() { { "tier", CurrentLocation.GetHazardData("Hectic")["tier"] }, {"texture_path", "res://UI/Icons/Modifiers/Timed.svg"} };
+				Dictionary<string, string> newTagData = new() { { "tier", CurrentLocation.GetHazardData("Hectic")["tier"] }, {"texture_path", "res://UI/Icons/Modifiers/Timed.png"} };
 				// delivery.AddTag("Timed", newTagData, GetNewModifierIcon("Timed", newTagData));
 				delivery.AddTag("Timed", newTagData);
 			}
@@ -1037,7 +1037,7 @@ public partial class Main : Node2D
 				Location destination = AcceptedQuests[delivery.ID].Destination;
 				int distance = (StarMap.GetIdPath(CurrentLocation.ID, destination.ID).Length + Rnd.Next(2)) * int.Parse(CurrentLocation.GetHazardData("Bacteria")["multiplier"]);
 				newTagData["jumps"] = distance.ToString();
-				newTagData["texture_path"] = "res://UI/Icons/Modifiers/Fragile.svg";
+				newTagData["texture_path"] = "res://UI/Icons/Modifiers/Fragile.png";
 				delivery.AddTag("Fragile", newTagData);
 			}
 			CurrentLocation.RemoveHazard("Bacteria");
@@ -1561,17 +1561,17 @@ public partial class Main : Node2D
 		switch (newTag)
 		{
 			case "Timed":
-				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Timed.svg"));
+				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Timed.png"));
 				NewModifier.SetData((20 - int.Parse(newTagData["tier"]) * 5).ToString());
 				NewModifier.TooltipText = "You better be fast!\nThis delivery has a timer on it.";
 				break;
 			case "Fragile":
-				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Fragile.svg"));
+				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Fragile.png"));
 				NewModifier.SetData(newTagData["jumps"]);
 				NewModifier.TooltipText = "These boxes seem more fragile than usual...\nEach jump is important, deliver the items in provided number of jumps.";
 				break;
 			case "Segmented":
-				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Segmented.svg"));
+				NewModifier.SetSprite(GD.Load<Texture2D>("res://UI/Icons/Modifiers/Segmented.png"));
 				NewModifier.SetData(newTagData["middle-man-name"]);
 				NewModifier.TooltipText = "I like how certain planets influence my goods, here's the path...\nMake sure you go to the specified planet before completing the order.";
 				break;

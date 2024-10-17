@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c2gm46bn2r65u"
-path="res://.godot/imported/Timed.svg-145d6ef24959074b5b66bd857fe18a78.ctex"
+uid="uid://bmogewcyj36ca"
+path="res://.godot/imported/Segmented.png-53a482902a3711ae5ff7c18a331416d3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI/Icons/Modifiers/Timed.svg"
-dest_files=["res://.godot/imported/Timed.svg-145d6ef24959074b5b66bd857fe18a78.ctex"]
+source_file="res://UI/Icons/Modifiers/Segmented.png"
+dest_files=["res://.godot/imported/Segmented.png-53a482902a3711ae5ff7c18a331416d3.ctex"]
 
 [params]
 
@@ -23,7 +23,7 @@ compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false
 mipmaps/limit=-1
-roughness/mode=1
+roughness/mode=0
 roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=0.2
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false
