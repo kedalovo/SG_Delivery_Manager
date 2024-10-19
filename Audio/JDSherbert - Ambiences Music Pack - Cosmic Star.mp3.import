@@ -2,7 +2,7 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-uid="uid://bbpk7lqwnlsjw"
+uid="uid://dgfwoxem8dqm1"
 path="res://.godot/imported/JDSherbert - Ambiences Music Pack - Cosmic Star.mp3-294b8b63edc81fee4bf8ae803a28d3a7.mp3str"
 
 [deps]
@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/JDSherbert - Ambiences Music Pack - Cosmic St
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
 bpm=0
 beat_count=0

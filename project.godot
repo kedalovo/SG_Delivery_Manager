@@ -10,25 +10,21 @@ config_version=5
 
 [application]
 
-config/name="[SG] Delivery Management"
+config/name="Delivery Management"
 run/main_scene="res://Main/Main.tscn"
 config/features=PackedStringArray("4.3", "C#", "Mobile")
-boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/stretch/mode="viewport"
+window/size/mode=4
+window/stretch/mode="canvas_items"
 
 [dotnet]
 
-project/assembly_name="[SG] Delivery Management"
-
-[filesystem]
-
-import/blender/enabled=false
+project/assembly_name="Delivery Management"
 
 [gui]
 
@@ -65,5 +61,4 @@ accept_quest={
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"

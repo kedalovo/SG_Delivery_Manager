@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://ck7a82me5xux0"]
 
 [ext_resource type="Script" path="res://Ship/Ship.cs" id="1_6mnlf"]
-[ext_resource type="Texture2D" uid="uid://c8ct1jduhj2b" path="res://Ship/SpaceshipSprite.png" id="1_b67oc"]
-[ext_resource type="Texture2D" uid="uid://cmdwqioasfw4c" path="res://Ship/Flame_01.png" id="2_ymg1j"]
-[ext_resource type="Texture2D" uid="uid://dwnpklsms4lbg" path="res://Ship/Flame_02.png" id="3_52rot"]
+[ext_resource type="Texture2D" uid="uid://d3oemef45vm2k" path="res://Ship/SpaceshipSprite.png" id="1_b67oc"]
+[ext_resource type="Texture2D" uid="uid://16ws3ugd5c27" path="res://Ship/Flame_01.png" id="2_ymg1j"]
+[ext_resource type="Texture2D" uid="uid://cyyidygtb351t" path="res://Ship/Flame_02.png" id="3_52rot"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rnjkw"]
 animations = [{

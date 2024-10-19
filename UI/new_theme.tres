@@ -1,14 +1,14 @@
 [gd_resource type="Theme" load_steps=24 format=3 uid="uid://b2qtdaxrtr5jx"]
 
-[ext_resource type="Texture2D" uid="uid://j41biow82fc2" path="res://UI/button_disabled.png" id="1_a8nwi"]
-[ext_resource type="Texture2D" uid="uid://cne4py8jrjwss" path="res://UI/button_hover.png" id="2_5l3oj"]
-[ext_resource type="Texture2D" uid="uid://dnssuj048bhoh" path="res://UI/button_normal.png" id="3_3rj4e"]
-[ext_resource type="Texture2D" uid="uid://dvx42028kar0h" path="res://UI/button_pressed.png" id="4_uojbf"]
-[ext_resource type="Texture2D" uid="uid://4o8tfiej4lwc" path="res://UI/9patch_test.png" id="5_e1das"]
-[ext_resource type="Texture2D" uid="uid://b50dg2k2jbe7m" path="res://UI/CheckBoxNormalCheck.png" id="5_i346t"]
-[ext_resource type="Texture2D" uid="uid://baj8jwctobjjq" path="res://UI/CheckBoxNormal.png" id="5_xwmk5"]
-[ext_resource type="Texture2D" uid="uid://w7dxqiklkjfu" path="res://UI/CheckBoxNormalUnCheck.png" id="6_70avj"]
-[ext_resource type="FontFile" uid="uid://cevs2as2to3ke" path="res://UI/Orbitron-VariableFont_wght.ttf" id="6_712fq"]
+[ext_resource type="Texture2D" uid="uid://c3j8rlabyowb8" path="res://UI/button_disabled.png" id="1_a8nwi"]
+[ext_resource type="Texture2D" uid="uid://gsvkj3uooli0" path="res://UI/button_hover.png" id="2_5l3oj"]
+[ext_resource type="Texture2D" uid="uid://bqlah8di14iu0" path="res://UI/button_normal.png" id="3_3rj4e"]
+[ext_resource type="Texture2D" uid="uid://dkyp18p2xsx8e" path="res://UI/button_pressed.png" id="4_uojbf"]
+[ext_resource type="Texture2D" uid="uid://c5erhq2icbw7l" path="res://UI/9patch_test.png" id="5_e1das"]
+[ext_resource type="Texture2D" uid="uid://40w0y7pblgdq" path="res://UI/CheckBoxNormalCheck.png" id="5_i346t"]
+[ext_resource type="Texture2D" uid="uid://d0hy4i577qe70" path="res://UI/CheckBoxNormal.png" id="5_xwmk5"]
+[ext_resource type="Texture2D" uid="uid://30iyb2tiodu1" path="res://UI/CheckBoxNormalUnCheck.png" id="6_70avj"]
+[ext_resource type="FontFile" uid="uid://c6hkfb2vffhvv" path="res://UI/Orbitron-VariableFont_wght.ttf" id="6_712fq"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h17ba"]
 texture = ExtResource("1_a8nwi")
